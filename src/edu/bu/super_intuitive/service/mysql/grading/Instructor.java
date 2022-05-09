@@ -70,7 +70,7 @@ public class Instructor extends Member implements IInstructor {
             int i = 0;
             while (rs.next()) {
                 try {
-                    courses[i] = new Course(rs.getString("cid"));
+                    courses[i] = new Course(rs.getInt("cid"));
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 }
@@ -83,8 +83,30 @@ public class Instructor extends Member implements IInstructor {
     }
 
     @Override
-    public void openCourse(ICourse course) {
+    public ICourse openCourse(String courseName,
+                              String courseAlias,
+                              String semester) throws InstantiationException {
+        // 先创建一个新的课程，并设置它的 instructor 为自己的 sid
+        try {
+            // 先获取下一个空闲的 id
+            var stmt1 = Database.getConnection().prepareStatement("SELECT MAX(cid) FROM courses");
+            var rs = stmt1.executeQuery();
+            rs.next();
+            int nextId = rs.getInt(1) + 1;
 
+            var stmt = Database.getConnection().prepareStatement(
+                    "INSERT INTO courses (name, alias, semester, instructor) VALUES (?, ?, ?, ?);");
+            stmt.setString(1, courseName);
+            stmt.setString(2, courseAlias);
+            stmt.setString(3, semester);
+            stmt.setString(4, this.getBUId());
+            stmt.executeUpdate();
+
+            return new Course(nextId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new InstantiationException("Cannot create a new course");
+        }
     }
 
     @Override

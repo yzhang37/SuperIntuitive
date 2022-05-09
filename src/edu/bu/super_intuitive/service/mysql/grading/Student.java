@@ -68,7 +68,7 @@ public class Student extends Member implements IStudent {
             int i = 0;
             while (rs2.next()) {
                 try {
-                    courses[i] = new Course(rs2.getString("cid"));
+                    courses[i] = new Course(rs2.getInt("cid"));
                 } catch (InstantiationException e) { e.printStackTrace();}
             }
         } catch (SQLException e) {
