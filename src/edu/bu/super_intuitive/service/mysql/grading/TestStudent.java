@@ -9,4 +9,11 @@ public class TestStudent {
         System.out.println(student.getName());
         System.out.println(student.getEmail());
     }
+
+    @Test
+    public void testCreateNewUser() {
+        Student student = new Student("U00000002", "a", "abc@bu.edu");
+        System.out.println(student.getName());
+        System.out.println(student.getEmail());
+    }
 }

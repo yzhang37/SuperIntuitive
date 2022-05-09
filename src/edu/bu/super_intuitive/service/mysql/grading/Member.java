@@ -61,9 +61,23 @@ public class Member implements IMember {
             // 如果没有，则创建一个新的用户
             try {
                 var stmt = Database.getConnection().createStatement();
-
+                var sql = String.format("INSERT INTO staffs (sid, name, email) VALUES (\"%s\", \"%s\", \"%s\")", buId, name, email);
+                stmt.executeUpdate(sql);
             } catch (SQLException e) {
                 e.printStackTrace();
+                throw new IllegalArgumentException(
+                        String.format("Failed to create a new member with BuId = \"%s\".", buId));
+            }
+        } else {
+            // 如果已经有，则更新已有的用户
+            try {
+                var stmt = Database.getConnection().createStatement();
+                var sql = String.format("UPDATE staffs SET name = \"%s\", email = \"%s\" WHERE sid = \"%s\"", name, email, buId);
+                stmt.executeUpdate(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new IllegalArgumentException(
+                        String.format("Failed to update member with BuId = \"%s\".", buId));
             }
         }
     }
