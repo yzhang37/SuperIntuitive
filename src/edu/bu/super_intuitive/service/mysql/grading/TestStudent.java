@@ -16,4 +16,11 @@ public class TestStudent {
         System.out.println(student.getName());
         System.out.println(student.getEmail());
     }
+
+    @Test
+    public void testModifyUserProperty() {
+        Student student = new Student("U00000002");
+        student.setName("Test user name");
+        student.setEmail("test@bu.edu");
+    }
 }

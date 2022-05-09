@@ -93,10 +93,15 @@ public class Member implements IMember {
 
     @Override
     public void setName(String name) {
-//        try {
-//            var stmt = Database.getConnection().createStatement();
-//            var sql = String.format("UPDATE staffs SET name = \"%s\" WHERE sid = \"%s\"", name, this.buId);
-//        }
+        try {
+            var stmt = Database.getConnection().createStatement();
+            var sql = String.format("UPDATE staffs SET name = \"%s\" WHERE sid = \"%s\"", name, this.buId);
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            System.out.printf(
+                "Failed to update member's name to \"%s\" with BuId = \"%s\".%n", name, this.buId);
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -106,7 +111,15 @@ public class Member implements IMember {
 
     @Override
     public void setEmail(String email) {
-
+        try {
+            var stmt = Database.getConnection().createStatement();
+            var sql = String.format("UPDATE staffs SET email = \"%s\" WHERE sid = \"%s\"", email, this.buId);
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            System.out.printf(
+                "Failed to update member's email to \"%s\" with BuId = \"%s\".%n", email, this.buId);
+            e.printStackTrace();
+        }
     }
 
     protected static String getSingleValue(String sql, String columnName) {
