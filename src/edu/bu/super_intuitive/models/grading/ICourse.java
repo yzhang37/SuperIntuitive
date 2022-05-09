@@ -1,7 +1,7 @@
 package edu.bu.super_intuitive.models.grading;
 
 public interface ICourse {
-    public String getCourseId();
+    public int getCourseId();
     /**
      * Return the IInstructor object for the course.
      * @return Object implementing IInstructor interface
