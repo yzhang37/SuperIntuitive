@@ -53,4 +53,14 @@ public class TestStudent {
             System.out.println(inst.getEmail());
         });
     }
+
+    @Test
+    public void testTeacherCreate() {
+        try {
+            var inst = new Instructor("U00000000");
+            inst.openCourse("Algorithm Practice", "CS112", "Spring 2024");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
