@@ -39,7 +39,7 @@ public class Database {
                         USERNAME, PASSWORD);
 
                 var stmt = conn.createStatement();
-                stmt.executeUpdate("USE GradingSystem;");
+                stmt.executeUpdate("use GradingSystem;");
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -48,13 +48,14 @@ public class Database {
 
     @Override
     protected void finalize() throws Throwable {
-        super.finalize();
         try {
             if (conn != null) {
                 conn.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            super.finalize();
         }
     }
 
@@ -62,8 +63,9 @@ public class Database {
         try {
             initConnection();
         } catch (SQLException e) {
-            System.out.println("Cannot connect to database");
+            System.out.println("Cannot connect to database:");
             e.printStackTrace();
+            System.exit(1);
         }
     }
 }
