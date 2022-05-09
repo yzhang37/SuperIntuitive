@@ -1,10 +1,13 @@
 package edu.bu.super_intuitive.service.mysql.grading;
 
 import edu.bu.super_intuitive.middleware.mysql.Database;
+import edu.bu.super_intuitive.models.grading.ICourse;
+import edu.bu.super_intuitive.models.grading.IInstructor;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
-public class Instructor extends Member {
+public class Instructor extends Member implements IInstructor {
     public Instructor(String id) throws InstantiationException {
         super(id);
         checkAndUpdate(id);
@@ -45,5 +48,52 @@ public class Instructor extends Member {
         if (fail) {
             throw new InstantiationException(failMessage);
         }
+    }
+
+    @Override
+    public ICourse[] getOwnedCourses() {
+        // 根据已有的 sid，在 courses 中查找 courses.instructor = sid
+        ICourse[] courses = null;
+        try {
+            // 先执行预查询，获取总个数
+            var stmt = Database.getConnection().prepareStatement("SELECT COUNT(*) FROM courses WHERE instructor = ?");
+            stmt.setString(1, this.getBUId());
+            var rs = stmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            courses = new ICourse[count];
+
+            var stmt2 = Database.getConnection().prepareStatement("SELECT cid FROM courses WHERE instructor = ?");
+            stmt2.setString(1, this.getBUId());
+            rs = stmt2.executeQuery();
+
+            int i = 0;
+            while (rs.next()) {
+                try {
+                    courses[i] = new Course(rs.getString("cid"));
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+                i++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Objects.requireNonNullElseGet(courses, () -> new ICourse[0]);
+    }
+
+    @Override
+    public void openCourse(ICourse course) {
+
+    }
+
+    @Override
+    public void removeCourse(ICourse course) {
+
+    }
+
+    @Override
+    public boolean hasOwnedCourse(ICourse course) {
+        return false;
     }
 }

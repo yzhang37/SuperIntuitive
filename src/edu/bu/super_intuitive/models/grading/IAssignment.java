@@ -1,6 +1,7 @@
 package edu.bu.super_intuitive.models.grading;
 
 public interface IAssignment {
+    public int getAssignmentId();
     public ICourse getCourse();
 
     public int getWeight();

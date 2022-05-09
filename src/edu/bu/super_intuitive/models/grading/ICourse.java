@@ -1,16 +1,41 @@
 package edu.bu.super_intuitive.models.grading;
 
 public interface ICourse {
+    public String getCourseId();
     /**
      * Return the IInstructor object for the course.
      * @return Object implementing IInstructor interface
      */
-    public IInstructor getInstructor();
+    public IInstructor getInstructor() throws InstantiationException;
 
+    /**
+     * @return 课程的别名 (短名称)
+     */
+    public String getAlias();
+    /**
+     * 设置课程的短名称
+     * @param alias short name of the class
+     */
+    public void setAlias(String alias);
+
+    /**
+     * @return 课程的完整名称
+     */
     public String getName();
+    /**
+     * 设置课程的完整名称。
+     * @param name Full name of the class
+     */
     public void setName(String name);
 
+    /**
+     * @return 课程的学期字符串
+     */
     public String getSemester();
+    /**
+     * 设置课程的学期字符串
+     * @param semester The semester string
+     */
     public void setSemester(String semester);
 
     /**

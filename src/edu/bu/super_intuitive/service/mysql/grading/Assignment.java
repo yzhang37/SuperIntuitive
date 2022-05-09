@@ -5,6 +5,11 @@ import edu.bu.super_intuitive.models.grading.ICourse;
 import edu.bu.super_intuitive.models.grading.IStudent;
 
 public class Assignment implements IAssignment {
+    private int aid;
+
+    public int getAssignmentId() {
+        return aid;
+    }
 
     @Override
     public ICourse getCourse() {
