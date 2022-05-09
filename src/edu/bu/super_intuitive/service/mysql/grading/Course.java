@@ -150,22 +150,48 @@ public class Course implements ICourse {
 
     @Override
     public void addOneStudent(IStudent student) {
-
+        try {
+            var BUId = student.getBUId();
+            var name = student.getName();
+            var email = student.getEmail();
+            var stmt = Database.getConnection().prepareStatement(
+                    "INSERT INTO staffs (sid, name, email, isInstructor" +
+                            "VALUES (?, ?, ?, ?)");
+            stmt.setString(1, BUId);
+            stmt.setString(2, name);
+            stmt.setString(3, email);
+            stmt.setBoolean(4, false);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void addManyStudents(IStudent[] students) {
-
+        for (var student : students) {
+            addOneStudent(student);
+        }
     }
 
     @Override
     public void removeOneStudent(IStudent student) {
-
+        try {
+            var BUId = student.getBUId();
+            var stmt = Database.getConnection().prepareStatement(
+                    "Delete from course where id = ?");
+            stmt.setString(1, BUId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void removeManyStudents(IStudent[] students) {
-
+        for (var student : students) {
+            removeOneStudent(student);
+        }
     }
 
     @Override
