@@ -2,7 +2,7 @@ package edu.bu.super_intuitive.service.mysql.grading;
 
 public class Instructor extends Member {
 
-    public Instructor(String id) {
+    public Instructor(String id) throws InstantiationException {
         super(id);
     }
 }
