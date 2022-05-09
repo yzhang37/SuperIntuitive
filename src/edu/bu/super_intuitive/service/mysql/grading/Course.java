@@ -180,7 +180,14 @@ public class Course implements ICourse {
 
     @Override
     public void removeAssignment(IAssignment assignment) {
-
+        try {
+            var stmt = Database.getConnection().prepareStatement("DELETE FROM assignments WHERE" +
+                                                                                        " aid = ?");
+            stmt.setString(1, String.valueOf(assignment.getAssignmentId()));
+            stmt.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
