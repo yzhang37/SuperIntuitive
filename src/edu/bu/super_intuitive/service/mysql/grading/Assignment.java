@@ -37,12 +37,36 @@ public class Assignment implements IAssignment {
     }
 
     @Override
-    public ICourse getCourse() {
-        return null;
+    public ICourse getCourse() throws InstantiationException {
+        var failMessage = "";
+        try {
+            var stmt = Database.getConnection().prepareStatement("SELECT course_id FROM assignments WHERE aid = ?");
+            stmt.setInt(1, aid);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Course(rs.getInt("course_id"));
+            }
+            failMessage = String.format("Database error, failed to get Course for Assignment aid=%d", this.aid);
+            // 然后用其创建一个 Instructor 对象
+        } catch (SQLException e) {
+            e.printStackTrace();
+            failMessage = e.getMessage();
+        }
+        throw new InstantiationException(failMessage);
     }
 
     @Override
     public int getWeight() {
+        try {
+            var stmt = Database.getConnection().prepareStatement("SELECT weight FROM assignments WHERE aid = ?");
+            stmt.setInt(1, aid);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("weight");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
@@ -53,6 +77,16 @@ public class Assignment implements IAssignment {
 
     @Override
     public int getFullScore() {
+        try {
+            var stmt = Database.getConnection().prepareStatement("SELECT score FROM assignments WHERE aid = ?");
+            stmt.setInt(1, aid);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("score");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
