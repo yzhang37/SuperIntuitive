@@ -21,7 +21,7 @@ public class AddAssignment implements ActionListener {
     public AddAssignment(ICourse courseObject, CourseView course_view) throws InstantiationException {
         this.course = courseObject;
         frame = new JFrame("Add Assignment");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         button = new JButton("Confirm");
         button.addActionListener(this);

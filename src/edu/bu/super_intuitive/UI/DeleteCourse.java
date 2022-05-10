@@ -23,7 +23,7 @@ public class DeleteCourse implements ActionListener {
 
     public DeleteCourse() throws InstantiationException {
         frame = new JFrame("Delete Course");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         button = new JButton("Confirm");
         button.addActionListener(this);

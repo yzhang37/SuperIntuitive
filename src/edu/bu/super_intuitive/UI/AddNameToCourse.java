@@ -39,7 +39,7 @@ public class AddNameToCourse extends JFrame {
 //        curr_frame = new JFrame();
         this.setTitle("Add name to course");   // Set window title
         this.setSize(620,400);    // Set window size
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    // Set window closeable
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);    // Set window closeable
         this.setLayout(new BorderLayout());
         this.searching_table = st;
         this.pending_table = pt;
@@ -87,9 +87,11 @@ public class AddNameToCourse extends JFrame {
         search_btn.setPreferredSize(new Dimension(80, 35));
         JLabel btn_label = new JLabel("🔍 Search");
         search_btn.addActionListener(e -> {
+
             String search_text = tf.getText();
             IStudent[] students = Students.getStudentsByFuzzySearchName(search_text);
             DefaultTableModel model = (DefaultTableModel) searching_table.getModel();
+            model.setRowCount(0);
             for (IStudent student : students) {
                 String name = student.getName();
                 String id = student.getBUId();

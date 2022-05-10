@@ -27,7 +27,7 @@ public class DeleteAssignment {
 
     public DeleteAssignment(CourseView course_view) throws InstantiationException, OperationFailed {
         frame = new JFrame("Delete Assignment");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.courseView = course_view;
 
         JButton button = new JButton("Confirm");

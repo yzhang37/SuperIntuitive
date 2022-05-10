@@ -21,7 +21,7 @@ public class AddCourse implements ActionListener {
 
     public AddCourse() throws InstantiationException {
         frame = new JFrame("Add Course");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         button = new JButton("Confirm");
         button.addActionListener(this);

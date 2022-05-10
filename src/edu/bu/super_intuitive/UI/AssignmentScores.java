@@ -73,7 +73,7 @@ public class AssignmentScores extends JFrame {
 
         // TODO: this default close window action should be
         //  removed in the final structure.
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
 }

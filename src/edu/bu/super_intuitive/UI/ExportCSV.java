@@ -14,7 +14,7 @@ public class ExportCSV implements ActionListener {
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/GradingSystem";
     static final String USER = "root";
-    static final String PASS = "root1234";
+    static final String PASS = "yzh373df";
     private JFrame frame;
     private JButton button;
     private JPanel panel;
@@ -36,7 +36,7 @@ public class ExportCSV implements ActionListener {
 
         frame.add(panel, BorderLayout.CENTER);
         frame.add(button, BorderLayout.SOUTH);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }

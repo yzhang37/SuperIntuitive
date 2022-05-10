@@ -48,7 +48,7 @@ public class StudentInfo implements ActionListener {
 
         frame.add(panel, BorderLayout.NORTH);
         frame.add(panel2, BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }

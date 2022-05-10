@@ -237,11 +237,12 @@ public class Course implements ICourse {
             var rs = stmt1.executeQuery();
             rs.next();
             var nextId = rs.getInt(1) + 1;
-            var stmt2 = Database.getConnection().prepareStatement("INSERT INTO assignments (course_id, name, score, weight) VALUES (?, ?, ?, ?)");
-            stmt2.setInt(1, this.getCourseId());
-            stmt2.setString(2, assignmentName);
-            stmt2.setInt(3, fullScore);
-            stmt2.setInt(4, weight);
+            var stmt2 = Database.getConnection().prepareStatement("INSERT INTO assignments (aid, course_id, name, score, weight) VALUES (?, ?, ?, ?, ?)");
+            stmt2.setInt(1, nextId);
+            stmt2.setInt(2, this.getCourseId());
+            stmt2.setString(3, assignmentName);
+            stmt2.setInt(4, fullScore);
+            stmt2.setInt(5, weight);
             stmt2.executeUpdate();
 
             return new Assignment(nextId);

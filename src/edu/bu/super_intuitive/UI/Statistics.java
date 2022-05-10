@@ -37,7 +37,7 @@ public class Statistics implements ActionListener {
 
         frame.add(panel, BorderLayout.CENTER);
 //        frame.add(button, BorderLayout.SOUTH);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
