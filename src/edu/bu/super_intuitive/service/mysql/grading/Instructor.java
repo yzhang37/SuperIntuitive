@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class Instructor extends Member implements IInstructor {
+
+    // Constructor for Instructor class
     public Instructor(String id) throws InstantiationException {
         super(id);
         checkAndUpdate(id);
@@ -26,6 +28,7 @@ public class Instructor extends Member implements IInstructor {
         checkAndUpdate(id);
     }
 
+    // Check if the instructor has the course
     private void checkAndUpdate(String id) throws InstantiationException {
         // Check if isInstructor is not false
         boolean fail = false;
@@ -58,6 +61,7 @@ public class Instructor extends Member implements IInstructor {
         }
     }
 
+    // Get the courses taught by the instructor
     @Override
     public ICourse[] getOwnedCourses() {
         // Find courses.instructor = sid in courses based on the existing sid
@@ -90,6 +94,7 @@ public class Instructor extends Member implements IInstructor {
         return Objects.requireNonNullElseGet(courses, () -> new ICourse[0]);
     }
 
+    // Open a course for the instructor
     @Override
     public ICourse openCourse(String courseName,
                               String courseAlias,
@@ -118,6 +123,7 @@ public class Instructor extends Member implements IInstructor {
         }
     }
 
+    // Remove a course from the instructor's list
     @Override
     public void removeCourse(ICourse course) throws OperationFailed {
         if (!hasOwnedCourse(course)) {
@@ -135,6 +141,8 @@ public class Instructor extends Member implements IInstructor {
         }
     }
 
+
+    // Return the list of students in a course
     @Override
     public boolean hasOwnedCourse(ICourse course) {
         try {

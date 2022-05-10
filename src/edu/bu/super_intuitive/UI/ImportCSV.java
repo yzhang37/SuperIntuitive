@@ -27,6 +27,8 @@ public class ImportCSV implements ActionListener{
     private final JLabel label;
     private final JComboBox list;
     private final ArrayList<String> data = new ArrayList<String>();
+
+    // Constructor
     public ImportCSV() {
         frame = new JFrame("Import CSV");
         button = new JButton("Browse");
@@ -50,6 +52,7 @@ public class ImportCSV implements ActionListener{
 
     }
 
+    // Action listener for button
     @Override
     public void actionPerformed(ActionEvent e) {
         String tableName = (String) list.getSelectedItem();
@@ -62,7 +65,8 @@ public class ImportCSV implements ActionListener{
             java.io.File f = j.getSelectedFile();
             filePath = f.getPath();
         }
-        // String filePath = System.getProperty("user.dir") + "/test.csv";
+
+        // Read csv file
         File file = new File(filePath);
         BufferedReader br = null;
         try {
@@ -76,15 +80,15 @@ public class ImportCSV implements ActionListener{
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        //System.out.println(column);
         String line = null;
+
+        // Read each line
         while (true) {
             try {
                 if ((line = br.readLine()) == null) break;
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            //System.out.println(line);
             data.add(line);
         }
 

@@ -19,6 +19,7 @@ public class InstructorPage extends JFrame {
 
     private final Instructor instructor = new Instructor("U00000000");
 
+    // Constructor for the InstructorPage class
     public InstructorPage() throws InstantiationException {
         setTitle("Instructor page");    // Set window title
         setSize(650,580);    // Set window size
@@ -35,6 +36,7 @@ public class InstructorPage extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    // Set the top panel
     private JPanel setTopPanel() {
         JPanel top_panel = new JPanel();    // Create a JPanel object
 
@@ -50,11 +52,14 @@ public class InstructorPage extends JFrame {
         return top_panel;
     }
 
+    // Set the center panel
     private JPanel setCenterPanel() throws InstantiationException {
         JPanel center_panel=new JPanel();
         JPanel cards=new JPanel(new CardLayout(50, 30));
 
         ICourse[] allCourses = instructor.getOwnedCourses();
+
+        // Create JPanel objects for each course
         for (ICourse course : allCourses) {
             JButton p1_button_1 = new JButton("<html>" + course.getAlias()
                     + " " + course.getName() + "<br>" +
@@ -72,10 +77,13 @@ public class InstructorPage extends JFrame {
             });
             center_panel.add(p1_button_1);
         }
+
+        // Add panels to the cards panel
         cards.add(center_panel,"card1");
         return cards;
     }
 
+    // Set the bottom panel
     private JPanel setBottomPanel(JFrame curr_frame) {
         // Create a panel object
         JPanel bottom_panel = new JPanel();

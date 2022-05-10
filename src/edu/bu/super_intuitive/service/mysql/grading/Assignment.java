@@ -19,6 +19,7 @@ import java.sql.SQLException;
 public class Assignment implements IAssignment {
     private final int aid;
 
+    // Constructor for Assignment class
     public Assignment(int aid) throws InstantiationException {
         this.aid = aid;
         // Verify that the data for the current id exists
@@ -40,10 +41,12 @@ public class Assignment implements IAssignment {
         }
     }
 
+    // Get current Assignment's id
     public int getAssignmentId() {
         return aid;
     }
 
+    // Get current Assignment's course
     @Override
     public ICourse getCourse() throws InstantiationException {
         var failMessage = "";
@@ -63,6 +66,7 @@ public class Assignment implements IAssignment {
         throw new InstantiationException(failMessage);
     }
 
+    // Get current Assignment's due date
     @Override
     public int getWeight() throws OperationFailed {
         var failMessage = "";
@@ -81,6 +85,7 @@ public class Assignment implements IAssignment {
         throw new OperationFailed(failMessage);
     }
 
+    // Get current Assignment's name
     public String getName() throws OperationFailed {
         var failMessage = "";
         try {
@@ -98,6 +103,7 @@ public class Assignment implements IAssignment {
         throw new OperationFailed(failMessage);
     }
 
+    // Setters
     @Override
     public void setWeight(int weight) throws OperationFailed {
         try {
@@ -180,6 +186,7 @@ public class Assignment implements IAssignment {
         return 0;
     }
 
+    // Returns true if the student has a score for this assignment
     @Override
     public boolean hasStudentScore(IStudent student) {
         try {
@@ -194,6 +201,7 @@ public class Assignment implements IAssignment {
         return false;
     }
 
+    // Remove the student's score for this assignment
     @Override
     public void removeStudentScore(IStudent student) throws OperationFailed {
         if (!hasStudentScore(student)) {

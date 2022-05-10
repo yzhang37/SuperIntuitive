@@ -1,5 +1,5 @@
 /**
- * @Author Hanyu Chen
+ * @Author Chenyu Cao
  * @Description // CSV file export
  * @Date $ 05.05.2022$
  * @Param $
@@ -25,6 +25,8 @@ public class ExportCSV implements ActionListener {
     private final JPanel panel;
     private final JComboBox list;
     private final StringBuilder sb = new StringBuilder();
+
+    // Constructor
     public ExportCSV() {
         frame = new JFrame("Export CSV");
         button = new JButton("Confirm");
@@ -46,6 +48,7 @@ public class ExportCSV implements ActionListener {
         frame.setVisible(true);
     }
 
+    // Connect to database
     public void connectToDB(String tableName){
         Connection conn = null;
         PreparedStatement st = null;
@@ -56,6 +59,8 @@ public class ExportCSV implements ActionListener {
             st = (PreparedStatement) conn
                     .prepareStatement("select * from " + tableName);
             System.out.println("Creating statement...");
+
+            // Get the result set
             ResultSet rs = st.executeQuery();
             ResultSetMetaData metaData = rs.getMetaData();
             int count = metaData.getColumnCount(); //number of column
@@ -66,6 +71,8 @@ public class ExportCSV implements ActionListener {
                 sb.append(",");
             }
             sb.append("\r\n");
+
+            // Get the data
             while(rs.next()){
                 for(int i = 1; i <= count; i++){
                     sb.append(rs.getString(columnName[i-1]));
@@ -76,6 +83,8 @@ public class ExportCSV implements ActionListener {
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+
+        // Close the connection
         finally {
             try{
                 if(st!=null)
@@ -90,6 +99,7 @@ public class ExportCSV implements ActionListener {
         }
     }
 
+    // Listen to the button event
     @Override
     public void actionPerformed(ActionEvent e) {
         String tableName = (String) list.getSelectedItem();

@@ -31,6 +31,7 @@ public class StudentInfo implements ActionListener {
     private Object[][] data;
     private String name, email;
 
+    // Constructor
     public StudentInfo(String studentId, String courseCode){
         frame = new JFrame("Student Information");
         label1 = new JLabel("Name:");
@@ -41,7 +42,6 @@ public class StudentInfo implements ActionListener {
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new FlowLayout());
         String[] columnNames = {"Assignments", "Grades"};
-        //connectToDB(courseCode, studentId);
 
         textArea1 = new JTextArea(name);
         textArea2 = new JTextArea(studentId);
@@ -65,6 +65,7 @@ public class StudentInfo implements ActionListener {
         frame.setVisible(true);
     }
 
+    // Connect to database
     public void connectToDB(String courseCode, String studentId){
         Connection conn = null;
         PreparedStatement st = null;
@@ -93,6 +94,8 @@ public class StudentInfo implements ActionListener {
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+
+        // Close the connection
         finally {
             try{
                 if(st!=null)
@@ -107,6 +110,7 @@ public class StudentInfo implements ActionListener {
         }
     }
 
+    // Add action listeners
     @Override
     public void actionPerformed(ActionEvent e) {
     }

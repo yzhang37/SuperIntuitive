@@ -22,6 +22,7 @@ public class Login implements ActionListener {
     private final JTextField textFieldUserName;
     private final JTextField textFieldPassword;
 
+    // Constructor
     public Login(){
         frame = new JFrame("Login");
         button = new JButton("Confirm");
@@ -54,6 +55,7 @@ public class Login implements ActionListener {
         frame.setVisible(true);
     }
 
+    // Add action listener
     @Override
     public void actionPerformed(ActionEvent e) {
         String loginName = textFieldUserName.getText();
