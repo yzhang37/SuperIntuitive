@@ -20,7 +20,7 @@ public class Students {
             var rs = stmt.executeQuery();
             while (rs.next()) {
                 try {
-                    sgittudents.add(new Student(rs.getString("sid")));
+                    students.add(new Student(rs.getString("sid")));
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 }
