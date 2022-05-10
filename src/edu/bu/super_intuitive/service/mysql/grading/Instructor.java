@@ -111,11 +111,12 @@ public class Instructor extends Member implements IInstructor {
 
     @Override
     public void removeCourse(ICourse course) {
-
+        // TODO: 帮助老师删除课程
     }
 
     @Override
     public boolean hasOwnedCourse(ICourse course) {
+        // TODO: 检查老师是否开了一门课程
         return false;
     }
 }
