@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Course delete page
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.models.exception.OperationFailed;
@@ -7,23 +14,20 @@ import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class DeleteCourse implements ActionListener {
 
-    private JFrame frame;
-    private JButton button;
-    private JPanel panel;
+    private final JFrame frame;
+    private final JButton button;
+    private final JPanel panel;
     private final JComboBox<String> comboBox = new JComboBox<>();
-    private Instructor instructor = new Instructor("U00000000");
-    private ICourse[] allCourses = instructor.getOwnedCourses();
+    private final Instructor instructor = new Instructor("U00000000");
+    private final ICourse[] allCourses = instructor.getOwnedCourses();
 
+    // Constructor
     public DeleteCourse() throws InstantiationException {
         frame = new JFrame("Delete Course");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         button = new JButton("Confirm");
         button.addActionListener(this);
@@ -41,6 +45,7 @@ public class DeleteCourse implements ActionListener {
         frame.setVisible(true);
     }
 
+    // Set combo box
     private void setComboBox(JPanel curr_panel, JComboBox<String> comboBox, String curr_label) {
         for (ICourse course : allCourses) {
             comboBox.addItem(course.getCourseId() + "-" + course.getAlias() + " - "
@@ -50,6 +55,7 @@ public class DeleteCourse implements ActionListener {
         curr_panel.add(comboBox);
     }
 
+    // Action listener
     @Override
     public void actionPerformed(ActionEvent e) {
         int courseId = comboBox.getSelectedIndex();

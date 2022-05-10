@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // AddNameToCourse is a class that is used to add a name to a course.
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.factory.grading.Students;
@@ -8,20 +15,11 @@ import edu.bu.super_intuitive.service.mysql.grading.Student;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.awt.event.*;
 import javax.swing.table.*;
-import java.awt.event.ActionListener;
 
-/**
- * @Author Hanyu Chen
- * @Description //TODO $
- * @Date $ 05.05.2022$
- * @Param $
- * @return $
- **/
 public class AddNameToCourse extends JFrame {
 
     private final JTable searching_table;
@@ -29,8 +27,9 @@ public class AddNameToCourse extends JFrame {
     private final List<String> added_students;
     private final ICourse course;
     private boolean isConfirmed;
-    private CourseView course_view;
+    private final CourseView course_view;
 
+    // Constructor
     public AddNameToCourse(JTable st,
                            JTable pt,
                            List<String> added_students,
@@ -39,7 +38,7 @@ public class AddNameToCourse extends JFrame {
 //        curr_frame = new JFrame();
         this.setTitle("Add name to course");   // Set window title
         this.setSize(620,400);    // Set window size
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    // Set window closeable
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);    // Set window closeable
         this.setLayout(new BorderLayout());
         this.searching_table = st;
         this.pending_table = pt;
@@ -64,32 +63,34 @@ public class AddNameToCourse extends JFrame {
                     }
                 }
                 if (course_view != null) {
-                    try {
-                        course_view.updateStudentDisplay();
-                    } catch (OperationFailed ex) {
-                        ex.printStackTrace();
-                    }
+                    course_view.updateStudentDisplay();
                 }
             }
             }
         });
     }
 
+    // Set top panel
     private void setTopPanel(JFrame curr_frame) {
         // Create panel
         JPanel top_panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel top_panel_left = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 20));
         JPanel top_panel_right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 40, 20));
 
+        // Create text field
         JTextField tf = new JTextField();
         tf.setPreferredSize(new Dimension(120, 35));
         JButton search_btn = new JButton();
         search_btn.setPreferredSize(new Dimension(80, 35));
         JLabel btn_label = new JLabel("🔍 Search");
+
+        // Add action listener for each row in table
         search_btn.addActionListener(e -> {
+
             String search_text = tf.getText();
             IStudent[] students = Students.getStudentsByFuzzySearchName(search_text);
             DefaultTableModel model = (DefaultTableModel) searching_table.getModel();
+            model.setRowCount(0);
             for (IStudent student : students) {
                 String name = student.getName();
                 String id = student.getBUId();
@@ -97,6 +98,7 @@ public class AddNameToCourse extends JFrame {
             }
         });
         search_btn.add(btn_label);
+
 
         top_panel_left.add(tf);
         top_panel_right.add(search_btn);
@@ -108,6 +110,7 @@ public class AddNameToCourse extends JFrame {
 
     }
 
+    // Set center panel
     private void setCenterPanel(JFrame curr_frame) {
         // Create panels
         JPanel curr_panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
@@ -141,6 +144,7 @@ public class AddNameToCourse extends JFrame {
         return curr_panel;
     }
 
+    // Set bottom panel
     private void setBottomPanel(JFrame curr_frame) {
         // Create a panel object
         JPanel bottom_panel = new JPanel();
@@ -169,10 +173,7 @@ public class AddNameToCourse extends JFrame {
 
 }
 
-/**
- * @version 1.0 11/09/98
- */
-
+// Define button editor class
 class ButtonRenderer extends JButton implements TableCellRenderer {
 
     public ButtonRenderer() {
@@ -186,12 +187,9 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
     }
 }
 
-/**
- * @version 1.0 11/09/98
- */
-
+// Define button editor class to catch click events
 class ButtonEditor extends DefaultCellEditor {
-    protected JButton button;
+    protected final JButton button;
 
     private String label;
     private final JFrame curr_frame;
@@ -201,7 +199,7 @@ class ButtonEditor extends DefaultCellEditor {
     private JTable searching_table;
     private int deleted_row;
     private boolean isPushed;
-    private CourseView course_view;
+    private final CourseView course_view;
 
     public ButtonEditor(JCheckBox checkBox,
                         JFrame frame,
@@ -224,6 +222,7 @@ class ButtonEditor extends DefaultCellEditor {
         });
     }
 
+    // Get the table when clicking the button
     public Component getTableCellEditorComponent(JTable table, Object value,
                                                  boolean isSelected, int row, int column) {
         label = (value == null) ? "" : value.toString();
@@ -234,6 +233,7 @@ class ButtonEditor extends DefaultCellEditor {
         return button;
     }
 
+    // Get the cell when clicking the button
     public Object getCellEditorValue() {
         if (isPushed) {
             DefaultTableModel model = (DefaultTableModel) pending_table.getModel();
@@ -247,18 +247,21 @@ class ButtonEditor extends DefaultCellEditor {
             new AddNameToCourse(searching_table, pending_table, added_students, course, this.course_view);
         }
         isPushed = false;
-        return new String(label);
+        return label;
     }
 
+    // Stop editing
     public boolean stopCellEditing() {
         isPushed = false;
         return super.stopCellEditing();
     }
 
+    // Stop firing events
     protected void fireEditingStopped() {
         super.fireEditingStopped();
     }
 
+    // Get row at index
     private Object[] getRowAt(int row, JTable table) {
         Object[] result = new String[3];
 

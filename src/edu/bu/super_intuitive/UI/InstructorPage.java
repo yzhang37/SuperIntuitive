@@ -1,10 +1,11 @@
-package edu.bu.super_intuitive.UI; /**
+/**
  * @Author Hanyu Chen
- * @Description //TODO $
+ * @Description // Constructor for the InstructorPage class
  * @Date $ 05.05.2022$
  * @Param $
- * @return $
+ * @return $ N/A
  **/
+package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.ICourse;
@@ -12,16 +13,13 @@ import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.sql.*;
 
 public class InstructorPage extends JFrame {
 
-    private Instructor instructor = new Instructor("U00000000");
+    private final Instructor instructor = new Instructor("U00000000");
 
+    // Constructor for the InstructorPage class
     public InstructorPage() throws InstantiationException {
         setTitle("Instructor page");    // Set window title
         setSize(650,580);    // Set window size
@@ -33,11 +31,12 @@ public class InstructorPage extends JFrame {
         add(setTopPanel(), BorderLayout.NORTH);
         add(setBottomPanel(this), BorderLayout.SOUTH);
 
-        setVisible(true);    //设置窗口可见
+        setVisible(true);    // Set window visible
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    // Set the top panel
     private JPanel setTopPanel() {
         JPanel top_panel = new JPanel();    // Create a JPanel object
 
@@ -53,11 +52,14 @@ public class InstructorPage extends JFrame {
         return top_panel;
     }
 
+    // Set the center panel
     private JPanel setCenterPanel() throws InstantiationException {
         JPanel center_panel=new JPanel();
         JPanel cards=new JPanel(new CardLayout(50, 30));
 
         ICourse[] allCourses = instructor.getOwnedCourses();
+
+        // Create JPanel objects for each course
         for (ICourse course : allCourses) {
             JButton p1_button_1 = new JButton("<html>" + course.getAlias()
                     + " " + course.getName() + "<br>" +
@@ -75,10 +77,13 @@ public class InstructorPage extends JFrame {
             });
             center_panel.add(p1_button_1);
         }
+
+        // Add panels to the cards panel
         cards.add(center_panel,"card1");
         return cards;
     }
 
+    // Set the bottom panel
     private JPanel setBottomPanel(JFrame curr_frame) {
         // Create a panel object
         JPanel bottom_panel = new JPanel();

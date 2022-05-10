@@ -1,3 +1,10 @@
+/**
+ * @Author Zhenghang Yin
+ * @Description // Constructor for Assignment class
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.service.mysql.grading;
 
 import edu.bu.super_intuitive.middleware.mysql.Database;
@@ -12,9 +19,10 @@ import java.sql.SQLException;
 public class Assignment implements IAssignment {
     private final int aid;
 
+    // Constructor for Assignment class
     public Assignment(int aid) throws InstantiationException {
         this.aid = aid;
-        // 验证当前 id 的数据是否存在
+        // Verify that the data for the current id exists
         boolean fail = false;
         try {
             var stmt = Database.getConnection().prepareStatement("SELECT * FROM assignments WHERE aid = ?");
@@ -33,10 +41,12 @@ public class Assignment implements IAssignment {
         }
     }
 
+    // Get current Assignment's id
     public int getAssignmentId() {
         return aid;
     }
 
+    // Get current Assignment's course
     @Override
     public ICourse getCourse() throws InstantiationException {
         var failMessage = "";
@@ -48,7 +58,7 @@ public class Assignment implements IAssignment {
                 return new Course(rs.getInt("course_id"));
             }
             failMessage = String.format("Database error, failed to get Course for Assignment aid=%d", this.aid);
-            // 然后用其创建一个 Instructor 对象
+            // Then use it to create an Instructor object
         } catch (SQLException e) {
             e.printStackTrace();
             failMessage = e.getMessage();
@@ -56,6 +66,7 @@ public class Assignment implements IAssignment {
         throw new InstantiationException(failMessage);
     }
 
+    // Get current Assignment's due date
     @Override
     public int getWeight() throws OperationFailed {
         var failMessage = "";
@@ -74,6 +85,7 @@ public class Assignment implements IAssignment {
         throw new OperationFailed(failMessage);
     }
 
+    // Get current Assignment's name
     public String getName() throws OperationFailed {
         var failMessage = "";
         try {
@@ -91,6 +103,7 @@ public class Assignment implements IAssignment {
         throw new OperationFailed(failMessage);
     }
 
+    // Setters
     @Override
     public void setWeight(int weight) throws OperationFailed {
         try {
@@ -173,6 +186,7 @@ public class Assignment implements IAssignment {
         return 0;
     }
 
+    // Returns true if the student has a score for this assignment
     @Override
     public boolean hasStudentScore(IStudent student) {
         try {
@@ -187,6 +201,7 @@ public class Assignment implements IAssignment {
         return false;
     }
 
+    // Remove the student's score for this assignment
     @Override
     public void removeStudentScore(IStudent student) throws OperationFailed {
         if (!hasStudentScore(student)) {

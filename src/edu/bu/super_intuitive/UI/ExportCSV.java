@@ -1,31 +1,38 @@
+/**
+ * @Author Chenyu Cao
+ * @Description // CSV file export
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.util.ArrayList;
 
 public class ExportCSV implements ActionListener {
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/GradingSystem";
     static final String USER = "root";
-    static final String PASS = "root1234";
-    private JFrame frame;
-    private JButton button;
-    private JPanel panel;
-    private JComboBox list;
-    private StringBuilder sb = new StringBuilder();
+    static final String PASS = "yzh373df";
+    private final JFrame frame;
+    private final JButton button;
+    private final JPanel panel;
+    private final JComboBox list;
+    private final StringBuilder sb = new StringBuilder();
+
+    // Constructor
     public ExportCSV() {
         frame = new JFrame("Export CSV");
         button = new JButton("Confirm");
         panel = new JPanel();
 
-        String tables[] = {"courses", "staffs", "assignments", "student"};
+        String[] tables = {"courses", "staffs", "assignments"};
         list = new JComboBox(tables);
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(2, 2));
@@ -36,11 +43,12 @@ public class ExportCSV implements ActionListener {
 
         frame.add(panel, BorderLayout.CENTER);
         frame.add(button, BorderLayout.SOUTH);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
+    // Connect to database
     public void connectToDB(String tableName){
         Connection conn = null;
         PreparedStatement st = null;
@@ -51,16 +59,20 @@ public class ExportCSV implements ActionListener {
             st = (PreparedStatement) conn
                     .prepareStatement("select * from " + tableName);
             System.out.println("Creating statement...");
+
+            // Get the result set
             ResultSet rs = st.executeQuery();
             ResultSetMetaData metaData = rs.getMetaData();
             int count = metaData.getColumnCount(); //number of column
-            String columnName[] = new String[count];
+            String[] columnName = new String[count];
             for(int i = 1; i <= count; i++){
                 columnName[i-1] = metaData.getColumnName(i);
                 sb.append(columnName[i-1]);
                 sb.append(",");
             }
             sb.append("\r\n");
+
+            // Get the data
             while(rs.next()){
                 for(int i = 1; i <= count; i++){
                     sb.append(rs.getString(columnName[i-1]));
@@ -71,6 +83,8 @@ public class ExportCSV implements ActionListener {
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+
+        // Close the connection
         finally {
             try{
                 if(st!=null)
@@ -85,11 +99,12 @@ public class ExportCSV implements ActionListener {
         }
     }
 
+    // Listen to the button event
     @Override
     public void actionPerformed(ActionEvent e) {
         String tableName = (String) list.getSelectedItem();
         connectToDB(tableName);
-        try (PrintWriter writer = new PrintWriter("test2.csv")) {
+        try (PrintWriter writer = new PrintWriter(tableName + ".csv")) {
             writer.write(sb.toString());
             System.out.println("done!");
         } catch (FileNotFoundException e2) {

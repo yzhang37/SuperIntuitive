@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for login page
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import java.awt.*;
@@ -15,6 +22,7 @@ public class Login implements ActionListener {
     private final JTextField textFieldUserName;
     private final JTextField textFieldPassword;
 
+    // Constructor
     public Login(){
         frame = new JFrame("Login");
         button = new JButton("Confirm");
@@ -40,18 +48,19 @@ public class Login implements ActionListener {
         frame.add(button, BorderLayout.SOUTH);
 
         frame.pack();
-        // 窗口居中显示
+        // Centered window display
         frame.setLocationRelativeTo(null);
-        // 禁用缩放
+        // Disable scaling and resizing buttons
         frame.setResizable(false);
         frame.setVisible(true);
     }
 
+    // Add action listener
     @Override
     public void actionPerformed(ActionEvent e) {
         String loginName = textFieldUserName.getText();
         String password = textFieldPassword.getText();
-        if(loginName.equals("CPK") && password.length() > 0){
+        if(loginName.equalsIgnoreCase("CPK") && password.length() > 3){
             JOptionPane.showMessageDialog(button, "You have successfully logged in");
             try {
                 new InstructorPage();

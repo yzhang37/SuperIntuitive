@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for transcripts
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A    
+ **/
 package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.models.grading.IStudent;
@@ -8,12 +15,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Transcripts implements ActionListener {
-    private JFrame frame;
-    private JLabel label1, label2, label3;
-    private JPanel panel, panel2;
-    private JTextArea textArea1, textArea2, textArea3;
-    private JTable table;
+    private final JFrame frame;
+    private final JLabel label1;
+    private final JLabel label2;
+    private final JLabel label3;
+    private final JPanel panel;
+    private final JPanel panel2;
+    private final JTextArea textArea1;
+    private final JTextArea textArea2;
+    private final JTextArea textArea3;
+    private final JTable table;
 
+    // Constructor
     public Transcripts(IStudent student){
         frame = new JFrame("Transcripts");
         label1 = new JLabel("Name:");
@@ -35,6 +48,7 @@ public class Transcripts implements ActionListener {
         panel.add(label3);
         panel.add(textArea3);
 
+        // Create the table
         String[] columnNames = {"Course ID",
                 "Course Name", "Credit", "Grades"};
         Object[][] data = {
@@ -49,7 +63,7 @@ public class Transcripts implements ActionListener {
 
         frame.add(panel, BorderLayout.NORTH);
         frame.add(panel2, BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }

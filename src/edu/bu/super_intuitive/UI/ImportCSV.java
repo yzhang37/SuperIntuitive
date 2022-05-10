@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for import csv file
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import javax.swing.*;
@@ -5,31 +12,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.stream.Stream;
+import java.util.Objects;
 
 public class ImportCSV implements ActionListener{
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/GradingSystem";
     static final String USER = "root";
-    static final String PASS = "root1234";
-    private JFrame frame;
-    private JButton button;
-    private JPanel panel;
-    private JLabel label;
-    private JComboBox list;
-    private ArrayList<String> data = new ArrayList<String>();
+    static final String PASS = "yzh373df";
+    private final JFrame frame;
+    private final JButton button;
+    private final JPanel panel;
+    private final JLabel label;
+    private final JComboBox list;
+    private final ArrayList<String> data = new ArrayList<String>();
+
+    // Constructor
     public ImportCSV() {
         frame = new JFrame("Import CSV");
         button = new JButton("Browse");
         panel = new JPanel();
         label = new JLabel("Import to table: ");
-        String tables[] = {"courses", "staffs", "assignments"};
+        String[] tables = {"courses", "staffs", "assignments"};
         list = new JComboBox(tables);
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(1, 2));
@@ -41,12 +46,13 @@ public class ImportCSV implements ActionListener{
 
         frame.add(panel, BorderLayout.CENTER);
         frame.add(button, BorderLayout.SOUTH);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
     }
 
+    // Action listener for button
     @Override
     public void actionPerformed(ActionEvent e) {
         String tableName = (String) list.getSelectedItem();
@@ -59,7 +65,8 @@ public class ImportCSV implements ActionListener{
             java.io.File f = j.getSelectedFile();
             filePath = f.getPath();
         }
-        // String filePath = System.getProperty("user.dir") + "/test.csv";
+
+        // Read csv file
         File file = new File(filePath);
         BufferedReader br = null;
         try {
@@ -69,19 +76,19 @@ public class ImportCSV implements ActionListener{
         }
         String column = null;
         try {
-            column = br.readLine();
+            column = Objects.requireNonNull(br).readLine();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        //System.out.println(column);
         String line = null;
+
+        // Read each line
         while (true) {
             try {
-                if (!((line = br.readLine()) != null)) break;
+                if ((line = br.readLine()) == null) break;
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            //System.out.println(line);
             data.add(line);
         }
 
@@ -92,7 +99,7 @@ public class ImportCSV implements ActionListener{
             //Open a connection
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            switch (tableName){
+            switch (Objects.requireNonNull(tableName)){
                 case("courses"): {
                     for(int i = 0; i < data.size(); i++) {
                         s = data.get(i).split(",");
@@ -159,6 +166,6 @@ public class ImportCSV implements ActionListener{
             }catch(SQLException se){
                 se.printStackTrace();
             }
-        };
+        }
     }
 }

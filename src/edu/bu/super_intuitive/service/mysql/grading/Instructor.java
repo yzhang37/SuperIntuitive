@@ -1,3 +1,10 @@
+/**
+ * @Author Zhenghang Yin
+ * @Description // Constructor for Instructor class
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.service.mysql.grading;
 
 import edu.bu.super_intuitive.middleware.mysql.Database;
@@ -9,6 +16,8 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class Instructor extends Member implements IInstructor {
+
+    // Constructor for Instructor class
     public Instructor(String id) throws InstantiationException {
         super(id);
         checkAndUpdate(id);
@@ -19,8 +28,9 @@ public class Instructor extends Member implements IInstructor {
         checkAndUpdate(id);
     }
 
+    // Check if the instructor has the course
     private void checkAndUpdate(String id) throws InstantiationException {
-        // 检查是否 isInstructor 为非 false
+        // Check if isInstructor is not false
         boolean fail = false;
         String failMessage = "";
         try {
@@ -51,12 +61,13 @@ public class Instructor extends Member implements IInstructor {
         }
     }
 
+    // Get the courses taught by the instructor
     @Override
     public ICourse[] getOwnedCourses() {
-        // 根据已有的 sid，在 courses 中查找 courses.instructor = sid
+        // Find courses.instructor = sid in courses based on the existing sid
         ICourse[] courses = null;
         try {
-            // 先执行预查询，获取总个数
+            // Execute a pre-query first to get the total number of
             var stmt = Database.getConnection().prepareStatement("SELECT COUNT(*) FROM courses WHERE instructor = ?");
             stmt.setString(1, this.getBUId());
             var rs = stmt.executeQuery();
@@ -83,13 +94,14 @@ public class Instructor extends Member implements IInstructor {
         return Objects.requireNonNullElseGet(courses, () -> new ICourse[0]);
     }
 
+    // Open a course for the instructor
     @Override
     public ICourse openCourse(String courseName,
                               String courseAlias,
                               String semester) throws InstantiationException {
-        // 先创建一个新的课程，并设置它的 instructor 为自己的 sid
+        // First create a new course and set its instructor to your own sid
         try {
-            // 先获取下一个空闲的 id
+            // Get the next id that is free first
             var stmt1 = Database.getConnection().prepareStatement("SELECT MAX(cid) FROM courses");
             var rs = stmt1.executeQuery();
             rs.next();
@@ -111,6 +123,7 @@ public class Instructor extends Member implements IInstructor {
         }
     }
 
+    // Remove a course from the instructor's list
     @Override
     public void removeCourse(ICourse course) throws OperationFailed {
         if (!hasOwnedCourse(course)) {
@@ -128,6 +141,8 @@ public class Instructor extends Member implements IInstructor {
         }
     }
 
+
+    // Return the list of students in a course
     @Override
     public boolean hasOwnedCourse(ICourse course) {
         try {

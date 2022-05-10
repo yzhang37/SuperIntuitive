@@ -1,3 +1,10 @@
+/**
+ * @Author Zhenghang Yin
+ * @Description // Course class is used to store the information of a course.
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.service.mysql.grading;
 import edu.bu.super_intuitive.middleware.mysql.Database;
 import edu.bu.super_intuitive.models.exception.OperationFailed;
@@ -12,21 +19,22 @@ import java.util.Objects;
 public class Course implements ICourse {
     private final int cid;
 
+    // Getter
     public int getCourseId() {
         return this.cid;
     }
 
     /**
-     * 根据 cid，从数据库中实例化一个已有的 Course 课程。
-     * 如果没有找到对应的记录，则抛出一个 InstantiationException
-     * @param cid 课程的 cid
+     * Instantiate an existing Course course from the database based on cid.
+     * If the corresponding record is not found, an InstantiationException is thrown
+     * @param cid Course cid
      */
     public Course(int cid) throws InstantiationException {
         this.cid = cid;
         var fail = false;
         var failMessage = "";
         try {
-            // 根据 cid，从数据库中获取一条记录
+            // Get a record from the database based on cid
             var stmt = Database.getConnection().prepareStatement("SELECT * FROM courses WHERE cid = ?");
             stmt.setInt(1, cid);
             var rs = stmt.executeQuery();
@@ -45,10 +53,11 @@ public class Course implements ICourse {
         }
     }
 
+    // Getter
     @Override
     public IInstructor getInstructor() throws InstantiationException {
         var failMessage = "";
-        // 首先获取表中对应的 instructor 字段
+        // First get the corresponding instructor field in the table
         try {
             var stmt = Database.getConnection().prepareStatement("SELECT instructor FROM courses WHERE cid = ?");
             stmt.setInt(1, this.getCourseId());
@@ -58,7 +67,7 @@ public class Course implements ICourse {
                 return new Instructor(instructor_sid);
             }
             failMessage = String.format("Database error, no instructor for course %d", this.getCourseId());
-            // 然后用其创建一个 Instructor 对象
+            // Then use it to create an Instructor object
         } catch (SQLException e) {
             e.printStackTrace();
             failMessage = e.getMessage();
@@ -66,6 +75,7 @@ public class Course implements ICourse {
         throw new InstantiationException(failMessage);
     }
 
+    // Getter
     @Override
     public String getAlias() {
         try {
@@ -81,6 +91,7 @@ public class Course implements ICourse {
         return null;
     }
 
+    // Setter
     @Override
     public void setAlias(String alias) {
         try {
@@ -93,6 +104,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Getter
     @Override
     public String getName() {
         try {
@@ -108,6 +120,7 @@ public class Course implements ICourse {
         return null;
     }
 
+    // Setter
     @Override
     public void setName(String name) {
         try {
@@ -120,6 +133,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Getter
     @Override
     public String getSemester() {
         try {
@@ -135,6 +149,7 @@ public class Course implements ICourse {
         return null;
     }
 
+    // Setter
     @Override
     public void setSemester(String semester) {
         try {
@@ -147,11 +162,12 @@ public class Course implements ICourse {
         }
     }
 
+    // Get registered students
     @Override
     public IStudent[] getRegisteredStudents() {
         IStudent[] students = null;
         try {
-            // 先获取有多少学生注册了
+            // Get how many students have registered first
             var stmt = Database.getConnection().prepareStatement("SELECT COUNT(*) FROM student_reg WHERE cid = ?");
             stmt.setInt(1, this.getCourseId());
             var rs = stmt.executeQuery();
@@ -159,7 +175,7 @@ public class Course implements ICourse {
             int count = rs.getInt(1);
 
             students = new IStudent[count];
-            // 依次获取每个学生的 sid
+            // Get the sid for each student in turn
             var stmt2 = Database.getConnection().prepareStatement("SELECT sid FROM student_reg WHERE cid = ?");
             stmt2.setInt(1, this.getCourseId());
             rs = stmt2.executeQuery();
@@ -177,10 +193,11 @@ public class Course implements ICourse {
         return Objects.requireNonNullElseGet(students, () -> new IStudent[0]);
     }
 
+    // Register student
     @Override
     public void registerStudent(IStudent student) throws OperationFailed {
         try {
-            // 首先检查是否已经注册了一个学生
+            // First check if a student is already registered
             if (this.hasStudent(student)) {
                 throw new OperationFailed(String.format(
                         "Student with BuId=%s has already registered in course with cid=%d", student.getBUId(), this.getCourseId()));
@@ -195,6 +212,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Return true if student is registered in this course
     @Override
     public boolean hasStudent(IStudent student) {
         try {
@@ -211,6 +229,7 @@ public class Course implements ICourse {
         return false;
     }
 
+    // Drop a student from this course
     @Override
     public void dropStudent(IStudent student) throws OperationFailed {
         try {
@@ -228,20 +247,22 @@ public class Course implements ICourse {
         }
     }
 
+    // Get the number of students registered in this course
     @Override
     public IAssignment addAssignment(String assignmentName, int fullScore, int weight) throws InstantiationException {
-        // 先创建一个新的作业，并设置它的 course_id 为自己的 cid
+        // First create a new job and set its course_id to its own cid
         try {
-            // 先获取下一个空闲的 id
+            // Get the next id that is free first
             var stmt1 = Database.getConnection().prepareStatement("SELECT MAX(aid) FROM assignments");
             var rs = stmt1.executeQuery();
             rs.next();
             var nextId = rs.getInt(1) + 1;
-            var stmt2 = Database.getConnection().prepareStatement("INSERT INTO assignments (course_id, name, score, weight) VALUES (?, ?, ?, ?)");
-            stmt2.setInt(1, this.getCourseId());
-            stmt2.setString(2, assignmentName);
-            stmt2.setInt(3, fullScore);
-            stmt2.setInt(4, weight);
+            var stmt2 = Database.getConnection().prepareStatement("INSERT INTO assignments (aid, course_id, name, score, weight) VALUES (?, ?, ?, ?, ?)");
+            stmt2.setInt(1, nextId);
+            stmt2.setInt(2, this.getCourseId());
+            stmt2.setString(3, assignmentName);
+            stmt2.setInt(4, fullScore);
+            stmt2.setInt(5, weight);
             stmt2.executeUpdate();
 
             return new Assignment(nextId);
@@ -251,6 +272,8 @@ public class Course implements ICourse {
         }
     }
 
+
+    // Remove an assignment from this course
     @Override
     public void removeAssignment(IAssignment assignment) throws OperationFailed {
         try {
@@ -260,13 +283,14 @@ public class Course implements ICourse {
             }
             var stmt = Database.getConnection().prepareStatement("DELETE FROM assignments WHERE aid = ?");
             stmt.setInt(1, assignment.getAssignmentId());
-            stmt.executeQuery();
+            stmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new OperationFailed("Failed to remove assignment from course:\n " + e.getMessage());
         }
     }
 
+    // Return true if this course has the given assignment
     @Override
     public boolean hasAssignment(IAssignment assignment) {
         try {
@@ -282,20 +306,22 @@ public class Course implements ICourse {
         return false;
     }
 
+    // Getter
     @Override
     public IAssignment[] getAssignments() {
-        // 查询 assignments 表格中所有 course_id = cid 的作业，然后返回列表
+        // Query all assignments with course_id = cid in the assignments table
+        // and return the list
         IAssignment[] assignments = null;
 
         try {
-            // 先获取总数
+            // Get the total first
             var stmt = Database.getConnection().prepareStatement("SELECT COUNT(*) FROM assignments WHERE course_id = ?");
             stmt.setInt(1, this.getCourseId());
             var rs = stmt.executeQuery();
             rs.next();
             int count = rs.getInt(1);
 
-            // 再获取作业列表
+            // Get the job list again
             assignments = new IAssignment[count];
             var stmt2 = Database.getConnection().prepareStatement("SELECT aid FROM assignments WHERE course_id = ?");
             stmt2.setInt(1, this.getCourseId());

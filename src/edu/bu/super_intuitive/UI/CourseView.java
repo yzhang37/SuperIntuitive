@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for the course view
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.models.exception.OperationFailed;
@@ -16,7 +23,7 @@ public class CourseView extends JFrame {
     private final ICourse courseObject;
     private IInstructor instructorObject;
 
-    // 本地的控件
+    // Local controls
     private JLabel headerLabel;
     private final JComponent[] page1Components;
     private final JComponent[] page2Components;
@@ -28,19 +35,19 @@ public class CourseView extends JFrame {
     private JScrollPane students_jScroll_panel;
 
     /**
-     * 提供一个 ICourse 对象，根据对象创建对应的窗口视图。
-     * @param course 一个 Course 对象。
+     * Provide an ICourse object and create the corresponding window view based on the object.
+     * @param course A Course object.
      */
     public CourseView(ICourse course) throws OperationFailed {
         super();
 
-        // 获取本窗口需要使用的基本数据对象
+        // Get the basic data objects that need to be used in this window
         this.courseObject = course;
         try {
             this.instructorObject = course.getInstructor();
         } catch (InstantiationException ignored) {}
 
-        // 设置窗口元件
+        // Setting the window components
         setSize(800, 600);
         this.setLayout(new BorderLayout());
         setLocationRelativeTo(null);
@@ -51,7 +58,7 @@ public class CourseView extends JFrame {
         this.add(workingPanel, BorderLayout.CENTER);
         this.page1Components = this.createPage1WorkingComponents();
         this.page2Components = this.createPage2WorkingComponents();
-        // 先把元件全斌说添加到 workingPanel 中
+        // First, add all the components to the workingPanel
         for (var component: this.page1Components) {
             workingPanel.add(component);
         }
@@ -70,7 +77,7 @@ public class CourseView extends JFrame {
         backButton.addActionListener(e -> this.dispose());
         bottomPanel.add(backButton);
 
-        // 设置窗口内容
+        // Set window content
         this.setTitle();
 
         // TODO: this default close window action should be
@@ -78,6 +85,7 @@ public class CourseView extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    // Create the upper component
     private JComponent createUpperComponent() {
         var label = new JLabel();
         label.setFont(new Font("Times New Roman", Font.BOLD, 24));
@@ -86,10 +94,11 @@ public class CourseView extends JFrame {
         return label;
     }
 
+    // Create the page1 working components
     private JComponent[] createPage1WorkingComponents() {
         ArrayList<JComponent> components = new ArrayList<>();
 
-        // 添加上面的信息提示文本
+        // Add the above message prompt text
         var instruction_label = new JLabel("<html>Please select an option from the menu below:</html>");
         var oldLabelFont = instruction_label.getFont();
         instruction_label.setFont(new Font(oldLabelFont.getFontName(), Font.PLAIN, oldLabelFont.getSize()));
@@ -100,7 +109,7 @@ public class CourseView extends JFrame {
         instruction_label_panel.add(instruction_label);
         components.add(instruction_label_panel);
 
-        // 功能面板，列出所有的主要功能和按钮
+        // Function panel, listing all main functions and buttons
         var function_choose_panel = new JPanel();
         function_choose_panel.setLayout(new GridLayout(2, 3));
         function_choose_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
@@ -115,6 +124,7 @@ public class CourseView extends JFrame {
         return componentsArray;
     }
 
+    // Set the header label
     private void setTitle() {
         var ui_user_name = this.instructorObject.getName();
         var ui_course_alias = this.courseObject.getAlias();
@@ -124,6 +134,7 @@ public class CourseView extends JFrame {
                 ui_user_name, ui_course_alias, ui_course_name));
     }
 
+    // Add the page1 buttons
     private JComponent[] addPage1Buttons() {
         var btnAssignmentView = new JButton("View Assignments");
         var btnStudentView = new JButton("View Registered Students");
@@ -132,13 +143,13 @@ public class CourseView extends JFrame {
         var btnExport = new JButton("Export");
 
         btnAssignmentView.addActionListener(e -> {
-            // 显示第二页
+            // Show second page
             setWorkingComponent(1);
             this.page2Tabs.setSelectedIndex(0);
         });
 
         btnStudentView.addActionListener(e -> {
-            // 显示第二页
+            // Show second page
             setWorkingComponent(1);
             this.page2Tabs.setSelectedIndex(1);
         });
@@ -152,10 +163,11 @@ public class CourseView extends JFrame {
         return new JComponent[] {btnAssignmentView, btnStudentView, btnStatistics, btnImport, btnExport};
     }
 
+    // Create the page2 working components
     private JComponent[] createPage2WorkingComponents() throws OperationFailed {
         ArrayList<JComponent> components = new ArrayList<>();
 
-        // 添加主要的两个视图，中间需要用 Tabbed 来显示界面
+        // Add the main two views and use Tabbed to display the interface in between
         var page2Tabs = new JTabbedPane();
         this.page2Tabs = page2Tabs;
 
@@ -172,9 +184,9 @@ public class CourseView extends JFrame {
             if (this.page2Tabs.getSelectedIndex() == 0) {
                 try {
                     new AddAssignment(courseObject, this);
-                    // 刷新窗口内的 assignments 视图
+                    // Refresh the assignments view in the window
                     this.updateAssignmentDisplay();
-                } catch (InstantiationException | OperationFailed ex) {
+                } catch (OperationFailed ex) {
                     throw new RuntimeException(ex);
                 }
             } else if (this.page2Tabs.getSelectedIndex() == 1) {
@@ -189,19 +201,25 @@ public class CourseView extends JFrame {
         btnAdd.addActionListener(button_listener1);
         components.add(btnAdd);
 
+        // Add delete button
         var btnDelete = new JButton("Delete");
         ActionListener button_listener2 = e -> {
-            //courseObject.removeAssignment(assignment);
-            try {
-                new DeleteAssignment();
-            } catch (InstantiationException | OperationFailed ex) {
-                ex.printStackTrace();
+            if (this.page2Tabs.getSelectedIndex() == 0) {
+                try {
+                    new DeleteAssignment(this);
+                } catch (InstantiationException | OperationFailed ex) {
+                    ex.printStackTrace();
+                }
+            } else if (this.page2Tabs.getSelectedIndex() == 1) {
+                System.out.println("delete student");
             }
         };
 
+        // Add action listener
         btnDelete.addActionListener(button_listener2);
         components.add(btnDelete);
 
+        // Add back button
         var btnBackToPage1 = new JButton("Back");
         ActionListener button_listener3 = e -> this.setWorkingComponent(0);
 
@@ -213,6 +231,7 @@ public class CourseView extends JFrame {
         return componentsArray;
     }
 
+    // Add assignment to the course
     private JPanel createPage2AssignmentView() throws OperationFailed {
         var panel = new JPanel();
         String[] assign_view_header = { "Name", "Weights", "Full Score"};
@@ -229,8 +248,9 @@ public class CourseView extends JFrame {
         return panel;
     }
 
+    // Update the assignment view
     public void updateAssignmentDisplay() throws OperationFailed {
-        // 先删除原有的表格内容
+        // Delete the original table content first
         this.assignment_table_model.setRowCount(0);
 
         IAssignment[] assignments = courseObject.getAssignments();
@@ -241,6 +261,7 @@ public class CourseView extends JFrame {
         this.assignment_jScroll_panel.revalidate();
     }
 
+    // Create the student view
     private JPanel createPage2StudentView() throws OperationFailed {
         var panel = new JPanel();
         String[] student_view_header = { "ID", "Name", "Email" };
@@ -256,8 +277,9 @@ public class CourseView extends JFrame {
         return panel;
     }
 
-    public void updateStudentDisplay() throws OperationFailed {
-        // 先删除原有的表格内容
+    // Update the student display
+    public void updateStudentDisplay() {
+        // Delete the original table content first
         this.students_table_model.setRowCount(0);
 
         IStudent[] students = courseObject.getRegisteredStudents();
@@ -269,8 +291,8 @@ public class CourseView extends JFrame {
     }
 
     /**
-     * 设置当前页面是在第一页还是第二页。
-     * @param pageNum 设置当前的页码
+     * Set whether the current page is on the first or second page.
+     * @param pageNum Set the current page number
      */
     private void setWorkingComponent(int pageNum) {
         if (pageNum == 0) {

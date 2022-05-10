@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for statistics
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.models.exception.OperationFailed;
@@ -8,14 +15,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Statistics implements ActionListener {
-    private JFrame frame;
+    private final JFrame frame;
     private JButton button;
-    private JLabel label1, label2, label3, label4, label5, label6;
-    private JPanel panel;
+    private final JLabel label1;
+    private final JLabel label2;
+    private final JLabel label3;
+    private final JLabel label4;
+    private final JLabel label5;
+    private final JLabel label6;
+    private final JPanel panel;
 
+    // Constructor
     public Statistics() {
         frame = new JFrame("Statistics");
-//        button = new JButton("Back");
         label1 = new JLabel("Mean: ");
         label2 = new JLabel("Medium: ");
         label3 = new JLabel("Standard deviation: ");
@@ -26,8 +38,6 @@ public class Statistics implements ActionListener {
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(3, 2));
-        //panel.setLayout(new FlowLayout());
-//        button.addActionListener(this);
         panel.add(label1);
         panel.add(label4);
         panel.add(label2);
@@ -36,12 +46,12 @@ public class Statistics implements ActionListener {
         panel.add(label6);
 
         frame.add(panel, BorderLayout.CENTER);
-//        frame.add(button, BorderLayout.SOUTH);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
+    // Add action listener
     @Override
     public void actionPerformed(ActionEvent e) {
         CourseView frame = null;

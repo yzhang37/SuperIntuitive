@@ -1,3 +1,10 @@
+/**
+ * @Author Zhenghang Yin
+ * @Description // Class for student information
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.service.mysql.grading;
 
 import edu.bu.super_intuitive.middleware.mysql.Database;
@@ -20,7 +27,7 @@ public class Student extends Member implements IStudent {
     }
 
     private void checkAndUpdate(String id) throws InstantiationException {
-        // 检查是否 isInstructor 为非 true
+        // Check if isInstructor is not true
         boolean fail = false;
         String failMessage = "";
         try {

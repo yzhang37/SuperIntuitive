@@ -1,27 +1,33 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // AddCourse is a class that is used to add a course to the database.
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $
+ **/
 package edu.bu.super_intuitive.UI;
-import edu.bu.super_intuitive.models.grading.ICourse;
 import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class AddCourse implements ActionListener {
-    private JFrame frame;
-    private JButton button;
-    private JPanel panel;
+    private final JFrame frame;
+    private final JButton button;
+    private final JPanel panel;
     private final JComboBox<String> comboBox = new JComboBox<>();
     private final JTextField textField1 = new JTextField();
     private final JTextField textField2 = new JTextField();
-    private Instructor instructor = new Instructor("U00000000");
+    private final Instructor instructor = new Instructor("U00000000");
 
+    // Constructor
     public AddCourse() throws InstantiationException {
         frame = new JFrame("Add Course");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         button = new JButton("Confirm");
         button.addActionListener(this);
@@ -43,6 +49,7 @@ public class AddCourse implements ActionListener {
         frame.setVisible(true);
     }
 
+    // Set text field
     private void setComboBox(JPanel curr_panel, List<String> str_labels, JComboBox<String> comboBox, String curr_label) {
         for (String s : str_labels) {
             comboBox.addItem(s);
@@ -51,12 +58,14 @@ public class AddCourse implements ActionListener {
         curr_panel.add(comboBox);
     }
 
+    // Set text field
     private void setTextField(JPanel jp, String str_label, JTextField curr_textField) {
         JLabel label = new JLabel(str_label);
         jp.add(label);
         jp.add(curr_textField);
     }
 
+    // Action listener for button
     @Override
     public void actionPerformed(ActionEvent e) {
         String courseCode = textField1.getText();

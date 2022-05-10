@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for add assignment page
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.ICourse;
@@ -8,20 +15,21 @@ import java.awt.event.*;
 
 
 public class AddAssignment implements ActionListener {
-    private JFrame frame;
-    private JButton button;
-    private JPanel panel;
+    private final JFrame frame;
+    private final JButton button;
+    private final JPanel panel;
     private final JComboBox<String> comboBox = new JComboBox<>();
     private final JTextField textField1 = new JTextField();
     private final JTextField textField2 = new JTextField();
     private final JTextField textField3 = new JTextField();
-    private ICourse course;
-    private CourseView course_view;
+    private final ICourse course;
+    private final CourseView course_view;
 
-    public AddAssignment(ICourse courseObject, CourseView course_view) throws InstantiationException {
+    // Constructor
+    public AddAssignment(ICourse courseObject, CourseView course_view) {
         this.course = courseObject;
         frame = new JFrame("Add Assignment");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         button = new JButton("Confirm");
         button.addActionListener(this);
@@ -43,12 +51,14 @@ public class AddAssignment implements ActionListener {
         this.course_view = course_view;
     }
 
+    // Set text field
     private void setTextField(JPanel jp, String str_label, JTextField curr_textField) {
         JLabel label = new JLabel(str_label);
         jp.add(label);
         jp.add(curr_textField);
     }
 
+    // Action listener
     @Override
     public void actionPerformed(ActionEvent e) {
         String assignmentName = textField1.getText();

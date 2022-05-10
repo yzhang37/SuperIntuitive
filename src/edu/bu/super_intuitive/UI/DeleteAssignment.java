@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for deleting an assignment
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.models.exception.OperationFailed;
@@ -7,29 +14,32 @@ import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-/**
- * @Author Hanyu Chen
- * @Description //TODO $
- * @Date $ 05.05.2022$
- * @Param $
- * @return $
- **/
-public class DeleteAssignment implements ActionListener {
+public class DeleteAssignment {
 
     private final JFrame frame;
     private final JComboBox<String> comboBox = new JComboBox<>();
     private final Instructor instructor = new Instructor("U00000000");
     private final ICourse course = instructor.getOwnedCourses()[0];
+    private final CourseView courseView;
 
-    public DeleteAssignment() throws InstantiationException, OperationFailed {
+    // Constructor
+    public DeleteAssignment(CourseView course_view) throws InstantiationException, OperationFailed {
         frame = new JFrame("Delete Assignment");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.courseView = course_view;
 
         JButton button = new JButton("Confirm");
-        button.addActionListener(this);
+        button.addActionListener(e -> {
+            int assignmentId = comboBox.getSelectedIndex();
+            try {
+                course.removeAssignment(course.getAssignments()[assignmentId]);
+                courseView.updateAssignmentDisplay();
+            } catch (OperationFailed ex) {
+                ex.printStackTrace();
+            }
+            frame.dispose();
+        });
 
         // Create panel and set configures
         JPanel panel = new JPanel();
@@ -45,29 +55,13 @@ public class DeleteAssignment implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    // Set the combo box
     private void setComboBox(JPanel curr_panel, JComboBox<String> comboBox) throws OperationFailed {
         for (IAssignment assign : course.getAssignments()) {
             comboBox.addItem(assign.getName());
         }
         curr_panel.add(new Label("Assignment to delete"));
         curr_panel.add(comboBox);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int assignmentId = comboBox.getSelectedIndex();
-        try {
-            course.removeAssignment(course.getAssignments()[assignmentId]);
-        } catch (OperationFailed ex) {
-            ex.printStackTrace();
-        }
-
-        this.frame.dispose();
-        try {
-            new InstructorPage();
-        } catch (InstantiationException ex) {
-            ex.printStackTrace();
-        }
     }
 
 }

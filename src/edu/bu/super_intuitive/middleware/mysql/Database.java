@@ -9,14 +9,14 @@ public class Database {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root1234";
 
-    // 创建 Database 的一个对象
+    // Create an object of Database
     private static Connection conn = null;
 
-    // 让构造函数为 private，这样该类就不会被实例化
+    // Make the constructor private so that the class will not be instantiated
     private Database() {}
 
     /**
-     * 获取数据库连接。如果是 Null，会抛出 RuntimeException
+     * Get the database connection. If it is Null, a RuntimeException will be thrown
      * @return Connection
      */
     public static Connection getConnection() throws RuntimeException {

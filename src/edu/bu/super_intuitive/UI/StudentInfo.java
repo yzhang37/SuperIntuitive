@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for student information
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import javax.swing.*;
@@ -11,14 +18,20 @@ public class StudentInfo implements ActionListener {
     static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
     static final String USER = "root";
     static final String PASS = "hou10ttr";
-    private JFrame frame;
-    private JLabel label1, label2, label3;
-    private JPanel panel, panel2;
-    private JTextArea textArea1, textArea2, textArea3;
-    private JTable table;
+    private final JFrame frame;
+    private final JLabel label1;
+    private final JLabel label2;
+    private final JLabel label3;
+    private final JPanel panel;
+    private final JPanel panel2;
+    private final JTextArea textArea1;
+    private final JTextArea textArea2;
+    private final JTextArea textArea3;
+    private final JTable table;
     private Object[][] data;
     private String name, email;
 
+    // Constructor
     public StudentInfo(String studentId, String courseCode){
         frame = new JFrame("Student Information");
         label1 = new JLabel("Name:");
@@ -29,7 +42,6 @@ public class StudentInfo implements ActionListener {
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new FlowLayout());
         String[] columnNames = {"Assignments", "Grades"};
-        //connectToDB(courseCode, studentId);
 
         textArea1 = new JTextArea(name);
         textArea2 = new JTextArea(studentId);
@@ -48,11 +60,12 @@ public class StudentInfo implements ActionListener {
 
         frame.add(panel, BorderLayout.NORTH);
         frame.add(panel2, BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
+    // Connect to database
     public void connectToDB(String courseCode, String studentId){
         Connection conn = null;
         PreparedStatement st = null;
@@ -81,6 +94,8 @@ public class StudentInfo implements ActionListener {
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+
+        // Close the connection
         finally {
             try{
                 if(st!=null)
@@ -95,6 +110,7 @@ public class StudentInfo implements ActionListener {
         }
     }
 
+    // Add action listeners
     @Override
     public void actionPerformed(ActionEvent e) {
     }
