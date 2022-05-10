@@ -5,7 +5,8 @@ import edu.bu.super_intuitive.models.grading.IStudent;
 import edu.bu.super_intuitive.service.mysql.grading.Student;
 
 import java.sql.SQLException;
-import java.util.Objects;
+import java.util.ArrayList;
+
 
 public class Students {
     /**
@@ -13,23 +14,13 @@ public class Students {
      * @return 学生对象集合, A list of Student 对象
      */
     public static IStudent[] getAllStudents() {
-        IStudent[] students = null;
+        ArrayList<IStudent> students = new ArrayList<>();
         try {
-            // 先获取一共有多少个学生
-            var stmt = Database.getConnection().prepareStatement("SELECT COUNT(*) FROM staffs WHERE isInstructor IS NOT NULL");
+            var stmt = Database.getConnection().prepareStatement("SELECT sid FROM staffs WHERE isInstructor <> TRUE");
             var rs = stmt.executeQuery();
-            rs.next();
-            var count = rs.getInt(1);
-
-            // 再获取全部学生
-            students = new IStudent[count];
-            var stmt2 = Database.getConnection().prepareStatement("SELECT sid FROM staffs WHERE isInstructor IS NOT NULL");
-            rs = stmt2.executeQuery();
-            int i = 0;
-
             while (rs.next()) {
                 try {
-                    students[i] = new Student(rs.getString("sid"));
+                    students.add(new Student(rs.getString("sid")));
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 }
@@ -37,6 +28,34 @@ public class Students {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return Objects.requireNonNullElse(students, new IStudent[0]);
+        IStudent[] studentsArray = new IStudent[students.size()];
+        students.toArray(studentsArray);
+        return studentsArray;
+    }
+
+    /**
+     * 使用学生的用户名进行模糊搜索，显示学生对象。
+     * @param name 部分学生名
+     * @return 返回所有满足匹配的学生对象。
+     */
+    public static IStudent[] getStudentsByFuzzySearchName(String name) {
+        ArrayList<IStudent> students = new ArrayList<>();
+        try {
+            var stmt = Database.getConnection().prepareStatement("SELECT sid FROM staffs WHERE isInstructor <> TRUE AND name LIKE ?");
+            stmt.setString(1, "%" + name + "%");
+            var rs = stmt.executeQuery();
+            while (rs.next()) {
+                try {
+                    students.add(new Student(rs.getString("sid")));
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        IStudent[] studentsArray = new IStudent[students.size()];
+        students.toArray(studentsArray);
+        return studentsArray;
     }
 }
