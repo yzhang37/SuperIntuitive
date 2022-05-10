@@ -101,7 +101,11 @@ public class AddNameToCourse extends JFrame {
         JPanel cards=new JPanel(new CardLayout(50, 30));
         ActionListener button_listener1 = e -> {
             curr_frame.dispose();
-            new AddCourse();
+            try {
+                new AddCourse();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            }
         };
 
         // Set layout
@@ -111,7 +115,9 @@ public class AddNameToCourse extends JFrame {
         JButton button_1 = new JButton("Confirm");
         JButton button_2 = new JButton("Cancel");
         button_1.addActionListener(button_listener1);
-
+        button_2.addActionListener(e -> {
+            this.dispose();
+        });
         // Add buttons into the center panel
         bottom_panel.add(button_1);
         bottom_panel.add(button_2);

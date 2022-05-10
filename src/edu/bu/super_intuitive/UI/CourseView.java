@@ -33,7 +33,7 @@ public class CourseView extends JFrame {
         this.courseObject = course;
         try {
             this.instructorObject = course.getInstructor();
-        } catch (InstantiationException e) {}
+        } catch (InstantiationException ignored) {}
 
         // 设置窗口元件
         setSize(800, 600);
@@ -55,7 +55,17 @@ public class CourseView extends JFrame {
         }
         this.setWorkingComponent(0);
 
-        this.add(this.createLowerComponent(), BorderLayout.SOUTH);
+        // Add the bottom component
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        // Add the back button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> {this.dispose();});
+        bottomPanel.add(backButton);
+
+
 
         // 设置窗口内容
         this.setTitle();
@@ -122,7 +132,8 @@ public class CourseView extends JFrame {
         var btnStatistics = new JButton("Compute Statistics and Grades");
         var btnImport = new JButton("Import");
         var btnExport = new JButton("Export");
-        var btnBack = new JButton("Back");
+//        var btnBack = new JButton("Back");
+        var btnAddStudents = new JButton("Add Students");
 
         btnAssignmentView.addActionListener(e -> {
             // 显示第二页
@@ -148,11 +159,12 @@ public class CourseView extends JFrame {
             new ExportCSV();
         });
 
-        btnBack.addActionListener(e -> {
-            this.dispose();
+        btnAddStudents.addActionListener(e -> {
+            new AddNameToCourse(new JTable(new DefaultTableModel(null, new Object[] {"Name", "ID", ""})),
+                                new JTable(new DefaultTableModel(null, new Object[] {"Name", "ID", ""})));
         });
 
-        return new JComponent[] {btnAssignmentView, btnStudentView, btnStatistics, btnImport, btnExport, btnBack};
+        return new JComponent[] {btnAssignmentView, btnStudentView, btnStatistics, btnImport, btnExport, btnAddStudents};
     }
 
     private JComponent[] createPage2WorkingComponents() throws OperationFailed {

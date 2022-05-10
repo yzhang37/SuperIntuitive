@@ -1,5 +1,7 @@
 package edu.bu.super_intuitive.UI;
 
+import edu.bu.super_intuitive.models.grading.ICourse;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -14,18 +16,17 @@ import java.awt.event.ActionListener;
  **/
 public class AssignmentScores extends JFrame {
 
-    private final String assignment_name = "HW1";
-    private final String ui_user_name = "Hanyu Chen";
-    private final String ui_course_name = "@temp CS611: Object-Oriented Programming of Java";
-
-    public AssignmentScores() {
+    public AssignmentScores(ICourse course) {
         super();
+        String ui_user_name = "Hanyu Chen";
+        String ui_course_name = "@temp CS611: Object-Oriented Programming of Java";
         setTitle(String.format("Course Management: [%s]\\%s", ui_user_name, ui_course_name));
         setSize(800, 600);
 
         // 整个窗口是一个 BorderLayout 的容器
         this.setLayout(new BorderLayout());
         // 整个窗口的顶部设置 Hi, welcome to class_name 的标题
+        String assignment_name = "HW1";
         var title_label = new JLabel(String.format("Students' score of %s", assignment_name));
         title_label.setFont(new Font("Times New Roman", Font.BOLD, 24));
         title_label.setBorder(BorderFactory.createEmptyBorder(20, 20, 30, 20));
@@ -57,7 +58,7 @@ public class AssignmentScores extends JFrame {
 
         JButton button_1 = new JButton("back");
         ActionListener button_listener1 = e -> {
-            var frame = new CourseView();
+            var frame = new CourseView(course);
             frame.setVisible(true);
         };
         button_1.addActionListener(button_listener1);

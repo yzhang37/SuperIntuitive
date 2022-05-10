@@ -15,7 +15,7 @@ public class Statistics implements ActionListener {
 
     public Statistics() {
         frame = new JFrame("Statistics");
-        button = new JButton("Back");
+//        button = new JButton("Back");
         label1 = new JLabel("Mean: ");
         label2 = new JLabel("Medium: ");
         label3 = new JLabel("Standard deviation: ");
@@ -27,7 +27,7 @@ public class Statistics implements ActionListener {
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(3, 2));
         //panel.setLayout(new FlowLayout());
-        button.addActionListener(this);
+//        button.addActionListener(this);
         panel.add(label1);
         panel.add(label4);
         panel.add(label2);
@@ -36,7 +36,7 @@ public class Statistics implements ActionListener {
         panel.add(label6);
 
         frame.add(panel, BorderLayout.CENTER);
-        frame.add(button, BorderLayout.SOUTH);
+//        frame.add(button, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
