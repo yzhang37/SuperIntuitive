@@ -14,6 +14,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.*;
 
 public class InstructorPage extends JFrame {
@@ -23,7 +25,7 @@ public class InstructorPage extends JFrame {
     public InstructorPage() throws InstantiationException {
         setTitle("Instructor page");    // Set window title
         setSize(650,580);    // Set window size
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    // Set window closeable
+        setLocationRelativeTo(null);    // Set window location to the center of the screen
         setLayout(new BorderLayout());    // Set BorderLayout
 
         // Add panels to the window
@@ -32,11 +34,12 @@ public class InstructorPage extends JFrame {
         add(setBottomPanel(this), BorderLayout.SOUTH);
 
         setVisible(true);    //设置窗口可见
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-
     private JPanel setTopPanel() {
-        JPanel top_panel=new JPanel();    // Create a JPanel object
+        JPanel top_panel = new JPanel();    // Create a JPanel object
 
         // Configures of top panel
         top_panel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -63,13 +66,12 @@ public class InstructorPage extends JFrame {
                     "</html>");
             p1_button_1.setPreferredSize(new Dimension(200, 100));
             p1_button_1.addActionListener(e -> {
-                JFrame frame = null;
                 try {
-                    frame = new CourseView(course);
+                    var frame = new CourseView(course);
+                    frame.setVisible(true);
                 } catch (OperationFailed ex) {
                     throw new RuntimeException(ex);
                 }
-                frame.setVisible(true);
             });
             center_panel.add(p1_button_1);
         }
@@ -114,46 +116,4 @@ public class InstructorPage extends JFrame {
 
         return cards;
     }
-
-//    private void jdbcTest() {
-//        Connection conn = null;
-//        Statement stmt = null;
-//
-//        try {
-//            //STEP 2: Register JDBC driver
-//            Class.forName(JDBC_DRIVER);
-//
-//            //STEP 3: Open a connection
-//            System.out.println("Connecting to database...");
-//            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-//
-//            //STEP 4: Execute a query
-//            System.out.println("Creating statement...");
-//            stmt = conn.createStatement();
-//            String sql;
-//            sql = "SELECT * FROM courseList";
-//            stmt.executeUpdate("USE CS611_Final;");
-//            ResultSet rs = stmt.executeQuery(sql);
-//            rs.next();
-//            System.out.println(rs.getString(1));
-//
-//        } catch (Exception se) {
-//            //Handle errors for JDBC
-//            se.printStackTrace();
-//        }//Handle errors for Class.forName
-//        finally {
-//            //finally block used to close resources
-//            try{
-//                if(stmt!=null)
-//                    stmt.close();
-//            } catch (SQLException ignored){}
-//            try{
-//                if(conn!=null)
-//                    conn.close();
-//            }catch(SQLException se){
-//                se.printStackTrace();
-//            }
-//        }
-//    }
-
 }

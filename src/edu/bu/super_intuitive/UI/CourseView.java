@@ -38,6 +38,7 @@ public class CourseView extends JFrame {
         // 设置窗口元件
         setSize(800, 600);
         this.setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
 
         this.add(this.createUpperComponent(), BorderLayout.NORTH);
         JPanel workingPanel = new JPanel();
