@@ -7,7 +7,7 @@ public class Database {
     private static final String DOMAIN = "localhost";
     private static final int PORT = 3306;
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "yzh373df";
+    private static final String PASSWORD = "root1234";
 
     // 创建 Database 的一个对象
     private static Connection conn = null;

@@ -1,9 +1,13 @@
 package edu.bu.super_intuitive.UI;
 
+import edu.bu.super_intuitive.models.exception.OperationFailed;
+import edu.bu.super_intuitive.models.grading.IAssignment;
 import edu.bu.super_intuitive.models.grading.ICourse;
 import edu.bu.super_intuitive.models.grading.IInstructor;
+import edu.bu.super_intuitive.models.grading.IStudent;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,7 +26,7 @@ public class CourseView extends JFrame {
      * 提供一个 ICourse 对象，根据对象创建对应的窗口视图。
      * @param course 一个 Course 对象。
      */
-    public CourseView(ICourse course) {
+    public CourseView(ICourse course) throws OperationFailed {
         super();
 
         // 获取本窗口需要使用的基本数据对象
@@ -150,7 +154,7 @@ public class CourseView extends JFrame {
         return new JComponent[] {btnAssignmentView, btnStudentView, btnStatistics, btnImport, btnExport, btnBack};
     }
 
-    private JComponent[] createPage2WorkingComponents() {
+    private JComponent[] createPage2WorkingComponents() throws OperationFailed {
         ArrayList<JComponent> components = new ArrayList<>();
 
         // 添加主要的两个视图，中间需要用 Tabbed 来显示界面
@@ -178,12 +182,16 @@ public class CourseView extends JFrame {
         return componentsArray;
     }
 
-    private JPanel createPage2AssignmentView() {
+    private JPanel createPage2AssignmentView() throws OperationFailed {
         var panel = new JPanel();
-        String[] assign_view_header = { "Name", "Weights", "Full Score", "Comment" };
-        var assignment_view = new JTable(new String[][]{
-                {"Assignment 1", "20%", "100", "Good"},
-        }, assign_view_header);
+        String[] assign_view_header = { "Name", "Weights", "Full Score"};
+        IAssignment[] assignments = courseObject.getAssignments();
+        DefaultTableModel tableModel = new DefaultTableModel(assign_view_header, 0);
+        for(var assignment: assignments) {
+            String[] assignment_info = {assignment.getName(), String.valueOf(assignment.getWeight()), String.valueOf(assignment.getFullScore())};
+            tableModel.addRow(assignment_info);
+        }
+        var assignment_view = new JTable(tableModel);
         JScrollPane assignment_jscroll_pane = new JScrollPane(assignment_view);
         panel.add(assignment_jscroll_pane);
         return panel;
@@ -192,9 +200,13 @@ public class CourseView extends JFrame {
     private JPanel createPage2StudentView() {
         var panel = new JPanel();
         String[] student_view_header = { "ID", "Name", "Email" };
-        var student_view = new JTable(new String[][]{
-                {"U12345678", "John Smith", "JSmith@bu.edu"},
-        }, student_view_header);
+        IStudent[] students = courseObject.getRegisteredStudents();
+        DefaultTableModel tableModel = new DefaultTableModel(student_view_header, 0);
+        for(var student: students) {
+            String[] student_info = {student.getBUId(), student.getName(), student.getEmail()};
+            tableModel.addRow(student_info);
+        }
+        var student_view = new JTable(tableModel);
         JScrollPane student_jscroll_pane = new JScrollPane(student_view);
         panel.add(student_jscroll_pane);
         return panel;

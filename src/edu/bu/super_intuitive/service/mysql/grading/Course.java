@@ -304,7 +304,7 @@ public class Course implements ICourse {
             int i = 0;
             while (rs.next()) {
                 try {
-                    assignments[i] = new Assignment(rs.getInt(1));
+                    assignments[i++] = new Assignment(rs.getInt(1));
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 }

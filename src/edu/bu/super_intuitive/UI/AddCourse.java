@@ -11,10 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AddCourse implements ActionListener {
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
-    static final String USER = "root";
-    static final String PASS = "hou10ttr";
     private JFrame frame;
     private JButton button;
     private JPanel panel;
