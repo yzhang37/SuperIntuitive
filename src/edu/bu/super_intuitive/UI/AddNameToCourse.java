@@ -28,6 +28,7 @@ public class AddNameToCourse extends JFrame {
     private final JTable pending_table;
     private final List<String> added_students;
     private final ICourse course;
+    private boolean isConfirmed;
 
     public AddNameToCourse(JTable st, JTable pt, List<String> added_students, ICourse course) {
 //        curr_frame = new JFrame();
@@ -49,11 +50,13 @@ public class AddNameToCourse extends JFrame {
 
         addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
-                for (String student : added_students) {
-                    try {
-                        course.registerStudent(new Student(student));
-                    } catch (OperationFailed | InstantiationException ex) {
-                        ex.printStackTrace();
+                if (isConfirmed) {
+                    for (String student : added_students) {
+                        try {
+                            course.registerStudent(new Student(student));
+                        } catch (OperationFailed | InstantiationException ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
             }
@@ -142,6 +145,7 @@ public class AddNameToCourse extends JFrame {
         JButton button_2 = new JButton("Cancel");
         button_1.addActionListener(button_listener1);
         button_2.addActionListener(e -> {
+            isConfirmed = true;
             this.dispose();
         });
         // Add buttons into the center panel

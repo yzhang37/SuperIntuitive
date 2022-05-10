@@ -1,5 +1,6 @@
 package edu.bu.super_intuitive.UI;
 
+import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.ICourse;
 
 import javax.swing.*;
@@ -58,7 +59,12 @@ public class AssignmentScores extends JFrame {
 
         JButton button_1 = new JButton("back");
         ActionListener button_listener1 = e -> {
-            var frame = new CourseView(course);
+            CourseView frame = null;
+            try {
+                frame = new CourseView(course);
+            } catch (OperationFailed ex) {
+                ex.printStackTrace();
+            }
             frame.setVisible(true);
         };
         button_1.addActionListener(button_listener1);
