@@ -166,7 +166,7 @@ public class Course implements ICourse {
             int i = 0;
             while (rs.next()) {
                 try {
-                    students[i] = new Student(rs.getString("sid"));
+                    students[i++] = new Student(rs.getString("sid"));
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 }

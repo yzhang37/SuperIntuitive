@@ -1,14 +1,11 @@
 package edu.bu.super_intuitive.UI;
+import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.ICourse;
-import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
 
-import java.util.Arrays;
-import java.util.List;
 
 public class AddAssignment implements ActionListener {
     private JFrame frame;
@@ -19,7 +16,9 @@ public class AddAssignment implements ActionListener {
     private final JTextField textField2 = new JTextField();
     private final JTextField textField3 = new JTextField();
     private ICourse course;
-    public AddAssignment(ICourse courseObject) throws InstantiationException {
+    private CourseView course_view;
+
+    public AddAssignment(ICourse courseObject, CourseView course_view) throws InstantiationException {
         this.course = courseObject;
         frame = new JFrame("Add Assignment");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,6 +39,8 @@ public class AddAssignment implements ActionListener {
         frame.add(button, BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
+
+        this.course_view = course_view;
     }
 
     private void setTextField(JPanel jp, String str_label, JTextField curr_textField) {
@@ -61,9 +62,15 @@ public class AddAssignment implements ActionListener {
         }
         JOptionPane.showMessageDialog(button, "Successfully added assignment!");
 
+        if (course_view != null) {
+            try {
+                course_view.updateAssignmentDisplay();
+            } catch (OperationFailed ex) {
+                ex.printStackTrace();
+            }
+        }
+
         this.frame.dispose();
-        //TODO
-        //show course view 2
     }
 
 }
