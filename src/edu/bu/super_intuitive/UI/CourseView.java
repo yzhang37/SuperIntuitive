@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for the course view
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.models.exception.OperationFailed;
@@ -78,6 +85,7 @@ public class CourseView extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    // Create the upper component
     private JComponent createUpperComponent() {
         var label = new JLabel();
         label.setFont(new Font("Times New Roman", Font.BOLD, 24));
@@ -86,6 +94,7 @@ public class CourseView extends JFrame {
         return label;
     }
 
+    // Create the page1 working components
     private JComponent[] createPage1WorkingComponents() {
         ArrayList<JComponent> components = new ArrayList<>();
 
@@ -115,6 +124,7 @@ public class CourseView extends JFrame {
         return componentsArray;
     }
 
+    // Set the header label
     private void setTitle() {
         var ui_user_name = this.instructorObject.getName();
         var ui_course_alias = this.courseObject.getAlias();
@@ -124,6 +134,7 @@ public class CourseView extends JFrame {
                 ui_user_name, ui_course_alias, ui_course_name));
     }
 
+    // Add the page1 buttons
     private JComponent[] addPage1Buttons() {
         var btnAssignmentView = new JButton("View Assignments");
         var btnStudentView = new JButton("View Registered Students");
@@ -152,6 +163,7 @@ public class CourseView extends JFrame {
         return new JComponent[] {btnAssignmentView, btnStudentView, btnStatistics, btnImport, btnExport};
     }
 
+    // Create the page2 working components
     private JComponent[] createPage2WorkingComponents() throws OperationFailed {
         ArrayList<JComponent> components = new ArrayList<>();
 
@@ -189,9 +201,9 @@ public class CourseView extends JFrame {
         btnAdd.addActionListener(button_listener1);
         components.add(btnAdd);
 
+        // Add delete button
         var btnDelete = new JButton("Delete");
         ActionListener button_listener2 = e -> {
-            //courseObject.removeAssignment(assignment);
             if (this.page2Tabs.getSelectedIndex() == 0) {
                 try {
                     new DeleteAssignment(this);
@@ -203,9 +215,11 @@ public class CourseView extends JFrame {
             }
         };
 
+        // Add action listener
         btnDelete.addActionListener(button_listener2);
         components.add(btnDelete);
 
+        // Add back button
         var btnBackToPage1 = new JButton("Back");
         ActionListener button_listener3 = e -> this.setWorkingComponent(0);
 
@@ -217,6 +231,7 @@ public class CourseView extends JFrame {
         return componentsArray;
     }
 
+    // Add assignment to the course
     private JPanel createPage2AssignmentView() throws OperationFailed {
         var panel = new JPanel();
         String[] assign_view_header = { "Name", "Weights", "Full Score"};
@@ -233,6 +248,7 @@ public class CourseView extends JFrame {
         return panel;
     }
 
+    // Update the assignment view
     public void updateAssignmentDisplay() throws OperationFailed {
         // 先删除原有的表格内容
         this.assignment_table_model.setRowCount(0);
@@ -245,6 +261,7 @@ public class CourseView extends JFrame {
         this.assignment_jScroll_panel.revalidate();
     }
 
+    // Create the student view
     private JPanel createPage2StudentView() throws OperationFailed {
         var panel = new JPanel();
         String[] student_view_header = { "ID", "Name", "Email" };
@@ -260,6 +277,7 @@ public class CourseView extends JFrame {
         return panel;
     }
 
+    // Update the student display
     public void updateStudentDisplay() {
         // 先删除原有的表格内容
         this.students_table_model.setRowCount(0);

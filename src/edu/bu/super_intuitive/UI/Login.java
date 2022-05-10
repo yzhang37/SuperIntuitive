@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for login page
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import java.awt.*;

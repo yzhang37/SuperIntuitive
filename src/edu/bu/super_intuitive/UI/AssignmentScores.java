@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // AssignmentScores is a class that contains the scores of the assignments.
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A$
+ **/
 package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.models.exception.OperationFailed;
@@ -9,13 +16,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
-/**
- * @Author Hanyu Chen
- * @Description //TODO $
- * @Date $ 05.05.2022$
- * @Param $
- * @return $
- **/
 public class AssignmentScores extends JFrame {
 
     public AssignmentScores(ICourse course) {

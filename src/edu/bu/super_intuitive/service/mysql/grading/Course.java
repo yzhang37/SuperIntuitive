@@ -1,3 +1,10 @@
+/**
+ * @Author Zhenghang Yin
+ * @Description // Course class is used to store the information of a course.
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.service.mysql.grading;
 import edu.bu.super_intuitive.middleware.mysql.Database;
 import edu.bu.super_intuitive.models.exception.OperationFailed;

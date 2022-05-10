@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for import csv file
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import javax.swing.*;

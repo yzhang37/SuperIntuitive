@@ -1,3 +1,10 @@
+/**
+ * @Author Zhenghang Yin
+ * @Description // IAssignment is the interface for the assignment.
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.models.grading;
 
 import edu.bu.super_intuitive.models.exception.OperationFailed;

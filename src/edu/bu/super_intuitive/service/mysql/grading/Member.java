@@ -1,3 +1,10 @@
+/**
+ * @Author Zhenghang Yin
+ * @Description // Class for member
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.service.mysql.grading;
 import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.IMember;

@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class of Assignment
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import javax.swing.*;
@@ -25,6 +32,7 @@ public class Assignment implements ActionListener {
     private Object[][] data;
     private String courseId, courseName, credit, grade;
 
+    // Constructor of Assignment
     public Assignment(String studentId, String courseCode){
         frame = new JFrame("Assignment Information");
         label1 = new JLabel("Name:");
@@ -60,10 +68,12 @@ public class Assignment implements ActionListener {
         frame.setVisible(true);
     }
 
+    // Connect to database
     public void connectToDB(String courseCode, String studentId){
         Connection conn = null;
         PreparedStatement st = null;
         try {
+            // Register JDBC driver
             System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
@@ -74,6 +84,7 @@ public class Assignment implements ActionListener {
             st.setString(1, studentId);
             ResultSet rs = st.executeQuery();
 
+            // Get the data
             if(rs.next()) {
                 data = new Object[][]{
                         {"TicTacToe", rs.getInt("TicTacToe")},
@@ -89,6 +100,7 @@ public class Assignment implements ActionListener {
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+        // Close the connection
         finally {
             try{
                 if(st!=null)
