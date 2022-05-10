@@ -4,28 +4,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.util.ArrayList;
 
 public class ExportCSV implements ActionListener {
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/GradingSystem";
     static final String USER = "root";
     static final String PASS = "yzh373df";
-    private JFrame frame;
-    private JButton button;
-    private JPanel panel;
-    private JComboBox list;
-    private StringBuilder sb = new StringBuilder();
+    private final JFrame frame;
+    private final JButton button;
+    private final JPanel panel;
+    private final JComboBox list;
+    private final StringBuilder sb = new StringBuilder();
     public ExportCSV() {
         frame = new JFrame("Export CSV");
         button = new JButton("Confirm");
         panel = new JPanel();
 
-        String tables[] = {"courses", "staffs", "assignments"};
+        String[] tables = {"courses", "staffs", "assignments"};
         list = new JComboBox(tables);
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(2, 2));
@@ -54,7 +52,7 @@ public class ExportCSV implements ActionListener {
             ResultSet rs = st.executeQuery();
             ResultSetMetaData metaData = rs.getMetaData();
             int count = metaData.getColumnCount(); //number of column
-            String columnName[] = new String[count];
+            String[] columnName = new String[count];
             for(int i = 1; i <= count; i++){
                 columnName[i-1] = metaData.getColumnName(i);
                 sb.append(columnName[i-1]);

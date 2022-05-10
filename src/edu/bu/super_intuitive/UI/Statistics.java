@@ -8,10 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Statistics implements ActionListener {
-    private JFrame frame;
+    private final JFrame frame;
     private JButton button;
-    private JLabel label1, label2, label3, label4, label5, label6;
-    private JPanel panel;
+    private final JLabel label1;
+    private final JLabel label2;
+    private final JLabel label3;
+    private final JLabel label4;
+    private final JLabel label5;
+    private final JLabel label6;
+    private final JPanel panel;
 
     public Statistics() {
         frame = new JFrame("Statistics");
@@ -26,8 +31,6 @@ public class Statistics implements ActionListener {
 
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(3, 2));
-        //panel.setLayout(new FlowLayout());
-//        button.addActionListener(this);
         panel.add(label1);
         panel.add(label4);
         panel.add(label2);

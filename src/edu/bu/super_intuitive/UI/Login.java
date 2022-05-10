@@ -51,7 +51,7 @@ public class Login implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String loginName = textFieldUserName.getText();
         String password = textFieldPassword.getText();
-        if(loginName.toUpperCase().equals("CPK") && password.length() > 3){
+        if(loginName.equalsIgnoreCase("CPK") && password.length() > 3){
             JOptionPane.showMessageDialog(button, "You have successfully logged in");
             try {
                 new InstructorPage();

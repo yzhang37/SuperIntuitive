@@ -7,19 +7,15 @@ import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class DeleteCourse implements ActionListener {
 
-    private JFrame frame;
-    private JButton button;
-    private JPanel panel;
+    private final JFrame frame;
+    private final JButton button;
+    private final JPanel panel;
     private final JComboBox<String> comboBox = new JComboBox<>();
-    private Instructor instructor = new Instructor("U00000000");
-    private ICourse[] allCourses = instructor.getOwnedCourses();
+    private final Instructor instructor = new Instructor("U00000000");
+    private final ICourse[] allCourses = instructor.getOwnedCourses();
 
     public DeleteCourse() throws InstantiationException {
         frame = new JFrame("Delete Course");

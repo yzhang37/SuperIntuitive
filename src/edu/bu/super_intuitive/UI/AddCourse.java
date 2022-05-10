@@ -1,23 +1,21 @@
 package edu.bu.super_intuitive.UI;
-import edu.bu.super_intuitive.models.grading.ICourse;
 import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class AddCourse implements ActionListener {
-    private JFrame frame;
-    private JButton button;
-    private JPanel panel;
+    private final JFrame frame;
+    private final JButton button;
+    private final JPanel panel;
     private final JComboBox<String> comboBox = new JComboBox<>();
     private final JTextField textField1 = new JTextField();
     private final JTextField textField2 = new JTextField();
-    private Instructor instructor = new Instructor("U00000000");
+    private final Instructor instructor = new Instructor("U00000000");
 
     public AddCourse() throws InstantiationException {
         frame = new JFrame("Add Course");

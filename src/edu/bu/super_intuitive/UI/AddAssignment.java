@@ -8,17 +8,17 @@ import java.awt.event.*;
 
 
 public class AddAssignment implements ActionListener {
-    private JFrame frame;
-    private JButton button;
-    private JPanel panel;
+    private final JFrame frame;
+    private final JButton button;
+    private final JPanel panel;
     private final JComboBox<String> comboBox = new JComboBox<>();
     private final JTextField textField1 = new JTextField();
     private final JTextField textField2 = new JTextField();
     private final JTextField textField3 = new JTextField();
-    private ICourse course;
-    private CourseView course_view;
+    private final ICourse course;
+    private final CourseView course_view;
 
-    public AddAssignment(ICourse courseObject, CourseView course_view) throws InstantiationException {
+    public AddAssignment(ICourse courseObject, CourseView course_view) {
         this.course = courseObject;
         frame = new JFrame("Add Assignment");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

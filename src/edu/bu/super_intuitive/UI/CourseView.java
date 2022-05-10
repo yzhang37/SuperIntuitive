@@ -174,7 +174,7 @@ public class CourseView extends JFrame {
                     new AddAssignment(courseObject, this);
                     // 刷新窗口内的 assignments 视图
                     this.updateAssignmentDisplay();
-                } catch (InstantiationException | OperationFailed ex) {
+                } catch (OperationFailed ex) {
                     throw new RuntimeException(ex);
                 }
             } else if (this.page2Tabs.getSelectedIndex() == 1) {
@@ -260,7 +260,7 @@ public class CourseView extends JFrame {
         return panel;
     }
 
-    public void updateStudentDisplay() throws OperationFailed {
+    public void updateStudentDisplay() {
         // 先删除原有的表格内容
         this.students_table_model.setRowCount(0);
 

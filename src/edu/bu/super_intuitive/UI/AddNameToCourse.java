@@ -8,12 +8,10 @@ import edu.bu.super_intuitive.service.mysql.grading.Student;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.awt.event.*;
 import javax.swing.table.*;
-import java.awt.event.ActionListener;
 
 /**
  * @Author Hanyu Chen
@@ -29,7 +27,7 @@ public class AddNameToCourse extends JFrame {
     private final List<String> added_students;
     private final ICourse course;
     private boolean isConfirmed;
-    private CourseView course_view;
+    private final CourseView course_view;
 
     public AddNameToCourse(JTable st,
                            JTable pt,
@@ -64,11 +62,7 @@ public class AddNameToCourse extends JFrame {
                     }
                 }
                 if (course_view != null) {
-                    try {
-                        course_view.updateStudentDisplay();
-                    } catch (OperationFailed ex) {
-                        ex.printStackTrace();
-                    }
+                    course_view.updateStudentDisplay();
                 }
             }
             }
@@ -193,7 +187,7 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
  */
 
 class ButtonEditor extends DefaultCellEditor {
-    protected JButton button;
+    protected final JButton button;
 
     private String label;
     private final JFrame curr_frame;
@@ -203,7 +197,7 @@ class ButtonEditor extends DefaultCellEditor {
     private JTable searching_table;
     private int deleted_row;
     private boolean isPushed;
-    private CourseView course_view;
+    private final CourseView course_view;
 
     public ButtonEditor(JCheckBox checkBox,
                         JFrame frame,
@@ -249,7 +243,7 @@ class ButtonEditor extends DefaultCellEditor {
             new AddNameToCourse(searching_table, pending_table, added_students, course, this.course_view);
         }
         isPushed = false;
-        return new String(label);
+        return label;
     }
 
     public boolean stopCellEditing() {

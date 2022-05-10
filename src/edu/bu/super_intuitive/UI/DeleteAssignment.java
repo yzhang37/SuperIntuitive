@@ -7,8 +7,6 @@ import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @Author Hanyu Chen
@@ -63,17 +61,5 @@ public class DeleteAssignment {
         curr_panel.add(new Label("Assignment to delete"));
         curr_panel.add(comboBox);
     }
-//
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//
-//
-//        this.frame.dispose();
-//        try {
-//            new InstructorPage();
-//        } catch (InstantiationException ex) {
-//            ex.printStackTrace();
-//        }
-//    }
 
 }

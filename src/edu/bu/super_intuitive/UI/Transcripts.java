@@ -8,11 +8,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Transcripts implements ActionListener {
-    private JFrame frame;
-    private JLabel label1, label2, label3;
-    private JPanel panel, panel2;
-    private JTextArea textArea1, textArea2, textArea3;
-    private JTable table;
+    private final JFrame frame;
+    private final JLabel label1;
+    private final JLabel label2;
+    private final JLabel label3;
+    private final JPanel panel;
+    private final JPanel panel2;
+    private final JTextArea textArea1;
+    private final JTextArea textArea2;
+    private final JTextArea textArea3;
+    private final JTable table;
 
     public Transcripts(IStudent student){
         frame = new JFrame("Transcripts");

@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 /**
  * @Author Hanyu Chen
@@ -34,8 +35,6 @@ public class AssignmentScores extends JFrame {
 
         // 整个窗口中间放置主要 Working 部件
         var center_working_panel = new JPanel();
-//        center_working_panel.setLayout(new BoxLayout(center_working_panel, BoxLayout.PAGE_AXIS));
-//        center_working_panel.setPreferredSize(new Dimension(100, 300));
         this.add(title_label, BorderLayout.NORTH);
 
         // 添加主要的两个视图，中间需要用 Tabbed 来显示界面
@@ -49,12 +48,7 @@ public class AssignmentScores extends JFrame {
         course_table.setPreferredSize(new Dimension(600, 300));
         center_working_panel.add(course_table);
 
-//        var assignment_panel = new JPanel();
-//        course_table.addTab("Assignments", null, assignment_panel, "Does nothing");
 
-
-//        JScrollPane assignment_jscroll_pane = new JScrollPane(assignment_view);
-//        assignment_panel.add(assignment_view);
         this.add(center_working_panel, BorderLayout.CENTER);
 
         JButton button_1 = new JButton("back");
@@ -65,7 +59,7 @@ public class AssignmentScores extends JFrame {
             } catch (OperationFailed ex) {
                 ex.printStackTrace();
             }
-            frame.setVisible(true);
+            Objects.requireNonNull(frame).setVisible(true);
         };
         button_1.addActionListener(button_listener1);
         this.add(button_1, BorderLayout.SOUTH);

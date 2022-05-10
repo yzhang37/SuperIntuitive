@@ -12,15 +12,11 @@ import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.sql.*;
 
 public class InstructorPage extends JFrame {
 
-    private Instructor instructor = new Instructor("U00000000");
+    private final Instructor instructor = new Instructor("U00000000");
 
     public InstructorPage() throws InstantiationException {
         setTitle("Instructor page");    // Set window title

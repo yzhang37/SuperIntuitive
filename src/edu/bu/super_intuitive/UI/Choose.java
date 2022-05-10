@@ -12,14 +12,16 @@ public class Choose implements ActionListener{
     static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
     static final String USER = "root";
     static final String PASS = "hou10ttr";
-    private JFrame frame;
-    private JButton button;
-    private JLabel label1, label2;
-    private JPanel panel;
-    private JTextField textField1, textField2;
-    private JComboBox list;
+    private final JFrame frame;
+    private final JButton button;
+    private final JLabel label1;
+    private final JLabel label2;
+    private final JPanel panel;
+    private final JTextField textField1;
+    private JTextField textField2;
+    private final JComboBox list;
 //    private String courseCode[];
-    private ArrayList<String> courseCode = new ArrayList<String>();
+    private final ArrayList<String> courseCode = new ArrayList<String>();
 
     public Choose(){
         frame = new JFrame("Choose Student and Course");
