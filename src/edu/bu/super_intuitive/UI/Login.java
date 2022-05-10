@@ -45,7 +45,11 @@ public class Login implements ActionListener {
         if(loginName.equals("CPK")){
             JOptionPane.showMessageDialog(button, "You have successfully logged in");
             frame.dispose();
-            new InstructorPage();
+            try {
+                new InstructorPage();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            }
         }else{
             JOptionPane.showMessageDialog(button, "Invalid login credentials");
         }

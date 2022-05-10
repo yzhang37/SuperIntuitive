@@ -67,7 +67,11 @@ public class CourseView extends JFrame {
         };
         ActionListener button_listener6 = e -> {
             this.dispose();
-            new InstructorPage();
+            try {
+                new InstructorPage();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            }
         };
         button1.addActionListener(button_listener1);
         button2.addActionListener(button_listener2);

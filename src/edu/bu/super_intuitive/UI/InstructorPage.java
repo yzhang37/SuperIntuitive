@@ -5,27 +5,21 @@ package edu.bu.super_intuitive.UI; /**
  * @Param $
  * @return $
  **/
+
+import edu.bu.super_intuitive.models.grading.ICourse;
+import edu.bu.super_intuitive.service.mysql.grading.Instructor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-
-
 public class InstructorPage extends JFrame {
 
-    // JDBC driver name and database URL
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
+    private Instructor instructor = new Instructor("U00000000");
 
-    //  Database credentials -- 数据库名和密码自己修改
-    static final String USER = "root";
-    static final String PASS = "hou10ttr";
-
-
-    public InstructorPage()
-    {
+    public InstructorPage() throws InstantiationException {
         setTitle("Instructor page");    // Set window title
         setSize(650,580);    // Set window size
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    // Set window closeable
@@ -55,81 +49,25 @@ public class InstructorPage extends JFrame {
         return top_panel;
     }
 
-    private JPanel setCenterPanel() {
+    private JPanel setCenterPanel() throws InstantiationException {
         JPanel center_panel=new JPanel();
         JPanel cards=new JPanel(new CardLayout(50, 30));
 
-        // Create buttons
-        Connection conn = null;
-        PreparedStatement st = null;
-        try {
-            Class.forName(JDBC_DRIVER);
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-            st = (PreparedStatement) conn
-                    .prepareStatement("Select * from courses");
-
-            ResultSet rs = st.executeQuery();
-            ResultSetMetaData metaData = rs.getMetaData();
-            int count = metaData.getColumnCount(); //number of column
-            ActionListener button_listener = e -> {
-                JFrame frame = new CourseView();
-                frame.setVisible(true);
-            };
-            while(rs.next()){
-                String instructorId = rs.getString("instructor");
-                //String instructorName = rs.getString("instructorId");
-                JButton p1_button_1 = new JButton("<html>" + rs.getString("alias")
-                        + " " + rs.getString("name") + "<br>" +
-                        "Semester: " + rs.getString("semester") + "<br>" +
-                        "Instructor: " + rs.getString("instructor") +
-                        "</html>");
-                p1_button_1.setPreferredSize(new Dimension(200, 100));
-                p1_button_1.addActionListener(button_listener);
-                center_panel.add(p1_button_1);
-            }
-
-        } catch (SQLException | ClassNotFoundException sqlException) {
-            sqlException.printStackTrace();
+        ActionListener button_listener = e -> {
+            JFrame frame = new CourseView();
+            frame.setVisible(true);
+        };
+        ICourse[] allCourses = instructor.getOwnedCourses();
+        for (ICourse course : allCourses) {
+            JButton p1_button_1 = new JButton("<html>" + course.getAlias()
+                    + " " + course.getName() + "<br>" +
+                    "Semester: " + course.getSemester() + "<br>" +
+                    "Instructor: " + course.getInstructor().getName() +
+                    "</html>");
+            p1_button_1.setPreferredSize(new Dimension(200, 100));
+            p1_button_1.addActionListener(button_listener);
+            center_panel.add(p1_button_1);
         }
-        finally {
-            try{
-                if(st!=null)
-                    st.close();
-            } catch (SQLException ignored){}
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }
-        }
-//        JButton p1_button_1 = new JButton("<html>" +
-//                "CS611 Object-oriented Design <br>" +
-//                "Semester: Spring<br>" +
-//                "Instructor: Christine" +
-//                "</html>");
-//        JButton p1_button_2 = new JButton("<html>" +
-//                "CS112 Intro to Computer Science II <br>" +
-//                "Semester: Spring<br>" +
-//                "Instructor: Christine" +
-//                "</html>");
-//        p1_button_1.setPreferredSize(new Dimension(250, 80));
-//        p1_button_2.setPreferredSize(new Dimension(250, 80));
-//        ActionListener button_listener3 = e -> {
-//            var frame = new CourseView();
-//            frame.setVisible(true);;
-//        };
-//        ActionListener button_listener4 = e -> {
-//
-//        };
-//        p1_button_1.addActionListener(button_listener3);
-//        p1_button_2.addActionListener(button_listener4);
-//
-//        // Add buttons into the center panel
-//        center_panel.add(p1_button_1);
-//        center_panel.add(p1_button_2);
         cards.add(center_panel,"card1");
         return cards;
     }
@@ -140,11 +78,19 @@ public class InstructorPage extends JFrame {
         JPanel cards=new JPanel(new CardLayout(50, 30));
         ActionListener button_listener1 = e -> {
             curr_frame.dispose();
-            new AddCourse();
+            try {
+                new AddCourse();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            }
         };
         ActionListener button_listener2 = e -> {
             curr_frame.dispose();
-            new DeleteCourse();
+            try {
+                new DeleteCourse();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            }
         };
 
         // Set layout

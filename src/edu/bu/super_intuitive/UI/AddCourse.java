@@ -1,4 +1,6 @@
 package edu.bu.super_intuitive.UI;
+import edu.bu.super_intuitive.models.grading.ICourse;
+import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +21,9 @@ public class AddCourse implements ActionListener {
     private final JComboBox<String> comboBox = new JComboBox<>();
     private final JTextField textField1 = new JTextField();
     private final JTextField textField2 = new JTextField();
-    private final JTextField textField3 = new JTextField();
+    private Instructor instructor = new Instructor("U00000000");
 
-    public AddCourse() {
+    public AddCourse() throws InstantiationException {
         frame = new JFrame("Add Course");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -37,7 +39,6 @@ public class AddCourse implements ActionListener {
 
         setTextField(panel,"Course Code: ", textField1);
         setTextField(panel,"Course Name: ", textField2);
-        setTextField(panel,"Instructor: ", textField3);
         setComboBox(panel, Arrays.stream(semester).toList(), comboBox, "Semester: ");
 
         frame.add(panel, BorderLayout.CENTER);
@@ -64,47 +65,23 @@ public class AddCourse implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String courseCode = textField1.getText();
         String courseName = textField2.getText();
-        String instructor = textField3.getText();
         String semester = (String) comboBox.getSelectedItem();
 
-        Connection conn = null;
-        PreparedStatement st = null;
-
         try {
-            //Open a connection
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-            st = (PreparedStatement) conn
-                    .prepareStatement("INSERT INTO courses (cid, name, instructor, semester)" +
-                            " VALUES (?, ?, ?, ?)");
-
-            System.out.println("Creating statement...");
-            st.setString(1, courseCode);
-            st.setString(2, courseName);
-            st.setString(3, instructor);
-            st.setString(4, semester);
-            st.execute();
-
-            JOptionPane.showMessageDialog(button, "Successfully added course!");
-
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            instructor.openCourse(courseName, courseCode, semester);
+        } catch (InstantiationException ex) {
+            ex.printStackTrace();
         }
-        finally {
-            try{
-                if(st!=null)
-                    st.close();
-            } catch (SQLException ignored){}
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }
-        }
+
+        JOptionPane.showMessageDialog(button, "Successfully added course!");
+
+
         this.frame.dispose();
-        new InstructorPage();
+        try {
+            new InstructorPage();
+        } catch (InstantiationException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

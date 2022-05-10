@@ -12,9 +12,9 @@ import java.util.ArrayList;
 
 public class ExportCSV implements ActionListener {
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/GradingSystem";
     static final String USER = "root";
-    static final String PASS = "hou10ttr";
+    static final String PASS = "root1234";
     private JFrame frame;
     private JButton button;
     private JPanel panel;
@@ -25,8 +25,8 @@ public class ExportCSV implements ActionListener {
         button = new JButton("Confirm");
         panel = new JPanel();
 
-        String tableData[] = {"courses", "staffs", "assignments"};
-        list = new JComboBox(tableData);
+        String tables[] = {"courses", "staffs", "assignments", "student"};
+        list = new JComboBox(tables);
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(2, 2));
         //panel.setLayout(new FlowLayout());

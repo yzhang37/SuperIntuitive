@@ -1,5 +1,9 @@
 package edu.bu.super_intuitive.UI;
 
+import edu.bu.super_intuitive.models.exception.OperationFailed;
+import edu.bu.super_intuitive.models.grading.ICourse;
+import edu.bu.super_intuitive.service.mysql.grading.Instructor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,35 +14,26 @@ import java.util.List;
 
 public class DeleteCourse implements ActionListener {
 
-
-    // JDBC driver name and database URL
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
-
-    //  Database credentials -- 数据库名和密码自己修改
-    static final String USER = "root";
-    static final String PASS = "hou10ttr";
-
     private JFrame frame;
     private JButton button;
     private JPanel panel;
     private final JComboBox<String> comboBox = new JComboBox<>();
+    private Instructor instructor = new Instructor("U00000000");
+    private ICourse[] allCourses = instructor.getOwnedCourses();
 
-    public DeleteCourse() {
+    public DeleteCourse() throws InstantiationException {
         frame = new JFrame("Delete Course");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         button = new JButton("Confirm");
         button.addActionListener(this);
 
-        String[] courseList = {"CS611", "CS655"};
-
         // Create panel and set configures
         panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(4, 2));
 
-        setComboBox(panel, Arrays.stream(courseList).toList(), comboBox, "CS611");
+        setComboBox(panel, comboBox, "Course to delete");
 
         frame.add(panel, BorderLayout.CENTER);
         frame.add(button, BorderLayout.SOUTH);
@@ -46,54 +41,30 @@ public class DeleteCourse implements ActionListener {
         frame.setVisible(true);
     }
 
-    private void setComboBox(JPanel curr_panel, List<String> str_labels, JComboBox<String> comboBox, String curr_label) {
-        for (String s : str_labels) {
-            comboBox.addItem(s);
+    private void setComboBox(JPanel curr_panel, JComboBox<String> comboBox, String curr_label) {
+        for (ICourse course : allCourses) {
+            comboBox.addItem(course.getCourseId() + "-" + course.getAlias() + " - "
+                    + course.getName() + " - " + course.getSemester());
         }
         curr_panel.add(new Label(curr_label));
         curr_panel.add(comboBox);
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        String courseId = (String) comboBox.getSelectedItem();
-
-        Connection conn = null;
-        PreparedStatement st = null;
-
+        int courseId = comboBox.getSelectedIndex();
         try {
-            //Open a connection
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-            st = (PreparedStatement) conn
-                    .prepareStatement("Delete from courses where alias = ?");
-
-            System.out.println("Creating statement...");
-            st.setString(1, courseId);
-            st.execute();
-
-            JOptionPane.showMessageDialog(button, "Successfully deleted course!");
-
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        finally {
-            try{
-                if(st!=null)
-                    st.close();
-            } catch (SQLException ignored){}
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }
+            instructor.removeCourse(allCourses[courseId]);
+        } catch (OperationFailed ex) {
+            ex.printStackTrace();
         }
 
         this.frame.dispose();
-        new InstructorPage();
+        try {
+            new InstructorPage();
+        } catch (InstantiationException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

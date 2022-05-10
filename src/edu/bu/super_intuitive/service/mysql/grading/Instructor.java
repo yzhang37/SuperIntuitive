@@ -96,11 +96,12 @@ public class Instructor extends Member implements IInstructor {
             int nextId = rs.getInt(1) + 1;
 
             var stmt = Database.getConnection().prepareStatement(
-                    "INSERT INTO courses (name, alias, semester, instructor) VALUES (?, ?, ?, ?);");
-            stmt.setString(1, courseName);
-            stmt.setString(2, courseAlias);
-            stmt.setString(3, semester);
-            stmt.setString(4, this.getBUId());
+                    "INSERT INTO courses (cid, name, alias, semester, instructor) VALUES (?, ?, ?, ?, ?);");
+            stmt.setInt(1, nextId);
+            stmt.setString(2, courseName);
+            stmt.setString(3, courseAlias);
+            stmt.setString(4, semester);
+            stmt.setString(5, this.getBUId());
             stmt.executeUpdate();
 
             return new Course(nextId);
