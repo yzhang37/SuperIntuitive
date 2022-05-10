@@ -51,7 +51,7 @@ public class Login implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String loginName = textFieldUserName.getText();
         String password = textFieldPassword.getText();
-        if(loginName.equals("CPK")){
+        if(loginName.equals("CPK") && password.length() > 0){
             JOptionPane.showMessageDialog(button, "You have successfully logged in");
             try {
                 new InstructorPage();
@@ -59,7 +59,7 @@ public class Login implements ActionListener {
             } catch (InstantiationException ex) {
                 ex.printStackTrace();
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(button, "Invalid login credentials");
         }
     }
