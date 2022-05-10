@@ -192,6 +192,11 @@ public class CourseView extends JFrame {
         var btnDelete = new JButton("Delete");
         ActionListener button_listener2 = e -> {
             //courseObject.removeAssignment(assignment);
+            try {
+                new DeleteAssignment();
+            } catch (InstantiationException | OperationFailed ex) {
+                ex.printStackTrace();
+            }
         };
 
         btnDelete.addActionListener(button_listener2);
