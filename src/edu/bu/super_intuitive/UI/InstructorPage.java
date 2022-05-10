@@ -53,10 +53,6 @@ public class InstructorPage extends JFrame {
         JPanel center_panel=new JPanel();
         JPanel cards=new JPanel(new CardLayout(50, 30));
 
-        ActionListener button_listener = e -> {
-            JFrame frame = new CourseView();
-            frame.setVisible(true);
-        };
         ICourse[] allCourses = instructor.getOwnedCourses();
         for (ICourse course : allCourses) {
             JButton p1_button_1 = new JButton("<html>" + course.getAlias()
@@ -65,7 +61,10 @@ public class InstructorPage extends JFrame {
                     "Instructor: " + course.getInstructor().getName() +
                     "</html>");
             p1_button_1.setPreferredSize(new Dimension(200, 100));
-            p1_button_1.addActionListener(button_listener);
+            p1_button_1.addActionListener(e -> {
+                JFrame frame = new CourseView(course);
+                frame.setVisible(true);
+            });
             center_panel.add(p1_button_1);
         }
         cards.add(center_panel,"card1");
