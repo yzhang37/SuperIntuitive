@@ -1,5 +1,7 @@
 package edu.bu.super_intuitive.models.grading;
 
+import edu.bu.super_intuitive.models.exception.OperationFailed;
+
 public interface ICourse {
     public int getCourseId();
     /**
@@ -47,34 +49,21 @@ public interface ICourse {
      * Add a student to the course.
      * @param student An object implementing IStudent interface
      */
-    public void addOneStudent(IStudent student);
+    public void registerStudent(IStudent student) throws OperationFailed;
     /**
-     * Add many students to the course.
-     * @param students Array of objects implementing IStudent interface
+     * Check if a student has been registered for the course.
+     * @param student An object implementing IStudent interface
+     * @return True if student is registered for the course, false otherwise
      */
-    public void addManyStudents(IStudent[] students);
+    public boolean hasStudent(IStudent student);
     /**
      * Remove a student from the course.
      * @param student An object implementing IStudent interface
      */
-    public void removeOneStudent(IStudent student);
-    /**
-     * Remove many students from the course.
-     * @param students Array of objects implementing IStudent interface
-     */
-    public void removeManyStudents(IStudent[] students);
-    public default void removeAllStudent() {
-        removeManyStudents(getRegisteredStudents());
-    }
-    /**
-     * Check if a student is registered for the course.
-     * @param student An object implementing IStudent interface
-     * @return True if student is registered for the course, false otherwise
-     */
-    public boolean checkRegistered(IStudent student);
+    public void dropStudent(IStudent student) throws OperationFailed ;
 
     public void addAssignment(IAssignment assignment);
-    public void removeAssignment(IAssignment assignment);
+    public void removeAssignment(IAssignment assignment) throws OperationFailed;
     public boolean hasAssignment(IAssignment assignment);
     public IAssignment[] getAssignments();
 }

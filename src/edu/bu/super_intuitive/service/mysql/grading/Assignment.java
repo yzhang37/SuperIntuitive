@@ -16,9 +16,8 @@ public class Assignment implements IAssignment {
         // 验证当前 id 的数据是否存在
         boolean fail = false;
         try {
-            var stmt = Database.getConnection().prepareStatement("SELECT * FROM assignments WHERE " +
-                                                                                        "aid = ?");
-            stmt.setString(1, String.valueOf(aid));
+            var stmt = Database.getConnection().prepareStatement("SELECT * FROM assignments WHERE aid = ?");
+            stmt.setInt(1, aid);
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) {
                 fail = true;
@@ -31,7 +30,6 @@ public class Assignment implements IAssignment {
             throw new InstantiationException(
                     String.format("Assignment with aid = \"%d\" not exist.", aid));
         }
-
     }
 
     public int getAssignmentId() {

@@ -1,11 +1,13 @@
 package edu.bu.super_intuitive.service.mysql.grading;
 import edu.bu.super_intuitive.middleware.mysql.Database;
+import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.IAssignment;
 import edu.bu.super_intuitive.models.grading.ICourse;
 import edu.bu.super_intuitive.models.grading.IInstructor;
 import edu.bu.super_intuitive.models.grading.IStudent;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class Course implements ICourse {
     private final int cid;
@@ -147,86 +149,151 @@ public class Course implements ICourse {
 
     @Override
     public IStudent[] getRegisteredStudents() {
-        return new IStudent[0];
-    }
-
-    @Override
-    public void addOneStudent(IStudent student) {
+        IStudent[] students = null;
         try {
-            var BUId = student.getBUId();
-            var name = student.getName();
-            var email = student.getEmail();
-            var stmt = Database.getConnection().prepareStatement(
-                    "INSERT INTO staffs (sid, name, email, isInstructor)" +
-                            "VALUES (?, ?, ?, ?)");
-            stmt.setString(1, BUId);
-            stmt.setString(2, name);
-            stmt.setString(3, email);
-            stmt.setBoolean(4, false);
-            stmt.executeUpdate();
+            // 先获取有多少学生注册了
+            var stmt = Database.getConnection().prepareStatement("SELECT COUNT(*) FROM student_reg WHERE cid = ?");
+            stmt.setInt(1, this.getCourseId());
+            var rs = stmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+
+            students = new IStudent[count];
+            // 依次获取每个学生的 sid
+            var stmt2 = Database.getConnection().prepareStatement("SELECT sid FROM student_reg WHERE cid = ?");
+            stmt2.setInt(1, this.getCourseId());
+            rs = stmt2.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                try {
+                    students[i] = new Student(rs.getString("sid"));
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return Objects.requireNonNullElseGet(students, () -> new IStudent[0]);
     }
 
     @Override
-    public void addManyStudents(IStudent[] students) {
-        for (var student : students) {
-            addOneStudent(student);
-        }
-    }
-
-    @Override
-    public void removeOneStudent(IStudent student) {
+    public void registerStudent(IStudent student) throws OperationFailed {
         try {
-            var BUId = student.getBUId();
-            var stmt = Database.getConnection().prepareStatement(
-                    "Delete from course where id = ?");
-            stmt.setString(1, BUId);
+            // 首先检查是否已经注册了一个学生
+            if (this.hasStudent(student)) {
+                throw new OperationFailed(String.format(
+                        "Student with BuId=%s has already registered in course with cid=%d", student.getBUId(), this.getCourseId()));
+            }
+            var stmt = Database.getConnection().prepareStatement("INSERT INTO student_reg (sid, cid) VALUES (?, ?)");
+            stmt.setString(1, student.getBUId());
+            stmt.setInt(2, this.getCourseId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new OperationFailed("Failed to add student to course:\n " + e.getMessage());
         }
     }
 
     @Override
-    public void removeManyStudents(IStudent[] students) {
-        for (var student : students) {
-            removeOneStudent(student);
+    public boolean hasStudent(IStudent student) {
+        try {
+            var stmt = Database.getConnection().prepareStatement("SELECT * FROM student_reg WHERE cid = ? AND sid = ?");
+            stmt.setInt(1, this.getCourseId());
+            stmt.setString(2, student.getBUId());
+            var rs = stmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean checkRegistered(IStudent student) {
         return false;
     }
 
     @Override
-    public void addAssignment(IAssignment assignment) {
-
+    public void dropStudent(IStudent student) throws OperationFailed {
+        try {
+            if (!this.hasStudent(student)) {
+                throw new OperationFailed(String.format(
+                        "Student with BuId=%s has not registered in course with cid=%d", student.getBUId(), this.getCourseId()));
+            }
+            var stmt = Database.getConnection().prepareStatement("DELETE FROM student_reg WHERE cid = ? AND sid = ?");
+            stmt.setInt(1, this.getCourseId());
+            stmt.setString(2, student.getBUId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new OperationFailed("Failed to drop student from course:\n " + e.getMessage());
+        }
     }
 
     @Override
-    public void removeAssignment(IAssignment assignment) {
+    public void addAssignment(IAssignment assignment) {
+        // TODO:
+    }
+
+    @Override
+    public void removeAssignment(IAssignment assignment) throws OperationFailed {
         try {
-            var stmt = Database.getConnection().prepareStatement("DELETE FROM assignments WHERE" +
-                                                                                        " aid = ?");
-            stmt.setString(1, String.valueOf(assignment.getAssignmentId()));
+            if (!this.hasAssignment(assignment)) {
+                throw new OperationFailed(String.format(
+                    "Assignment with aid=%d is not created by course with cid=%d", assignment.getAssignmentId(), this.getCourseId()));
+            }
+            var stmt = Database.getConnection().prepareStatement("DELETE FROM assignments WHERE aid = ?");
+            stmt.setInt(1, assignment.getAssignmentId());
             stmt.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new OperationFailed("Failed to remove assignment from course:\n " + e.getMessage());
         }
     }
 
     @Override
     public boolean hasAssignment(IAssignment assignment) {
+        try {
+            var stmt = Database.getConnection().prepareStatement("SELECT course_id FROM assignments WHERE aid = ?");
+            stmt.setInt(1, assignment.getAssignmentId());
+            var rs = stmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
     public IAssignment[] getAssignments() {
-        return new IAssignment[0];
-    }
-    // get all assignments for the course
+        // 查询 assignments 表格中所有 course_id = cid 的作业，然后返回列表
+        IAssignment[] assignments = null;
 
+        try {
+            // 先获取总数
+            var stmt = Database.getConnection().prepareStatement("SELECT COUNT(*) FROM assignments WHERE course_id = ?");
+            stmt.setInt(1, this.getCourseId());
+            var rs = stmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+
+            // 再获取作业列表
+            assignments = new IAssignment[count];
+            var stmt2 = Database.getConnection().prepareStatement("SELECT aid FROM assignments WHERE course_id = ?");
+            stmt2.setInt(1, this.getCourseId());
+            rs = stmt2.executeQuery();
+
+            int i = 0;
+            while (rs.next()) {
+                try {
+                    assignments[i] = new Assignment(rs.getInt(1));
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Objects.requireNonNullElseGet(assignments, () -> new IAssignment[0]);
+    }
 }
