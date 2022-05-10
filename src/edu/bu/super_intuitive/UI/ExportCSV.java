@@ -25,7 +25,7 @@ public class ExportCSV implements ActionListener {
         button = new JButton("Confirm");
         panel = new JPanel();
 
-        String tables[] = {"courses", "staffs", "assignments", "student"};
+        String tables[] = {"courses", "staffs", "assignments"};
         list = new JComboBox(tables);
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(2, 2));
@@ -89,7 +89,7 @@ public class ExportCSV implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String tableName = (String) list.getSelectedItem();
         connectToDB(tableName);
-        try (PrintWriter writer = new PrintWriter("test2.csv")) {
+        try (PrintWriter writer = new PrintWriter(tableName + ".csv")) {
             writer.write(sb.toString());
             System.out.println("done!");
         } catch (FileNotFoundException e2) {
