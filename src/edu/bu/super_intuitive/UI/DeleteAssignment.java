@@ -17,19 +17,30 @@ import java.awt.event.ActionListener;
  * @Param $
  * @return $
  **/
-public class DeleteAssignment implements ActionListener {
+public class DeleteAssignment {
 
     private final JFrame frame;
     private final JComboBox<String> comboBox = new JComboBox<>();
     private final Instructor instructor = new Instructor("U00000000");
     private final ICourse course = instructor.getOwnedCourses()[0];
+    private final CourseView courseView;
 
-    public DeleteAssignment() throws InstantiationException, OperationFailed {
+    public DeleteAssignment(CourseView course_view) throws InstantiationException, OperationFailed {
         frame = new JFrame("Delete Assignment");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.courseView = course_view;
 
         JButton button = new JButton("Confirm");
-        button.addActionListener(this);
+        button.addActionListener(e -> {
+            int assignmentId = comboBox.getSelectedIndex();
+            try {
+                course.removeAssignment(course.getAssignments()[assignmentId]);
+                courseView.updateAssignmentDisplay();
+            } catch (OperationFailed ex) {
+                ex.printStackTrace();
+            }
+            frame.dispose();
+        });
 
         // Create panel and set configures
         JPanel panel = new JPanel();
@@ -52,22 +63,17 @@ public class DeleteAssignment implements ActionListener {
         curr_panel.add(new Label("Assignment to delete"));
         curr_panel.add(comboBox);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int assignmentId = comboBox.getSelectedIndex();
-        try {
-            course.removeAssignment(course.getAssignments()[assignmentId]);
-        } catch (OperationFailed ex) {
-            ex.printStackTrace();
-        }
-
-        this.frame.dispose();
-        try {
-            new InstructorPage();
-        } catch (InstantiationException ex) {
-            ex.printStackTrace();
-        }
-    }
+//
+//    @Override
+//    public void actionPerformed(ActionEvent e) {
+//
+//
+//        this.frame.dispose();
+//        try {
+//            new InstructorPage();
+//        } catch (InstantiationException ex) {
+//            ex.printStackTrace();
+//        }
+//    }
 
 }
