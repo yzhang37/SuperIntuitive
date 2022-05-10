@@ -10,14 +10,16 @@ public abstract class Member implements IMember {
     private final String buId;
 
     /**
-     * 根据 BUId 获取一个 Member 对象。因为没有提供额外信息，调用这个函数前提是，数据库中
-     * 已经存在一个 BUId 为 buId 的用户。如果不存在，则会产生 IllegalArgumentException。
-     * @param buId 数据库中已有的成员的 BUId。
-     * @throws IllegalArgumentException 如果数据库中不存在 buId 的用户。
+     * Gets a Member object based on BUId. Since no additional information is
+     * provided, calling this function assumes that a user with a BUId of buId
+     * already exists in the database. If it does not exist, an IllegalArgumentException
+     * is thrown.
+     * @param buId BUId of the members already in the database.
+     * @throws IllegalArgumentException If the user with buId does not exist in the database.
      */
     public Member(String buId) throws InstantiationException {
         this.buId = buId;
-        // 验证当前 id 的数据是否存在
+        // Verify that the data for the current id exists
         boolean fail = false;
         try {
             var stmt = Database.getConnection().prepareStatement("SELECT * FROM staffs WHERE sid = ?");
@@ -37,15 +39,17 @@ public abstract class Member implements IMember {
     }
 
     /**
-     * 使用 BUId 获取/创建一个 Member 对象。如果数据库中不存在 buId 的用户，则会创建一个新的用户，使用 name, email 字段。
-     * 如果数据库中已经存在 buId 的用户，则不会创建新用户，但会更新已有数值。
-     * @param buId 数据库中已有的成员的 BUId。
-     * @param name 成员的姓名。
-     * @param email 成员的邮箱。
+     * Use BUId to get/create a Member object. If the user with buId does not exist in the database,
+     * a new user will be created, using the name, email fields. If the user with buId already exists
+     * in the database, no new user will be created, but the existing values will be updated.
+     *
+     * @param buId BUId of the members already in the database.
+     * @param name The name of the member.
+     * @param email Members' emails.
      */
     public Member(String buId, String name, String email) throws InstantiationException{
         this.buId = buId;
-        // 首先先去数据库查询，是否已经有这个用户对象
+        // First go to the database and check if the user object already exists
         boolean alreadyExists = false;
         try {
             var stmt = Database.getConnection().prepareStatement("SELECT * FROM staffs WHERE sid = ?");
@@ -59,7 +63,7 @@ public abstract class Member implements IMember {
         }
 
         if (!alreadyExists) {
-            // 如果没有，则创建一个新的用户
+            // If not, create a new user
             try {
                 var stmt = Database.getConnection().prepareStatement("INSERT INTO staffs (sid, name, email) VALUES (?, ?, ?)");
                 stmt.setString(1, buId);
@@ -72,7 +76,7 @@ public abstract class Member implements IMember {
                         String.format("Failed to create a new member with BuId = \"%s\".", buId));
             }
         } else {
-            // 如果已经有，则更新已有的用户
+            // Update existing users if they already exist
             try {
                 var stmt = Database.getConnection().prepareStatement("UPDATE staffs SET name = ?, email = ? WHERE sid = ?");
                 stmt.setString(1, name);

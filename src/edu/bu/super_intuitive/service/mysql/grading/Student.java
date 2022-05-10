@@ -20,7 +20,7 @@ public class Student extends Member implements IStudent {
     }
 
     private void checkAndUpdate(String id) throws InstantiationException {
-        // 检查是否 isInstructor 为非 true
+        // Check if isInstructor is not true
         boolean fail = false;
         String failMessage = "";
         try {

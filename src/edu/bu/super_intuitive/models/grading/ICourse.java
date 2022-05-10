@@ -11,7 +11,7 @@ public interface ICourse {
     IInstructor getInstructor() throws InstantiationException;
 
     /**
-     * @return 课程的别名 (短名称)
+     * @return Alias of the course (short name)
      */
     String getAlias();
     /**
@@ -21,21 +21,21 @@ public interface ICourse {
     void setAlias(String alias);
 
     /**
-     * @return 课程的完整名称
+     * @return Full name of the course
      */
     String getName();
     /**
-     * 设置课程的完整名称。
+     * Set the full name of the course.
      * @param name Full name of the class
      */
     void setName(String name);
 
     /**
-     * @return 课程的学期字符串
+     * @return Semester string of the course
      */
     String getSemester();
     /**
-     * 设置课程的学期字符串
+     * Set the semester string of the course
      * @param semester The semester string
      */
     void setSemester(String semester);

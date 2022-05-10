@@ -234,7 +234,7 @@ public class CourseView extends JFrame {
     }
 
     public void updateAssignmentDisplay() throws OperationFailed {
-        // 先删除原有的表格内容
+        // Delete the original table content first
         this.assignment_table_model.setRowCount(0);
 
         IAssignment[] assignments = courseObject.getAssignments();
@@ -261,7 +261,7 @@ public class CourseView extends JFrame {
     }
 
     public void updateStudentDisplay() {
-        // 先删除原有的表格内容
+        // Delete the original table content first
         this.students_table_model.setRowCount(0);
 
         IStudent[] students = courseObject.getRegisteredStudents();
@@ -273,8 +273,8 @@ public class CourseView extends JFrame {
     }
 
     /**
-     * 设置当前页面是在第一页还是第二页。
-     * @param pageNum 设置当前的页码
+     * Set whether the current page is on the first or second page.
+     * @param pageNum Set the current page number
      */
     private void setWorkingComponent(int pageNum) {
         if (pageNum == 0) {

@@ -20,7 +20,7 @@ public class Instructor extends Member implements IInstructor {
     }
 
     private void checkAndUpdate(String id) throws InstantiationException {
-        // 检查是否 isInstructor 为非 false
+        // Check if isInstructor is not false
         boolean fail = false;
         String failMessage = "";
         try {
@@ -53,10 +53,10 @@ public class Instructor extends Member implements IInstructor {
 
     @Override
     public ICourse[] getOwnedCourses() {
-        // 根据已有的 sid，在 courses 中查找 courses.instructor = sid
+        // Find courses.instructor = sid in courses based on the existing sid
         ICourse[] courses = null;
         try {
-            // 先执行预查询，获取总个数
+            // Execute a pre-query first to get the total number of
             var stmt = Database.getConnection().prepareStatement("SELECT COUNT(*) FROM courses WHERE instructor = ?");
             stmt.setString(1, this.getBUId());
             var rs = stmt.executeQuery();
@@ -87,9 +87,9 @@ public class Instructor extends Member implements IInstructor {
     public ICourse openCourse(String courseName,
                               String courseAlias,
                               String semester) throws InstantiationException {
-        // 先创建一个新的课程，并设置它的 instructor 为自己的 sid
+        // First create a new course and set its instructor to your own sid
         try {
-            // 先获取下一个空闲的 id
+            // Get the next id that is free first
             var stmt1 = Database.getConnection().prepareStatement("SELECT MAX(cid) FROM courses");
             var rs = stmt1.executeQuery();
             rs.next();
