@@ -169,13 +169,32 @@ public class CourseView extends JFrame {
         var student_panel = this.createPage2StudentView();
         page2Tabs.addTab("Students", null, student_panel, "View Registered Students");
 
-        var btnBackToPage1 = new JButton("Back");
+        var btnAdd = new JButton("Add");
         ActionListener button_listener1 = e -> {
-            // 返回到第一页
+            try {
+                new AddAssignment(courseObject);
+            } catch (InstantiationException ex) {
+                throw new RuntimeException(ex);
+            }
+        };
+
+        btnAdd.addActionListener(button_listener1);
+        components.add(btnAdd);
+
+        var btnDetele = new JButton("Delete");
+        ActionListener button_listener2 = e -> {
+            //courseObject.removeAssignment(assignment);
+        };
+
+        btnDetele.addActionListener(button_listener2);
+        components.add(btnDetele);
+
+        var btnBackToPage1 = new JButton("Back");
+        ActionListener button_listener3 = e -> {
             this.setWorkingComponent(0);
         };
 
-        btnBackToPage1.addActionListener(button_listener1);
+        btnBackToPage1.addActionListener(button_listener3);
         components.add(btnBackToPage1);
 
         JComponent[] componentsArray = new JComponent[components.size()];
