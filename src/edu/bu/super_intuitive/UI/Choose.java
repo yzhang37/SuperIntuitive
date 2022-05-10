@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for choosing the language
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import java.awt.*;
@@ -20,9 +27,9 @@ public class Choose implements ActionListener{
     private final JTextField textField1;
     private JTextField textField2;
     private final JComboBox list;
-//    private String courseCode[];
     private final ArrayList<String> courseCode = new ArrayList<String>();
 
+    // Constructor
     public Choose(){
         frame = new JFrame("Choose Student and Course");
         button = new JButton("Confirm");
@@ -51,6 +58,7 @@ public class Choose implements ActionListener{
         frame.setVisible(true);
     }
 
+    // Connect to the database
     public void connectToDB(){
         Connection conn = null;
         PreparedStatement st = null;
@@ -62,6 +70,8 @@ public class Choose implements ActionListener{
                     .prepareStatement("select * from course");
 
             System.out.println("Creating statement...");
+
+            // Execute SQL query
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 courseCode.add(rs.getString("id"));
@@ -69,6 +79,7 @@ public class Choose implements ActionListener{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+        // Close connection
         finally {
             try{
                 if(st!=null)
@@ -83,6 +94,7 @@ public class Choose implements ActionListener{
         }
     }
 
+    // Action listener
     @Override
     public void actionPerformed(ActionEvent e) {
         String studentId = textField1.getText();

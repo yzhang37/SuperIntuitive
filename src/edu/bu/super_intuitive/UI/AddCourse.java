@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // AddCourse is a class that is used to add a course to the database.
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $
+ **/
 package edu.bu.super_intuitive.UI;
 import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
@@ -17,6 +24,7 @@ public class AddCourse implements ActionListener {
     private final JTextField textField2 = new JTextField();
     private final Instructor instructor = new Instructor("U00000000");
 
+    // Constructor
     public AddCourse() throws InstantiationException {
         frame = new JFrame("Add Course");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -41,6 +49,7 @@ public class AddCourse implements ActionListener {
         frame.setVisible(true);
     }
 
+    // Set text field
     private void setComboBox(JPanel curr_panel, List<String> str_labels, JComboBox<String> comboBox, String curr_label) {
         for (String s : str_labels) {
             comboBox.addItem(s);
@@ -49,12 +58,14 @@ public class AddCourse implements ActionListener {
         curr_panel.add(comboBox);
     }
 
+    // Set text field
     private void setTextField(JPanel jp, String str_label, JTextField curr_textField) {
         JLabel label = new JLabel(str_label);
         jp.add(label);
         jp.add(curr_textField);
     }
 
+    // Action listener for button
     @Override
     public void actionPerformed(ActionEvent e) {
         String courseCode = textField1.getText();

@@ -1,3 +1,10 @@
+/**
+ * @Author Zhenghang Yin
+ * @Description // Class for testing the Student class
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.service.mysql.grading;
 
 import org.junit.jupiter.api.Test;

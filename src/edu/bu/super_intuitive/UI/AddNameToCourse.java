@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // AddNameToCourse is a class that is used to add a name to a course.
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.factory.grading.Students;
@@ -13,13 +20,6 @@ import java.util.List;
 import java.awt.event.*;
 import javax.swing.table.*;
 
-/**
- * @Author Hanyu Chen
- * @Description //TODO $
- * @Date $ 05.05.2022$
- * @Param $
- * @return $
- **/
 public class AddNameToCourse extends JFrame {
 
     private final JTable searching_table;
@@ -29,6 +29,7 @@ public class AddNameToCourse extends JFrame {
     private boolean isConfirmed;
     private final CourseView course_view;
 
+    // Constructor
     public AddNameToCourse(JTable st,
                            JTable pt,
                            List<String> added_students,
@@ -69,17 +70,21 @@ public class AddNameToCourse extends JFrame {
         });
     }
 
+    // Set top panel
     private void setTopPanel(JFrame curr_frame) {
         // Create panel
         JPanel top_panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel top_panel_left = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 20));
         JPanel top_panel_right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 40, 20));
 
+        // Create text field
         JTextField tf = new JTextField();
         tf.setPreferredSize(new Dimension(120, 35));
         JButton search_btn = new JButton();
         search_btn.setPreferredSize(new Dimension(80, 35));
         JLabel btn_label = new JLabel("🔍 Search");
+
+        // Add action listener for each row in table
         search_btn.addActionListener(e -> {
 
             String search_text = tf.getText();
@@ -94,6 +99,7 @@ public class AddNameToCourse extends JFrame {
         });
         search_btn.add(btn_label);
 
+
         top_panel_left.add(tf);
         top_panel_right.add(search_btn);
 
@@ -104,6 +110,7 @@ public class AddNameToCourse extends JFrame {
 
     }
 
+    // Set center panel
     private void setCenterPanel(JFrame curr_frame) {
         // Create panels
         JPanel curr_panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
@@ -137,6 +144,7 @@ public class AddNameToCourse extends JFrame {
         return curr_panel;
     }
 
+    // Set bottom panel
     private void setBottomPanel(JFrame curr_frame) {
         // Create a panel object
         JPanel bottom_panel = new JPanel();
@@ -165,10 +173,7 @@ public class AddNameToCourse extends JFrame {
 
 }
 
-/**
- * @version 1.0 11/09/98
- */
-
+// Define button editor class
 class ButtonRenderer extends JButton implements TableCellRenderer {
 
     public ButtonRenderer() {
@@ -182,10 +187,7 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
     }
 }
 
-/**
- * @version 1.0 11/09/98
- */
-
+// Define button editor class to catch click events
 class ButtonEditor extends DefaultCellEditor {
     protected final JButton button;
 
@@ -220,6 +222,7 @@ class ButtonEditor extends DefaultCellEditor {
         });
     }
 
+    // Get the table when clicking the button
     public Component getTableCellEditorComponent(JTable table, Object value,
                                                  boolean isSelected, int row, int column) {
         label = (value == null) ? "" : value.toString();
@@ -230,6 +233,7 @@ class ButtonEditor extends DefaultCellEditor {
         return button;
     }
 
+    // Get the cell when clicking the button
     public Object getCellEditorValue() {
         if (isPushed) {
             DefaultTableModel model = (DefaultTableModel) pending_table.getModel();
@@ -246,15 +250,18 @@ class ButtonEditor extends DefaultCellEditor {
         return label;
     }
 
+    // Stop editing
     public boolean stopCellEditing() {
         isPushed = false;
         return super.stopCellEditing();
     }
 
+    // Stop firing events
     protected void fireEditingStopped() {
         super.fireEditingStopped();
     }
 
+    // Get row at index
     private Object[] getRowAt(int row, JTable table) {
         Object[] result = new String[3];
 

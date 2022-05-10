@@ -1,10 +1,11 @@
-package edu.bu.super_intuitive.UI; /**
+/**
  * @Author Hanyu Chen
- * @Description //TODO $
+ * @Description // Constructor for the InstructorPage class
  * @Date $ 05.05.2022$
  * @Param $
- * @return $
+ * @return $ N/A
  **/
+package edu.bu.super_intuitive.UI;
 
 import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.ICourse;

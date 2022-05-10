@@ -1,3 +1,10 @@
+/**
+ * @Author Hanyu Chen
+ * @Description // Class for add assignment page
+ * @Date $ 05.05.2022$
+ * @Param $
+ * @return $ N/A
+ **/
 package edu.bu.super_intuitive.UI;
 import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.ICourse;
@@ -18,6 +25,7 @@ public class AddAssignment implements ActionListener {
     private final ICourse course;
     private final CourseView course_view;
 
+    // Constructor
     public AddAssignment(ICourse courseObject, CourseView course_view) {
         this.course = courseObject;
         frame = new JFrame("Add Assignment");
@@ -43,12 +51,14 @@ public class AddAssignment implements ActionListener {
         this.course_view = course_view;
     }
 
+    // Set text field
     private void setTextField(JPanel jp, String str_label, JTextField curr_textField) {
         JLabel label = new JLabel(str_label);
         jp.add(label);
         jp.add(curr_textField);
     }
 
+    // Action listener
     @Override
     public void actionPerformed(ActionEvent e) {
         String assignmentName = textField1.getText();
