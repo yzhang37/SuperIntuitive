@@ -1,16 +1,19 @@
 package edu.bu.super_intuitive.models.grading;
 
+import edu.bu.super_intuitive.models.exception.OperationFailed;
+
 public interface IAssignment {
     public int getAssignmentId();
-    public ICourse getCourse();
+    public ICourse getCourse() throws InstantiationException;
 
-    public int getWeight();
-    public void setWeight(int weight);
+    public int getWeight() throws OperationFailed;
+    public void setWeight(int weight) throws OperationFailed;
 
-    public int getFullScore();
-    public void setFullScore(int fullScore);
+    public int getFullScore() throws OperationFailed;
+    public void setFullScore(int fullScore) throws OperationFailed;
 
-    public void setScore(IStudent student, int score);
-    public int getScore(IStudent student);
-    public void removeScore(IStudent student);
+    public void setStudentScore(IStudent student, int score) throws OperationFailed;
+    public int getStudentScore(IStudent student) throws OperationFailed;
+    public boolean hasStudentScore(IStudent student);
+    public void removeStudentScore(IStudent student) throws OperationFailed;
 }
