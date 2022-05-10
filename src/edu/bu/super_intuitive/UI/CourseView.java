@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class CourseView extends JFrame {
@@ -72,7 +74,14 @@ public class CourseView extends JFrame {
 
         // TODO: this default close window action should be
         //  removed in the final structure.
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+//        addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosed(WindowEvent e) {
+//                System.out.println("Window closed");
+//            }
+//        });
     }
 
     private JComponent createUpperComponent() {
@@ -161,7 +170,8 @@ public class CourseView extends JFrame {
 
         btnAddStudents.addActionListener(e -> {
             new AddNameToCourse(new JTable(new DefaultTableModel(null, new Object[] {"Name", "ID", ""})),
-                                new JTable(new DefaultTableModel(null, new Object[] {"Name", "ID", ""})));
+                                new JTable(new DefaultTableModel(null, new Object[] {"Name", "ID", ""})),
+                                new ArrayList<String>(), courseObject);
         });
 
         return new JComponent[] {btnAssignmentView, btnStudentView, btnStatistics, btnImport, btnExport, btnAddStudents};

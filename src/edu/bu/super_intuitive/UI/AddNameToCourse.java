@@ -1,5 +1,11 @@
 package edu.bu.super_intuitive.UI;
 
+import edu.bu.super_intuitive.factory.grading.Students;
+import edu.bu.super_intuitive.models.exception.OperationFailed;
+import edu.bu.super_intuitive.models.grading.ICourse;
+import edu.bu.super_intuitive.models.grading.IStudent;
+import edu.bu.super_intuitive.service.mysql.grading.Student;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,8 +26,10 @@ public class AddNameToCourse extends JFrame {
 
     private final JTable searching_table;
     private final JTable pending_table;
+    private final List<String> added_students;
+    private final ICourse course;
 
-    public AddNameToCourse(JTable st, JTable pt) {
+    public AddNameToCourse(JTable st, JTable pt, List<String> added_students, ICourse course) {
 //        curr_frame = new JFrame();
         this.setTitle("Add name to course");   // Set window title
         this.setSize(620,400);    // Set window size
@@ -29,12 +37,27 @@ public class AddNameToCourse extends JFrame {
         this.setLayout(new BorderLayout());
         this.searching_table = st;
         this.pending_table = pt;
+        this.course = course;
+        this.added_students = added_students;
+
 
         setTopPanel(this);
         setCenterPanel(this);
         setBottomPanel(this);
 //        System.out.println("🔍");
         this.setVisible(true);    // Set window to be visible
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent e) {
+                for (String student : added_students) {
+                    try {
+                        course.registerStudent(new Student(student));
+                    } catch (OperationFailed | InstantiationException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     private void setTopPanel(JFrame curr_frame) {
@@ -48,6 +71,16 @@ public class AddNameToCourse extends JFrame {
         JButton search_btn = new JButton();
         search_btn.setPreferredSize(new Dimension(80, 35));
         JLabel btn_label = new JLabel("🔍 Search");
+        search_btn.addActionListener(e -> {
+            String search_text = tf.getText();
+            IStudent[] students = Students.getStudentsByFuzzySearchName(search_text);
+            DefaultTableModel model = (DefaultTableModel) searching_table.getModel();
+            for (IStudent student : students) {
+                String name = student.getName();
+                String id = student.getBUId();
+                model.addRow(new String[]{name, id, " + Add"});
+            }
+        });
         search_btn.add(btn_label);
 
         top_panel_left.add(tf);
@@ -82,14 +115,12 @@ public class AddNameToCourse extends JFrame {
         curr_panel.setPreferredSize(new Dimension(250, 200));
 
         curr_panel.add(new JLabel(label));
-//        JTable curr_table = new JTable(data, new String[]{"Name", "ID", ""});
         if (label.equals("Search results")) {
             curr_table.getColumn("").setCellRenderer(new ButtonRenderer());
             curr_table.getColumn("").setCellEditor(
-                    new ButtonEditor(new JCheckBox(), this, pending_table));
+                    new ButtonEditor(new JCheckBox(), this, pending_table, added_students, course));
         }
         curr_table.setPreferredSize(new Dimension(250, 150));
-//        curr_list.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         curr_panel.add(curr_table);
         return curr_panel;
@@ -101,11 +132,6 @@ public class AddNameToCourse extends JFrame {
         JPanel cards=new JPanel(new CardLayout(50, 30));
         ActionListener button_listener1 = e -> {
             curr_frame.dispose();
-            try {
-                new AddCourse();
-            } catch (InstantiationException ex) {
-                ex.printStackTrace();
-            }
         };
 
         // Set layout
@@ -126,18 +152,6 @@ public class AddNameToCourse extends JFrame {
         curr_frame.add(bottom_panel, BorderLayout.SOUTH);
     }
 
-    public static void main(String[] args) {
-        List<Object[]> searching_res_test = new ArrayList<>();
-        List<Object[]> pending_res_test = new ArrayList<>();
-        DefaultTableModel tmp = new DefaultTableModel(new Object[]{"Name", "ID", ""}, 0);
-//        Object[][] tmp = new Object[][] {{"", "", ""}};
-        for (int i = 0; i < 3; i++) {
-            tmp.addRow(new Object[]{"U88923596", "Hanyu Chen", " + Add"});
-        }
-        new AddNameToCourse(new JTable(tmp),
-                new JTable(new DefaultTableModel(new Object[]{"Name", "ID"}, 0)));
-    }
-
 }
 
 /**
@@ -152,13 +166,6 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
 
     public Component getTableCellRendererComponent(JTable table, Object value,
                                                    boolean isSelected, boolean hasFocus, int row, int column) {
-//        if (isSelected) {
-//            setForeground(table.getSelectionForeground());
-//            setBackground(table.getSelectionBackground());
-//        } else {
-//            setForeground(table.getForeground());
-//            setBackground(UIManager.getColor("Button.background"));
-//        }
         setText((value == null) ? "" : value.toString());
         return this;
     }
@@ -174,14 +181,18 @@ class ButtonEditor extends DefaultCellEditor {
     private String label;
     private final JFrame curr_frame;
     private final JTable pending_table;
+    private final List<String> added_students;
+    private final ICourse course;
     private JTable searching_table;
     private int deleted_row;
     private boolean isPushed;
 
-    public ButtonEditor(JCheckBox checkBox, JFrame frame, JTable pending_table) {
+    public ButtonEditor(JCheckBox checkBox, JFrame frame, JTable pending_table, List<String> added_students, ICourse course) {
         super(checkBox);
         curr_frame = frame;
         this.pending_table = pending_table;
+        this.added_students = added_students;
+        this.course = course;
         button = new JButton();
         button.setOpaque(true);
         button.addActionListener(new ActionListener() {
@@ -205,15 +216,13 @@ class ButtonEditor extends DefaultCellEditor {
         if (isPushed) {
             DefaultTableModel model = (DefaultTableModel) pending_table.getModel();
             Object[] added_row = Arrays.copyOfRange(getRowAt(deleted_row, searching_table), 0, 2);
+            added_students.add(added_row[1].toString());
             model.addRow(added_row);
-            DefaultTableModel search_model = (DefaultTableModel)searching_table.getModel();
+            DefaultTableModel search_model = (DefaultTableModel) searching_table.getModel();
             search_model.removeRow(deleted_row);
-//            search_model.setRowCount(search_model.getColumnCount()+1);
-
 
             curr_frame.dispose();
-            new AddNameToCourse(searching_table, pending_table);
-            // System.out.println(label + ": Ouch!");
+            new AddNameToCourse(searching_table, pending_table, added_students, course);
         }
         isPushed = false;
         return new String(label);
