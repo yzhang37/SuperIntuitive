@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Database {
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
-    private static final String DOMAIN = "172.20.10.3";
+    private static final String DOMAIN = "155.41.24.115";
     private static final int PORT = 3306;
     private static final String USERNAME = "root";
     private static final String PASSWORD = "hou10ttr";

@@ -74,6 +74,10 @@ public class Assignment implements IAssignment {
         throw new OperationFailed(failMessage);
     }
 
+    public String getName() {
+        return null;
+    }
+
     @Override
     public void setWeight(int weight) throws OperationFailed {
         try {
