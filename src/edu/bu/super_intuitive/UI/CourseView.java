@@ -16,7 +16,7 @@ public class CourseView extends JFrame {
     private final ICourse courseObject;
     private IInstructor instructorObject;
 
-    // 本地的控件
+    // Local controls
     private JLabel headerLabel;
     private final JComponent[] page1Components;
     private final JComponent[] page2Components;
@@ -28,19 +28,19 @@ public class CourseView extends JFrame {
     private JScrollPane students_jScroll_panel;
 
     /**
-     * 提供一个 ICourse 对象，根据对象创建对应的窗口视图。
-     * @param course 一个 Course 对象。
+     * Provide an ICourse object and create the corresponding window view based on the object.
+     * @param course A Course object.
      */
     public CourseView(ICourse course) throws OperationFailed {
         super();
 
-        // 获取本窗口需要使用的基本数据对象
+        // Get the basic data objects that need to be used in this window
         this.courseObject = course;
         try {
             this.instructorObject = course.getInstructor();
         } catch (InstantiationException ignored) {}
 
-        // 设置窗口元件
+        // Setting the window components
         setSize(800, 600);
         this.setLayout(new BorderLayout());
         setLocationRelativeTo(null);
@@ -51,7 +51,7 @@ public class CourseView extends JFrame {
         this.add(workingPanel, BorderLayout.CENTER);
         this.page1Components = this.createPage1WorkingComponents();
         this.page2Components = this.createPage2WorkingComponents();
-        // 先把元件全斌说添加到 workingPanel 中
+        // First, add all the components to the workingPanel
         for (var component: this.page1Components) {
             workingPanel.add(component);
         }
@@ -70,7 +70,7 @@ public class CourseView extends JFrame {
         backButton.addActionListener(e -> this.dispose());
         bottomPanel.add(backButton);
 
-        // 设置窗口内容
+        // Set window content
         this.setTitle();
 
         // TODO: this default close window action should be
@@ -89,7 +89,7 @@ public class CourseView extends JFrame {
     private JComponent[] createPage1WorkingComponents() {
         ArrayList<JComponent> components = new ArrayList<>();
 
-        // 添加上面的信息提示文本
+        // Add the above message prompt text
         var instruction_label = new JLabel("<html>Please select an option from the menu below:</html>");
         var oldLabelFont = instruction_label.getFont();
         instruction_label.setFont(new Font(oldLabelFont.getFontName(), Font.PLAIN, oldLabelFont.getSize()));
@@ -100,7 +100,7 @@ public class CourseView extends JFrame {
         instruction_label_panel.add(instruction_label);
         components.add(instruction_label_panel);
 
-        // 功能面板，列出所有的主要功能和按钮
+        // Function panel, listing all main functions and buttons
         var function_choose_panel = new JPanel();
         function_choose_panel.setLayout(new GridLayout(2, 3));
         function_choose_panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
@@ -132,13 +132,13 @@ public class CourseView extends JFrame {
         var btnExport = new JButton("Export");
 
         btnAssignmentView.addActionListener(e -> {
-            // 显示第二页
+            // Show second page
             setWorkingComponent(1);
             this.page2Tabs.setSelectedIndex(0);
         });
 
         btnStudentView.addActionListener(e -> {
-            // 显示第二页
+            // Show second page
             setWorkingComponent(1);
             this.page2Tabs.setSelectedIndex(1);
         });
@@ -155,7 +155,7 @@ public class CourseView extends JFrame {
     private JComponent[] createPage2WorkingComponents() throws OperationFailed {
         ArrayList<JComponent> components = new ArrayList<>();
 
-        // 添加主要的两个视图，中间需要用 Tabbed 来显示界面
+        // Add the main two views and use Tabbed to display the interface in between
         var page2Tabs = new JTabbedPane();
         this.page2Tabs = page2Tabs;
 
@@ -172,7 +172,7 @@ public class CourseView extends JFrame {
             if (this.page2Tabs.getSelectedIndex() == 0) {
                 try {
                     new AddAssignment(courseObject, this);
-                    // 刷新窗口内的 assignments 视图
+                    // Refresh the assignments view in the window
                     this.updateAssignmentDisplay();
                 } catch (OperationFailed ex) {
                     throw new RuntimeException(ex);

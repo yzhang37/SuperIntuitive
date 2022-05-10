@@ -15,7 +15,7 @@ public interface ICourse {
      */
     String getAlias();
     /**
-     * 设置课程的短名称
+     * Set the short name of the course
      * @param alias short name of the class
      */
     void setAlias(String alias);

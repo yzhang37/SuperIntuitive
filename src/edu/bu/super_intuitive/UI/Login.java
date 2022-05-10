@@ -40,9 +40,9 @@ public class Login implements ActionListener {
         frame.add(button, BorderLayout.SOUTH);
 
         frame.pack();
-        // 窗口居中显示
+        // Centered window display
         frame.setLocationRelativeTo(null);
-        // 禁用缩放
+        // Disable scaling and resizing buttons
         frame.setResizable(false);
         frame.setVisible(true);
     }
