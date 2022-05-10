@@ -68,7 +68,7 @@ public class DeleteCourse implements ActionListener {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             st = (PreparedStatement) conn
-                    .prepareStatement("Delete from course where id = ?");
+                    .prepareStatement("Delete from courses where alias = ?");
 
             System.out.println("Creating statement...");
             st.setString(1, courseId);

@@ -29,7 +29,7 @@ public class StudentInfo implements ActionListener {
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new FlowLayout());
         String[] columnNames = {"Assignments", "Grades"};
-        connectToDB(courseCode, studentId);
+        //connectToDB(courseCode, studentId);
 
         textArea1 = new JTextArea(name);
         textArea2 = new JTextArea(studentId);
@@ -59,7 +59,7 @@ public class StudentInfo implements ActionListener {
         try {
             //Open a connection
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection(JDBC_DRIVER, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             st = (PreparedStatement) conn
                     .prepareStatement("Select * from " + courseCode + ", student " +

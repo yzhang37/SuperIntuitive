@@ -76,7 +76,7 @@ public class AddCourse implements ActionListener {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             st = (PreparedStatement) conn
-                    .prepareStatement("INSERT INTO course (id, name, instructor, semester)" +
+                    .prepareStatement("INSERT INTO courses (cid, name, instructor, semester)" +
                             " VALUES (?, ?, ?, ?)");
 
             System.out.println("Creating statement...");
@@ -103,7 +103,6 @@ public class AddCourse implements ActionListener {
                 se.printStackTrace();
             }
         }
-
         this.frame.dispose();
         new InstructorPage();
     }

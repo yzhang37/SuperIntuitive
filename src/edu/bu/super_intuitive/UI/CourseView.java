@@ -57,7 +57,7 @@ public class CourseView extends JFrame {
             frame.setVisible(true);
         };
         ActionListener button_listener3 = e -> {
-
+            new Statistics();
         };
         ActionListener button_listener4 = e -> {
             new ImportCSV();

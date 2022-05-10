@@ -11,6 +11,10 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class ExportCSV implements ActionListener {
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
+    static final String USER = "root";
+    static final String PASS = "hou10ttr";
     private JFrame frame;
     private JButton button;
     private JPanel panel;
@@ -21,7 +25,7 @@ public class ExportCSV implements ActionListener {
         button = new JButton("Confirm");
         panel = new JPanel();
 
-        String tableData[] = {"course", "student"};
+        String tableData[] = {"courses", "staffs", "assignments"};
         list = new JComboBox(tableData);
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new GridLayout(2, 2));
@@ -42,8 +46,7 @@ public class ExportCSV implements ActionListener {
         PreparedStatement st = null;
         try {
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GradingSystem",
-                    "root", "root1234");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             st = (PreparedStatement) conn
                     .prepareStatement("select * from " + tableName);
@@ -55,6 +58,7 @@ public class ExportCSV implements ActionListener {
             for(int i = 1; i <= count; i++){
                 columnName[i-1] = metaData.getColumnName(i);
                 sb.append(columnName[i-1]);
+                sb.append(",");
             }
             sb.append("\r\n");
             while(rs.next()){

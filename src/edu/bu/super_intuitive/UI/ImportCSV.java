@@ -19,8 +19,6 @@ import java.util.stream.Stream;
 public class ImportCSV {
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
-
-    //  Database credentials -- 数据库名和密码自己修改
     static final String USER = "root";
     static final String PASS = "hou10ttr";
     private JFrame frame;
@@ -57,7 +55,7 @@ public class ImportCSV {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(line);
+            //System.out.println(line);
             data.add(line);
         }
 
@@ -70,14 +68,15 @@ public class ImportCSV {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             st = (PreparedStatement) conn
-                    .prepareStatement("INSERT INTO course (id, name, instructor, semester)" +
-                            " VALUES (?, ?, ?, ?)");
+                    .prepareStatement("INSERT INTO courses (cid, name, instructor, semester, alias)" +
+                            " VALUES (?, ?, ?, ?, ?)");
 
             System.out.println("Creating statement...");
             st.setString(1, s[0]);
             st.setString(2, s[1]);
             st.setString(3, s[2]);
             st.setString(4, s[3]);
+            st.setString(5, s[4]);
             st.execute();
 
             JOptionPane.showMessageDialog(button, "Successfully added course!");

@@ -74,7 +74,8 @@ public class InstructorPage extends JFrame {
             ResultSetMetaData metaData = rs.getMetaData();
             int count = metaData.getColumnCount(); //number of column
             ActionListener button_listener = e -> {
-                new CourseView();
+                JFrame frame = new CourseView();
+                frame.setVisible(true);
             };
             while(rs.next()){
                 String instructorId = rs.getString("instructor");

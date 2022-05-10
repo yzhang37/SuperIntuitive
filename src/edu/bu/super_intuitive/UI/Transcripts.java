@@ -1,5 +1,7 @@
 package edu.bu.super_intuitive.UI;
 
+import edu.bu.super_intuitive.models.grading.IStudent;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,16 +14,16 @@ public class Transcripts implements ActionListener {
     private JTextArea textArea1, textArea2, textArea3;
     private JTable table;
 
-    public Transcripts(){
+    public Transcripts(IStudent student){
         frame = new JFrame("Transcripts");
         label1 = new JLabel("Name:");
         label2 = new JLabel("BU ID:");
         label3 = new JLabel("Email:");
         panel = new JPanel();
         panel2 = new JPanel();
-        textArea1 = new JTextArea("John Smith");
-        textArea2 = new JTextArea("U12345678");
-        textArea3 = new JTextArea("JSmith@bu.edu");
+        textArea1 = new JTextArea(student.getName());
+        textArea2 = new JTextArea(student.getBUId());
+        textArea3 = new JTextArea(student.getEmail());
         panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panel.setLayout(new FlowLayout());
         panel.add(label1);
