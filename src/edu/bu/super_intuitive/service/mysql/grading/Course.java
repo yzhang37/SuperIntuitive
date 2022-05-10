@@ -260,7 +260,7 @@ public class Course implements ICourse {
             }
             var stmt = Database.getConnection().prepareStatement("DELETE FROM assignments WHERE aid = ?");
             stmt.setInt(1, assignment.getAssignmentId());
-            stmt.executeQuery();
+            stmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new OperationFailed("Failed to remove assignment from course:\n " + e.getMessage());
