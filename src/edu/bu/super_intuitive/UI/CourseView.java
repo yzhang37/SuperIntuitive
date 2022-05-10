@@ -10,8 +10,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class CourseView extends JFrame {
@@ -23,6 +21,11 @@ public class CourseView extends JFrame {
     private final JComponent[] page1Components;
     private final JComponent[] page2Components;
     private JTabbedPane page2Tabs;
+    private DefaultTableModel assignment_table_model;
+    private JScrollPane assignment_jScroll_panel;
+
+    private DefaultTableModel students_table_model;
+    private JScrollPane students_jScroll_panel;
 
     /**
      * 提供一个 ICourse 对象，根据对象创建对应的窗口视图。
@@ -64,10 +67,8 @@ public class CourseView extends JFrame {
 
         // Add the back button
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> {this.dispose();});
+        backButton.addActionListener(e -> this.dispose());
         bottomPanel.add(backButton);
-
-
 
         // 设置窗口内容
         this.setTitle();
@@ -75,13 +76,6 @@ public class CourseView extends JFrame {
         // TODO: this default close window action should be
         //  removed in the final structure.
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-//        addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosed(WindowEvent e) {
-//                System.out.println("Window closed");
-//            }
-//        });
     }
 
     private JComponent createUpperComponent() {
@@ -121,11 +115,6 @@ public class CourseView extends JFrame {
         return componentsArray;
     }
 
-    private JComponent createLowerComponent() {
-        // TODO: 我希望把这个可以做成一个状态栏，但是现在只是简单弄了一个 JLabel
-        return new JLabel("Stub Label");
-    }
-
     private void setTitle() {
         var ui_user_name = this.instructorObject.getName();
         var ui_course_alias = this.courseObject.getAlias();
@@ -141,8 +130,6 @@ public class CourseView extends JFrame {
         var btnStatistics = new JButton("Compute Statistics and Grades");
         var btnImport = new JButton("Import");
         var btnExport = new JButton("Export");
-//        var btnBack = new JButton("Back");
-        var btnAddStudents = new JButton("Add Students");
 
         btnAssignmentView.addActionListener(e -> {
             // 显示第二页
@@ -156,25 +143,13 @@ public class CourseView extends JFrame {
             this.page2Tabs.setSelectedIndex(1);
         });
 
-        btnStatistics.addActionListener(e -> {
-            new Statistics();
-        });
+        btnStatistics.addActionListener(e -> new Statistics());
 
-        btnImport.addActionListener(e -> {
-            new ImportCSV();
-        });
+        btnImport.addActionListener(e -> new ImportCSV());
 
-        btnExport.addActionListener(e -> {
-            new ExportCSV();
-        });
+        btnExport.addActionListener(e -> new ExportCSV());
 
-        btnAddStudents.addActionListener(e -> {
-            new AddNameToCourse(new JTable(new DefaultTableModel(null, new Object[] {"Name", "ID", ""})),
-                                new JTable(new DefaultTableModel(null, new Object[] {"Name", "ID", ""})),
-                                new ArrayList<String>(), courseObject);
-        });
-
-        return new JComponent[] {btnAssignmentView, btnStudentView, btnStatistics, btnImport, btnExport, btnAddStudents};
+        return new JComponent[] {btnAssignmentView, btnStudentView, btnStatistics, btnImport, btnExport};
     }
 
     private JComponent[] createPage2WorkingComponents() throws OperationFailed {
@@ -193,28 +168,37 @@ public class CourseView extends JFrame {
 
         var btnAdd = new JButton("Add");
         ActionListener button_listener1 = e -> {
-            try {
-                new AddAssignment(courseObject);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
+            // assignment
+            if (this.page2Tabs.getSelectedIndex() == 0) {
+                try {
+                    new AddAssignment(courseObject, this);
+                    // 刷新窗口内的 assignments 视图
+                    this.updateAssignmentDisplay();
+                } catch (InstantiationException | OperationFailed ex) {
+                    throw new RuntimeException(ex);
+                }
+            } else if (this.page2Tabs.getSelectedIndex() == 1) {
+                // student
+                new AddNameToCourse(
+                        new JTable(new DefaultTableModel(null, new Object[] {"Name", "ID", ""})),
+                        new JTable(new DefaultTableModel(null, new Object[] {"Name", "ID", ""})),
+                        new ArrayList<>(), courseObject, this);
             }
         };
 
         btnAdd.addActionListener(button_listener1);
         components.add(btnAdd);
 
-        var btnDetele = new JButton("Delete");
+        var btnDelete = new JButton("Delete");
         ActionListener button_listener2 = e -> {
             //courseObject.removeAssignment(assignment);
         };
 
-        btnDetele.addActionListener(button_listener2);
-        components.add(btnDetele);
+        btnDelete.addActionListener(button_listener2);
+        components.add(btnDelete);
 
         var btnBackToPage1 = new JButton("Back");
-        ActionListener button_listener3 = e -> {
-            this.setWorkingComponent(0);
-        };
+        ActionListener button_listener3 = e -> this.setWorkingComponent(0);
 
         btnBackToPage1.addActionListener(button_listener3);
         components.add(btnBackToPage1);
@@ -227,31 +211,56 @@ public class CourseView extends JFrame {
     private JPanel createPage2AssignmentView() throws OperationFailed {
         var panel = new JPanel();
         String[] assign_view_header = { "Name", "Weights", "Full Score"};
-        IAssignment[] assignments = courseObject.getAssignments();
+
         DefaultTableModel tableModel = new DefaultTableModel(assign_view_header, 0);
-        for(var assignment: assignments) {
-            String[] assignment_info = {assignment.getName(), String.valueOf(assignment.getWeight()), String.valueOf(assignment.getFullScore())};
-            tableModel.addRow(assignment_info);
-        }
+        this.assignment_table_model = tableModel;
         var assignment_view = new JTable(tableModel);
-        JScrollPane assignment_jscroll_pane = new JScrollPane(assignment_view);
-        panel.add(assignment_jscroll_pane);
+        JScrollPane assignment_jScroll_pane = new JScrollPane(assignment_view);
+        this.assignment_jScroll_panel = assignment_jScroll_pane;
+        panel.add(assignment_jScroll_pane);
+
+        updateAssignmentDisplay();
+
         return panel;
     }
 
-    private JPanel createPage2StudentView() {
+    public void updateAssignmentDisplay() throws OperationFailed {
+        // 先删除原有的表格内容
+        this.assignment_table_model.setRowCount(0);
+
+        IAssignment[] assignments = courseObject.getAssignments();
+        for (var assignment: assignments) {
+            String[] assignment_info = { assignment.getName(), String.valueOf(assignment.getWeight()), String.valueOf(assignment.getFullScore())};
+            this.assignment_table_model.addRow(assignment_info);
+        }
+        this.assignment_jScroll_panel.revalidate();
+    }
+
+    private JPanel createPage2StudentView() throws OperationFailed {
         var panel = new JPanel();
         String[] student_view_header = { "ID", "Name", "Email" };
-        IStudent[] students = courseObject.getRegisteredStudents();
         DefaultTableModel tableModel = new DefaultTableModel(student_view_header, 0);
+        this.students_table_model = tableModel;
+        var student_view = new JTable(tableModel);
+        JScrollPane student_jScroll_pane = new JScrollPane(student_view);
+        this.students_jScroll_panel = student_jScroll_pane;
+        panel.add(student_jScroll_pane);
+
+        updateStudentDisplay();
+
+        return panel;
+    }
+
+    public void updateStudentDisplay() throws OperationFailed {
+        // 先删除原有的表格内容
+        this.students_table_model.setRowCount(0);
+
+        IStudent[] students = courseObject.getRegisteredStudents();
         for(var student: students) {
             String[] student_info = {student.getBUId(), student.getName(), student.getEmail()};
-            tableModel.addRow(student_info);
+            this.students_table_model.addRow(student_info);
         }
-        var student_view = new JTable(tableModel);
-        JScrollPane student_jscroll_pane = new JScrollPane(student_view);
-        panel.add(student_jscroll_pane);
-        return panel;
+        this.students_jScroll_panel.revalidate();
     }
 
     /**
