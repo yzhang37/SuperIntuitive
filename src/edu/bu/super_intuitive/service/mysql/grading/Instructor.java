@@ -1,6 +1,7 @@
 package edu.bu.super_intuitive.service.mysql.grading;
 
 import edu.bu.super_intuitive.middleware.mysql.Database;
+import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.ICourse;
 import edu.bu.super_intuitive.models.grading.IInstructor;
 
@@ -32,7 +33,7 @@ public class Instructor extends Member implements IInstructor {
             } else {
                 if (!rs.wasNull() && !rs.getBoolean("isInstructor")) {
                     fail = true;
-                    failMessage = String.format("Member with BuId = \"%s\" is a student. Cannot be instantiated as a teachter.", id);
+                    failMessage = String.format("Member with BuId = \"%s\" is a student. Cannot be instantiated as a teacher.", id);
                 } else if (rs.wasNull()) {
                     var stmt2 = Database.getConnection().prepareStatement("UPDATE staffs SET isInstructor = true WHERE sid = ?");
                     stmt2.setString(1, id);
@@ -110,13 +111,35 @@ public class Instructor extends Member implements IInstructor {
     }
 
     @Override
-    public void removeCourse(ICourse course) {
-        // TODO: 帮助老师删除课程
+    public void removeCourse(ICourse course) throws OperationFailed {
+        if (!hasOwnedCourse(course)) {
+            throw new OperationFailed(String.format(
+                "Instructor sid=%s does not own course cid=%d, so cannot drop it.", this.getBUId(), course.getCourseId()));
+        }
+        try {
+            var stmt = Database.getConnection().prepareStatement("DELETE FROM courses WHERE cid = ? AND instructor = ?");
+            stmt.setInt(1, course.getCourseId());
+            stmt.setString(2, this.getBUId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new OperationFailed("Cannot drop course");
+        }
     }
 
     @Override
     public boolean hasOwnedCourse(ICourse course) {
-        // TODO: 检查老师是否开了一门课程
+        try {
+            var stmt = Database.getConnection().prepareStatement("SELECT COUNT(*) FROM courses WHERE instructor = ? AND cid = ?");
+            stmt.setString(1, this.getBUId());
+            stmt.setInt(2, course.getCourseId());
+            var rs = stmt.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }
