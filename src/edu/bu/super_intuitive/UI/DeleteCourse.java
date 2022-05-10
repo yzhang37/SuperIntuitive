@@ -24,6 +24,7 @@ public class DeleteCourse implements ActionListener {
     private final Instructor instructor = new Instructor("U00000000");
     private final ICourse[] allCourses = instructor.getOwnedCourses();
 
+    // Constructor
     public DeleteCourse() throws InstantiationException {
         frame = new JFrame("Delete Course");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -44,6 +45,7 @@ public class DeleteCourse implements ActionListener {
         frame.setVisible(true);
     }
 
+    // Set combo box
     private void setComboBox(JPanel curr_panel, JComboBox<String> comboBox, String curr_label) {
         for (ICourse course : allCourses) {
             comboBox.addItem(course.getCourseId() + "-" + course.getAlias() + " - "
@@ -53,6 +55,7 @@ public class DeleteCourse implements ActionListener {
         curr_panel.add(comboBox);
     }
 
+    // Action listener
     @Override
     public void actionPerformed(ActionEvent e) {
         int courseId = comboBox.getSelectedIndex();

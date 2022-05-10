@@ -19,6 +19,7 @@ import java.util.Objects;
 public class Course implements ICourse {
     private final int cid;
 
+    // Getter
     public int getCourseId() {
         return this.cid;
     }
@@ -52,6 +53,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Getter
     @Override
     public IInstructor getInstructor() throws InstantiationException {
         var failMessage = "";
@@ -73,6 +75,7 @@ public class Course implements ICourse {
         throw new InstantiationException(failMessage);
     }
 
+    // Getter
     @Override
     public String getAlias() {
         try {
@@ -88,6 +91,7 @@ public class Course implements ICourse {
         return null;
     }
 
+    // Setter
     @Override
     public void setAlias(String alias) {
         try {
@@ -100,6 +104,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Getter
     @Override
     public String getName() {
         try {
@@ -115,6 +120,7 @@ public class Course implements ICourse {
         return null;
     }
 
+    // Setter
     @Override
     public void setName(String name) {
         try {
@@ -127,6 +133,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Getter
     @Override
     public String getSemester() {
         try {
@@ -142,6 +149,7 @@ public class Course implements ICourse {
         return null;
     }
 
+    // Setter
     @Override
     public void setSemester(String semester) {
         try {
@@ -154,6 +162,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Get registered students
     @Override
     public IStudent[] getRegisteredStudents() {
         IStudent[] students = null;
@@ -184,6 +193,7 @@ public class Course implements ICourse {
         return Objects.requireNonNullElseGet(students, () -> new IStudent[0]);
     }
 
+    // Register student
     @Override
     public void registerStudent(IStudent student) throws OperationFailed {
         try {
@@ -202,6 +212,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Return true if student is registered in this course
     @Override
     public boolean hasStudent(IStudent student) {
         try {
@@ -218,6 +229,7 @@ public class Course implements ICourse {
         return false;
     }
 
+    // Drop a student from this course
     @Override
     public void dropStudent(IStudent student) throws OperationFailed {
         try {
@@ -235,6 +247,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Get the number of students registered in this course
     @Override
     public IAssignment addAssignment(String assignmentName, int fullScore, int weight) throws InstantiationException {
         // 先创建一个新的作业，并设置它的 course_id 为自己的 cid
@@ -259,6 +272,8 @@ public class Course implements ICourse {
         }
     }
 
+
+    // Remove an assignment from this course
     @Override
     public void removeAssignment(IAssignment assignment) throws OperationFailed {
         try {
@@ -275,6 +290,7 @@ public class Course implements ICourse {
         }
     }
 
+    // Return true if this course has the given assignment
     @Override
     public boolean hasAssignment(IAssignment assignment) {
         try {
@@ -290,6 +306,7 @@ public class Course implements ICourse {
         return false;
     }
 
+    // Getter
     @Override
     public IAssignment[] getAssignments() {
         // 查询 assignments 表格中所有 course_id = cid 的作业，然后返回列表

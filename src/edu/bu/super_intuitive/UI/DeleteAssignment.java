@@ -15,13 +15,6 @@ import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * @Author Hanyu Chen
- * @Description //TODO $
- * @Date $ 05.05.2022$
- * @Param $
- * @return $
- **/
 public class DeleteAssignment {
 
     private final JFrame frame;
@@ -30,6 +23,7 @@ public class DeleteAssignment {
     private final ICourse course = instructor.getOwnedCourses()[0];
     private final CourseView courseView;
 
+    // Constructor
     public DeleteAssignment(CourseView course_view) throws InstantiationException, OperationFailed {
         frame = new JFrame("Delete Assignment");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -61,6 +55,7 @@ public class DeleteAssignment {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    // Set the combo box
     private void setComboBox(JPanel curr_panel, JComboBox<String> comboBox) throws OperationFailed {
         for (IAssignment assign : course.getAssignments()) {
             comboBox.addItem(assign.getName());

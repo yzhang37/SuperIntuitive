@@ -25,9 +25,9 @@ public class Statistics implements ActionListener {
     private final JLabel label6;
     private final JPanel panel;
 
+    // Constructor
     public Statistics() {
         frame = new JFrame("Statistics");
-//        button = new JButton("Back");
         label1 = new JLabel("Mean: ");
         label2 = new JLabel("Medium: ");
         label3 = new JLabel("Standard deviation: ");
@@ -46,12 +46,12 @@ public class Statistics implements ActionListener {
         panel.add(label6);
 
         frame.add(panel, BorderLayout.CENTER);
-//        frame.add(button, BorderLayout.SOUTH);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
+    // Add action listener
     @Override
     public void actionPerformed(ActionEvent e) {
         CourseView frame = null;

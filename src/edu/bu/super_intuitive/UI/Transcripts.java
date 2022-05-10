@@ -26,6 +26,7 @@ public class Transcripts implements ActionListener {
     private final JTextArea textArea3;
     private final JTable table;
 
+    // Constructor
     public Transcripts(IStudent student){
         frame = new JFrame("Transcripts");
         label1 = new JLabel("Name:");
@@ -47,6 +48,7 @@ public class Transcripts implements ActionListener {
         panel.add(label3);
         panel.add(textArea3);
 
+        // Create the table
         String[] columnNames = {"Course ID",
                 "Course Name", "Credit", "Grades"};
         Object[][] data = {
