@@ -1,3 +1,5 @@
+package edu.bu.super_intuitive.UI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;

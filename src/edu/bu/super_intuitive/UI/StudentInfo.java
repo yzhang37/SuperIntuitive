@@ -1,3 +1,5 @@
+package edu.bu.super_intuitive.UI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -5,6 +7,10 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class StudentInfo implements ActionListener {
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
+    static final String USER = "root";
+    static final String PASS = "hou10ttr";
     private JFrame frame;
     private JLabel label1, label2, label3;
     private JPanel panel, panel2;
@@ -53,8 +59,7 @@ public class StudentInfo implements ActionListener {
         try {
             //Open a connection
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GradingSystem",
-                    "root", "root1234");
+            conn = DriverManager.getConnection(JDBC_DRIVER, USER, PASS);
 
             st = (PreparedStatement) conn
                     .prepareStatement("Select * from " + courseCode + ", student " +

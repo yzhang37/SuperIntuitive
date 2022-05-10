@@ -1,3 +1,5 @@
+package edu.bu.super_intuitive.UI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +17,12 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class ImportCSV {
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
+
+    //  Database credentials -- 数据库名和密码自己修改
+    static final String USER = "root";
+    static final String PASS = "hou10ttr";
     private JFrame frame;
     private JButton button;
     private ArrayList<String> data = new ArrayList<String>();;
@@ -59,8 +67,7 @@ public class ImportCSV {
         try {
             //Open a connection
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GradingSystem",
-                    "root", "root1234");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             st = (PreparedStatement) conn
                     .prepareStatement("INSERT INTO course (id, name, instructor, semester)" +

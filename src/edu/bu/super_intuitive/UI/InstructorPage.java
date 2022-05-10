@@ -1,4 +1,4 @@
-/**
+package edu.bu.super_intuitive.UI; /**
  * @Author Hanyu Chen
  * @Description //TODO $
  * @Date $ 05.05.2022$
@@ -17,7 +17,7 @@ public class InstructorPage extends JFrame {
 
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/";
+    static final String DB_URL = "jdbc:mysql://172.20.10.3/GradingSystem";
 
     //  Database credentials -- 数据库名和密码自己修改
     static final String USER = "root";
@@ -63,13 +63,12 @@ public class InstructorPage extends JFrame {
         Connection conn = null;
         PreparedStatement st = null;
         try {
-            //Open a connection
+            Class.forName(JDBC_DRIVER);
             System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GradingSystem",
-                    "root", "root1234");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             st = (PreparedStatement) conn
-                    .prepareStatement("Select * from course");
+                    .prepareStatement("Select * from courses");
 
             ResultSet rs = st.executeQuery();
             ResultSetMetaData metaData = rs.getMetaData();
@@ -78,7 +77,9 @@ public class InstructorPage extends JFrame {
                 new CourseView();
             };
             while(rs.next()){
-                JButton p1_button_1 = new JButton("<html>" + rs.getString("id")
+                String instructorId = rs.getString("instructor");
+                //String instructorName = rs.getString("instructorId");
+                JButton p1_button_1 = new JButton("<html>" + rs.getString("alias")
                         + " " + rs.getString("name") + "<br>" +
                         "Semester: " + rs.getString("semester") + "<br>" +
                         "Instructor: " + rs.getString("instructor") +
@@ -88,7 +89,7 @@ public class InstructorPage extends JFrame {
                 center_panel.add(p1_button_1);
             }
 
-        } catch (SQLException sqlException) {
+        } catch (SQLException | ClassNotFoundException sqlException) {
             sqlException.printStackTrace();
         }
         finally {

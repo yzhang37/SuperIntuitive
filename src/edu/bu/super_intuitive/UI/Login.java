@@ -1,3 +1,5 @@
+package edu.bu.super_intuitive.UI;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +18,7 @@ public class Login implements ActionListener {
     public Login(){
         frame = new JFrame("Login");
         button = new JButton("Confirm");
-        label1 = new JLabel("Student ID");
+        label1 = new JLabel("Login Name:");
         label2 = new JLabel("Password:");
         panel = new JPanel();
         textField1 = new JTextField();
@@ -38,47 +40,54 @@ public class Login implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String userID = textField1.getText();
+        String loginName = textField1.getText();
         String password = textField2.getText();
-
-        Connection conn = null;
-        PreparedStatement st = null;
-        try {
-            //Open a connection
-            System.out.println("Connecting to database...");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GradingSystem",
-                    "root", "root1234");
-
-            st = (PreparedStatement) conn
-                    .prepareStatement("Select id, password from student where id = ? and password=?");
-
-            st.setString(1, userID);
-            st.setString(2, password);
-            ResultSet rs = st.executeQuery();
-
-            //STEP 4: Execute a query
-            System.out.println("Creating statement...");
-            if (rs.next()) {
-                JOptionPane.showMessageDialog(button, "You have successfully logged in");
-                new InstructorPage();
-            } else {
-                JOptionPane.showMessageDialog(button, "Wrong StudentID or Password");
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+        if(loginName.equals("CPK")){
+            JOptionPane.showMessageDialog(button, "You have successfully logged in");
+            frame.dispose();
+            new InstructorPage();
+        }else{
+            JOptionPane.showMessageDialog(button, "Invalid login credentials");
         }
-        finally {
-            //finally block used to close resources
-            try{
-                if(st!=null)
-                    st.close();
-            } catch (SQLException ignored){}
-            try{
-                if(conn!=null)
-                    conn.close();
-            }catch(SQLException se){
-                se.printStackTrace();
-            }//end finally try
-        }
+//        Connection conn = null;
+//        PreparedStatement st = null;
+//        try {
+//            //Open a connection
+//            System.out.println("Connecting to database...");
+//            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GradingSystem",
+//                    "root", "root1234");
+//
+//            st = (PreparedStatement) conn
+//                    .prepareStatement("Select id, password from student where id = ? and password=?");
+//
+//            st.setString(1, userID);
+//            st.setString(2, password);
+//            ResultSet rs = st.executeQuery();
+//
+//            //STEP 4: Execute a query
+//            System.out.println("Creating statement...");
+//            if (rs.next()) {
+//                JOptionPane.showMessageDialog(button, "You have successfully logged in");
+//                new InstructorPage();
+//                frame.dispose();
+//            } else {
+//                JOptionPane.showMessageDialog(button, "Wrong StudentID or Password");
+//            }
+//        } catch (SQLException sqlException) {
+//            sqlException.printStackTrace();
+//        }
+//        finally {
+//            //finally block used to close resources
+//            try{
+//                if(st!=null)
+//                    st.close();
+//            } catch (SQLException ignored){}
+//            try{
+//                if(conn!=null)
+//                    conn.close();
+//            }catch(SQLException se){
+//                se.printStackTrace();
+//            }//end finally try
+//        }
     }
 }
