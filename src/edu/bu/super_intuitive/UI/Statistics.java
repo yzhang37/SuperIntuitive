@@ -1,5 +1,7 @@
 package edu.bu.super_intuitive.UI;
 
+import edu.bu.super_intuitive.models.exception.OperationFailed;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -42,7 +44,12 @@ public class Statistics implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var frame = new CourseView(null);
+        CourseView frame = null;
+        try {
+            frame = new CourseView(null);
+        } catch (OperationFailed ex) {
+            throw new RuntimeException(ex);
+        }
         frame.setVisible(true);
         this.frame.dispose();
     }

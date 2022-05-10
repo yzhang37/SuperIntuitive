@@ -6,6 +6,7 @@ package edu.bu.super_intuitive.UI; /**
  * @return $
  **/
 
+import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.ICourse;
 import edu.bu.super_intuitive.service.mysql.grading.Instructor;
 
@@ -62,7 +63,12 @@ public class InstructorPage extends JFrame {
                     "</html>");
             p1_button_1.setPreferredSize(new Dimension(200, 100));
             p1_button_1.addActionListener(e -> {
-                JFrame frame = new CourseView(course);
+                JFrame frame = null;
+                try {
+                    frame = new CourseView(course);
+                } catch (OperationFailed ex) {
+                    throw new RuntimeException(ex);
+                }
                 frame.setVisible(true);
             });
             center_panel.add(p1_button_1);

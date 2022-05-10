@@ -23,7 +23,7 @@ public class ImportCSV implements ActionListener{
     private JPanel panel;
     private JLabel label;
     private JComboBox list;
-    private ArrayList<String> data = new ArrayList<String>();;
+    private ArrayList<String> data = new ArrayList<String>();
     public ImportCSV() {
         frame = new JFrame("Import CSV");
         button = new JButton("Browse");
