@@ -74,8 +74,21 @@ public class Assignment implements IAssignment {
         throw new OperationFailed(failMessage);
     }
 
-    public String getName() {
-        return null;
+    public String getName() throws OperationFailed {
+        var failMessage = "";
+        try {
+            var stmt = Database.getConnection().prepareStatement("SELECT name FROM assignments WHERE aid = ?");
+            stmt.setInt(1, aid);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+            failMessage = String.format("Database error, failed to get name for Assignment aid=%d", this.aid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            failMessage = e.getMessage();
+        }
+        throw new OperationFailed(failMessage);
     }
 
     @Override

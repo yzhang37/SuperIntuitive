@@ -8,7 +8,7 @@ public interface IAssignment {
 
     public int getWeight() throws OperationFailed;
     public void setWeight(int weight) throws OperationFailed;
-    public String getName();
+    public String getName() throws OperationFailed;
 
     public int getFullScore() throws OperationFailed;
     public void setFullScore(int fullScore) throws OperationFailed;
