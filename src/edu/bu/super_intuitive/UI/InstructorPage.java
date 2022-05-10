@@ -29,7 +29,7 @@ public class InstructorPage extends JFrame {
         add(setTopPanel(), BorderLayout.NORTH);
         add(setBottomPanel(this), BorderLayout.SOUTH);
 
-        setVisible(true);    //设置窗口可见
+        setVisible(true);    // Set window visible
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

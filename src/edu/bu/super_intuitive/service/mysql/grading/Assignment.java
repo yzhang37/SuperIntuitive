@@ -14,7 +14,7 @@ public class Assignment implements IAssignment {
 
     public Assignment(int aid) throws InstantiationException {
         this.aid = aid;
-        // 验证当前 id 的数据是否存在
+        // Verify that the data for the current id exists
         boolean fail = false;
         try {
             var stmt = Database.getConnection().prepareStatement("SELECT * FROM assignments WHERE aid = ?");
@@ -48,7 +48,7 @@ public class Assignment implements IAssignment {
                 return new Course(rs.getInt("course_id"));
             }
             failMessage = String.format("Database error, failed to get Course for Assignment aid=%d", this.aid);
-            // 然后用其创建一个 Instructor 对象
+            // Then use it to create an Instructor object
         } catch (SQLException e) {
             e.printStackTrace();
             failMessage = e.getMessage();

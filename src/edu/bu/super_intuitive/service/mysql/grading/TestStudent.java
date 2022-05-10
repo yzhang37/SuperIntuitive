@@ -40,7 +40,7 @@ public class TestStudent {
 
     @Test
     public void testInstantTeacherAsStudent() {
-        // 这里必须抛出异常，否则测试不通过
+        // Exceptions must be thrown here, otherwise the test will not pass
         assertThrows(InstantiationException.class, () -> {
             var student = new Student("U00000000");
             System.out.println(student.getName());

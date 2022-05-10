@@ -25,19 +25,19 @@ public class AssignmentScores extends JFrame {
         setTitle(String.format("Course Management: [%s]\\%s", ui_user_name, ui_course_name));
         setSize(800, 600);
 
-        // 整个窗口是一个 BorderLayout 的容器
+        // The entire window is a container for the BorderLayout
         this.setLayout(new BorderLayout());
-        // 整个窗口的顶部设置 Hi, welcome to class_name 的标题
+        // Set the title Hi, welcome to class_name at the top of the entire window
         String assignment_name = "HW1";
         var title_label = new JLabel(String.format("Students' score of %s", assignment_name));
         title_label.setFont(new Font("Times New Roman", Font.BOLD, 24));
         title_label.setBorder(BorderFactory.createEmptyBorder(20, 20, 30, 20));
 
-        // 整个窗口中间放置主要 Working 部件
+        // The main Working part is placed in the middle of the entire window
         var center_working_panel = new JPanel();
         this.add(title_label, BorderLayout.NORTH);
 
-        // 添加主要的两个视图，中间需要用 Tabbed 来显示界面
+        // Add the main two views and use Tabbed to display the interface in between
         Object[] table_labels = {"Name", "BUId", "Email", "Score" };
         DefaultTableModel defaultTableModel = new DefaultTableModel(new Object[][]{
                                                         {"Hanyu Chen", "U88923596", "chenhy1", "90" }},

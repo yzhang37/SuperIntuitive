@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class Students {
     /**
-     * 获取全局的所有学生对象
-     * @return 学生对象集合, A list of Student 对象
+     * Get all student objects globally
+     * @return Student object collection, A list of Student objects
      */
     public static IStudent[] getAllStudents() {
         ArrayList<IStudent> students = new ArrayList<>();
@@ -34,9 +34,9 @@ public class Students {
     }
 
     /**
-     * 使用学生的用户名进行模糊搜索，显示学生对象。
-     * @param name 部分学生名
-     * @return 返回所有满足匹配的学生对象。
+     * Fuzzy search using the student's username to display the student object.
+     * @param name Part of student names
+     * @return all student objects that satisfy the match.
      */
     public static IStudent[] getStudentsByFuzzySearchName(String name) {
         ArrayList<IStudent> students = new ArrayList<>();
