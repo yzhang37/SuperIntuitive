@@ -1,6 +1,7 @@
 package edu.bu.super_intuitive.service.mysql.grading;
 
 import edu.bu.super_intuitive.middleware.mysql.Database;
+import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.IAssignment;
 import edu.bu.super_intuitive.models.grading.ICourse;
 import edu.bu.super_intuitive.models.grading.IStudent;
@@ -71,8 +72,17 @@ public class Assignment implements IAssignment {
     }
 
     @Override
-    public void setWeight(int weight) {
-
+    public void setWeight(int weight) throws OperationFailed {
+        try {
+            var stmt = Database.getConnection().prepareStatement("UPDATE assignments SET weight = ? WHERE aid = ?");
+            stmt.setInt(1, weight);
+            stmt.setInt(2, aid);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new OperationFailed(
+                    String.format("Failed to update weight for assignment aid=%d", this.aid));
+        }
     }
 
     @Override
@@ -91,8 +101,17 @@ public class Assignment implements IAssignment {
     }
 
     @Override
-    public void setFullScore(int fullScore) {
-
+    public void setFullScore(int fullScore) throws OperationFailed {
+        try {
+            var stmt = Database.getConnection().prepareStatement("UPDATE assignments SET score = ? WHERE aid = ?");
+            stmt.setInt(1, fullScore);
+            stmt.setInt(2, aid);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new OperationFailed(
+                    String.format("Failed to update full score for assignment aid=%d", this.aid));
+        }
     }
 
     @Override

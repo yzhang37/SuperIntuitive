@@ -1,4 +1,5 @@
 package edu.bu.super_intuitive.service.mysql.grading;
+import edu.bu.super_intuitive.models.exception.OperationFailed;
 import edu.bu.super_intuitive.models.grading.IMember;
 import edu.bu.super_intuitive.middleware.mysql.Database;
 
@@ -106,16 +107,16 @@ public abstract class Member implements IMember {
     }
 
     @Override
-    public void setName(String name) {
+    public void setName(String name) throws OperationFailed {
         try {
             var stmt = Database.getConnection().prepareStatement("UPDATE staffs SET name = ? WHERE sid = ?");
             stmt.setString(1, name);
             stmt.setString(2, this.buId);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.printf(
-                "Failed to update member's name to \"%s\" with BuId = \"%s\".%n", name, this.buId);
             e.printStackTrace();
+            throw new OperationFailed(String.format(
+                    "Failed to update member's name to \"%s\" with BuId = \"%s\".%n", name, this.buId));
         }
     }
 
@@ -135,16 +136,16 @@ public abstract class Member implements IMember {
     }
 
     @Override
-    public void setEmail(String email) {
+    public void setEmail(String email) throws OperationFailed{
         try {
             var stmt = Database.getConnection().prepareStatement("UPDATE staffs SET email = ? WHERE sid = ?");
             stmt.setString(1, email);
             stmt.setString(2, this.buId);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.printf(
-                "Failed to update member's email to \"%s\" with BuId = \"%s\".%n", email, this.buId);
             e.printStackTrace();
+            throw new OperationFailed(String.format(
+                    "Failed to update member's email to \"%s\" with BuId = \"%s\".%n", email, this.buId));
         }
     }
 }
