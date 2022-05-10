@@ -229,8 +229,27 @@ public class Course implements ICourse {
     }
 
     @Override
-    public void addAssignment(IAssignment assignment) {
-        // TODO:
+    public IAssignment addAssignment(String assignmentName, int fullScore, int weight) throws InstantiationException {
+        // 先创建一个新的作业，并设置它的 course_id 为自己的 cid
+        try {
+            // 先获取下一个空闲的 id
+            var stmt1 = Database.getConnection().prepareStatement("SELECT MAX(aid) FROM assignments");
+            var rs = stmt1.executeQuery();
+            rs.next();
+            var nextId = rs.getInt(1) + 1;
+
+            var stmt2 = Database.getConnection().prepareStatement("INSERT INTO assignments (course_id, name, score, weight) VALUES (?, ?, ?, ?)");
+            stmt2.setInt(1, this.getCourseId());
+            stmt2.setString(2, assignmentName);
+            stmt2.setInt(3, fullScore);
+            stmt2.setInt(4, weight);
+            stmt2.executeUpdate();
+
+            return new Assignment(nextId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new InstantiationException("Failed to add assignment to course:\n " + e.getMessage());
+        }
     }
 
     @Override

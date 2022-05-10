@@ -62,7 +62,7 @@ public interface ICourse {
      */
     public void dropStudent(IStudent student) throws OperationFailed ;
 
-    public void addAssignment(IAssignment assignment);
+    public IAssignment addAssignment(String assignmentName, int fullScore, int weight) throws InstantiationException;
     public void removeAssignment(IAssignment assignment) throws OperationFailed;
     public boolean hasAssignment(IAssignment assignment);
     public IAssignment[] getAssignments();
