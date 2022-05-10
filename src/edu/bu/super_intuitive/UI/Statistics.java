@@ -42,7 +42,7 @@ public class Statistics implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        var frame = new CourseView();
+        var frame = new CourseView(null);
         frame.setVisible(true);
         this.frame.dispose();
     }
