@@ -41,7 +41,7 @@ public class Students {
     public static IStudent[] getStudentsByFuzzySearchName(String name) {
         ArrayList<IStudent> students = new ArrayList<>();
         try {
-            var stmt = Database.getConnection().prepareStatement("SELECT sid FROM staffs WHERE isInstructor <> TRUE AND name LIKE ?");
+            var stmt = Database.getConnection().prepareStatement("SELECT sid FROM staffs WHERE isInstructor IS NOT TRUE AND name LIKE ?");
             stmt.setString(1, "%" + name + "%");
             var rs = stmt.executeQuery();
             while (rs.next()) {
