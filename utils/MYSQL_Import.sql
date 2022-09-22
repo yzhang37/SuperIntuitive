@@ -31,7 +31,7 @@ CREATE TABLE `assignments` (
   PRIMARY KEY (`aid`),
   KEY `assignment_courses_cid_fk` (`course_id`),
   CONSTRAINT `assignment_courses_cid_fk` FOREIGN KEY (`course_id`) REFERENCES `courses` (`cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='List all the assignments in the DB';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='List all the assignments in the DB';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +40,7 @@ CREATE TABLE `assignments` (
 
 LOCK TABLES `assignments` WRITE;
 /*!40000 ALTER TABLE `assignments` DISABLE KEYS */;
+INSERT INTO `assignments` VALUES (1,'Snake game',100,20,1),(2,'Minesweeper game',100,25,1),(3,'DOTA2-like game',100,35,1);
 /*!40000 ALTER TABLE `assignments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +60,7 @@ CREATE TABLE `courses` (
   PRIMARY KEY (`cid`),
   KEY `courses_instructors__fk` (`instructor`),
   CONSTRAINT `courses_instructors__fk` FOREIGN KEY (`instructor`) REFERENCES `staffs` (`sid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='List all the courses in the Academic DB.';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='List all the courses in the Academic DB.';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +95,7 @@ CREATE TABLE `staffs` (
 
 LOCK TABLES `staffs` WRITE;
 /*!40000 ALTER TABLE `staffs` DISABLE KEYS */;
-INSERT INTO `staffs` VALUES ('U00000000','Christine Papadakis-Kanaris','cpk@bu.edu',1);
+INSERT INTO `staffs` VALUES ('U00000000','Christine Papadakis-Kanaris','cpk@bu.edu',1),('U19657074','Temi Jordan','jordantemi.test@bu.edu',0),('U23042622','Zhenghang Yin','zhyin.test@bu.edu',0),('U38312673','Hanyu Chen','chanyu.test@bu.edu',0),('U46838276','Carly Redon','redonc.test@bu.edu',0),('U58851675','Finn Janus','fjanus.test@bu.edu',0),('U68557294','Chenyu Cao','cyc.test@bu.edu',0),('U84494801','Wiener Joy','jwe.test@bu.edu',0),('U96784462','Francis Chin','fchin.test@bu.edu',0);
 /*!40000 ALTER TABLE `staffs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,6 +122,7 @@ CREATE TABLE `student_reg` (
 
 LOCK TABLES `student_reg` WRITE;
 /*!40000 ALTER TABLE `student_reg` DISABLE KEYS */;
+INSERT INTO `student_reg` VALUES ('U38312673',1),('U46838276',1),('U84494801',1);
 /*!40000 ALTER TABLE `student_reg` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-21 20:28:22
+-- Dump completed on 2022-09-22  4:49:55
