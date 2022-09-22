@@ -84,7 +84,7 @@ This model is reflected in the database as the following framework diagram:
 
 ![](README-assets/model_gs_erd.svg)
 
-When the model is wrapped in Java format objects, I wrapped the low-level SQL queries to make it easier for the callers (back-end and front-end developers) to use. The wrapped version will be covered in \[Model Encapsulation].
+When the model is wrapped in Java format objects, I wrapped the low-level SQL queries to make it easier for the callers (back-end and front-end developers) to use. The wrapped version will be covered in [Model Encapsulation](#model-encapsulation).
 
 ## Code Design
 
@@ -92,17 +92,17 @@ When the model is wrapped in Java format objects, I wrapped the low-level SQL qu
 
 The project framework was divided into the following categories:
 
-*   \[UI], Mainly stores user interface related code
+*   [UI](src/edu/bu/super_intuitive/UI), Mainly stores user interface related code
 
-    This will be covered in \[User Interface].
+    This will be covered in [User Interface](#user-interface).
 
-*   \[factory], stores some factory functions
+*   [factory](src/edu/bu/super_intuitive/factory), stores some factory functions
 
-*   \[middleware], stores some functions that establish database links. These functions are not the core of Java object-oriented programming.
+*   [middleware](src/edu/bu/super_intuitive/middleware), stores some functions that establish database links. These functions are not the core of Java object-oriented programming.
 
-*   \[models], holds the interface definitions for all objects within the grading system. This will be covered in \[Model Encapsulation].
+*   [models](src/edu/bu/super_intuitive/models), holds the interface definitions for all objects within the grading system. This will be covered in [Model Encapsulation](#model-encapsulation).
 
-*   \[service], holds the specific SQL query methods and definitions for all the objects to communicate with MySQL.
+*   [service](src/edu/bu/super_intuitive/service), holds the specific SQL query methods and definitions for all the objects to communicate with MySQL.
 
 ***
 
@@ -257,7 +257,7 @@ This chapter introduces the main dialogs in the program. The windows were design
 
 8.  Import CSV data into database tables, by Chenyu Cao.
 
-    Test cases can be found in \[assignmentTest.csv] and \[courseTest.csv].
+    Test cases can be found in [assignmentTest.csv](assignmentTest.csv) and [courseTest.csv](courseTest.csv).
 
     ![](README-assets/ui_import.png)
 
