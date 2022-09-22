@@ -35,7 +35,7 @@ The project is the final project for the class CS 611: Object-oriented Software 
 
 3.  Configure the username and password to connect to the server.
 
-    Open file `src/edu/bu/super_intuitive/middleware/mysql/Database.java`, modify the following lines:
+    Open file [`src/edu/bu/super_intuitive/middleware/mysql/Database.java`](src/edu/bu/super_intuitive/middleware/mysql/Database.java), modify the following lines:
 
     ```java
     public class Database {
@@ -132,7 +132,7 @@ Example: We have `IStudent studentMike`,  `IAssignment assignment1`. If Mike's s
 assignment1.setStudentScore(studentMike, 80);
 ```
 
-For more information, please see \[IAssignment.java]。
+For more information, please see [IAssignment.java](src/edu/bu/super_intuitive/models/grading/IAssignment.java)。
 
 #### Course Interface
 
@@ -170,7 +170,7 @@ var newCourse = saenko.openCourse(
   "Advanced Deep Learning", "CS 723", "Fall 2021");
 ```
 
-The `IInstructor` interface also provides other functions like `registerStudent`, `addAssignment`, etc. For more information, please see \[ICourse.java]。
+The `IInstructor` interface also provides other functions like `registerStudent`, `addAssignment`, etc. For more information, please see [ICourse.java](src/edu/bu/super_intuitive/models/grading/ICourse.java)。
 
 #### Student Interface
 
